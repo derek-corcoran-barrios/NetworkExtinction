@@ -14,8 +14,10 @@ exports data frame with the characteristics of the network after every
 extintion
 }
 \description{
-Generates an AMPL dat file from a Stack in which each file is the projection
-of a species distribution model into a time slice
+It takes a network and it calculates wich species is the most conected
+of the network, then it extinguishes that species, and calculates the
+secundary extintions. After that it recalculates the conections and
+repeats the process until every species becomes extinct.
 }
 \examples{
 data("net")
@@ -24,5 +26,5 @@ Mostconnected(Network = net)
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>
 
-Javier Fajardo <javierfajnolla@gmail.com >
+Isidora Avila <msavila@uc.cl>
 }

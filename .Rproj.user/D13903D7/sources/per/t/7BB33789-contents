@@ -1,12 +1,13 @@
 Package: NetworkExtintion
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Extinction Simulation in Food Webs
 Version: 0.1.0
-Authors@R: person("Derek", "Corcoran", email = "derek.corcoran.barrios@gmail.com",
-  role = c("aut", "cre"))
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Authors@R: c(person("Derek", "Corcoran", email = "derek.corcoran.barrios@gmail.com",
+  role = c("aut", "cre")), person("Isidora", "Avila", email = "msavila@uc.cl ",
+  role = c("aut")))
+Maintainer: Derek Corcoran <derek.corcoran.barrios@gmail.com>
+Description: Simulates the extintion of species in the food web and it analizes
+             its cascading effects.
 Depends: R (>= 2.10)
 Imports: dplyr, network, sna
 License: GPL (>= 2)

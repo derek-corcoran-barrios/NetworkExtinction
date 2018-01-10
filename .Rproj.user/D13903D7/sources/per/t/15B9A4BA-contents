@@ -1,7 +1,10 @@
 #' Extnction analyses from more to less conected
 #'
-#' Generates an AMPL dat file from a Stack in which each file is the projection
-#' of a species distribution model into a time slice
+#' It takes a network and it calculates wich species is the most conected
+#' of the network, then it extinguishes that species, and calculates the
+#' secundary extintions. After that it recalculates the conections and
+#' repeats the process until every species becomes extinct.
+#'
 #' @param Network a trophic network of class network
 #' @return exports data frame with the characteristics of the network after every
 #' extintion
@@ -17,7 +20,7 @@
 #' @importFrom dplyr arrange
 #' @importFrom dplyr desc
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author Javier Fajardo <javierfajnolla@gmail.com >
+#' @author Isidora Avila <msavila@uc.cl>
 #' @export
 
 Mostconnected <- function(Network){
