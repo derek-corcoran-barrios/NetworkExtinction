@@ -9,7 +9,7 @@ Maintainer: Derek Corcoran <derek.corcoran.barrios@gmail.com>
 Description: Simulates the extintion of species in the food web and it analizes
              its cascading effects.
 Depends: R (>= 2.10)
-Imports: dplyr, network, sna
+Imports: dplyr, ggplot2, network, sna
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
