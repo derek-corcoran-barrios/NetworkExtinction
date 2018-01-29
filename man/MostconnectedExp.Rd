@@ -24,7 +24,7 @@ data("net")
 MostconnectedExp(Network = net)
 }
 \seealso{
-[NetworkExtintion::ExtinctionOrder]
+[NetworkExtintion::ExtinctionOrder()]
 }
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>

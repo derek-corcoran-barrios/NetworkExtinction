@@ -82,6 +82,7 @@ Mostconnected <- function(Network){
     if (DF$linksS[i] == 0) break
   }
   DF <- DF[complete.cases(DF),]
+  class(DF) <- c("NetworkTopology", "data.frame")
   return(DF)
 }
 
