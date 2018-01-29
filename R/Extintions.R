@@ -1,4 +1,4 @@
-#' Extnction analyses from more to less conected
+#' Extnction analyses from more to less conected species
 #'
 #' It takes a network and it calculates wich species is the most conected
 #' of the network, then it extinguishes that species, and calculates the
