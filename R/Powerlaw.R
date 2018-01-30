@@ -1,10 +1,10 @@
 #' Degree distribution of the network
 #'
-#' Calculate the degree distribution of the network. Then, adjust
-#' the exponential, power law and power law truncated distribution
-#' to the network degree distribution and calculate de AIC to  evaluate
-#' the best model. Finally, do a plot of the degree distribution in a log-log scale
-#' and adjust the three models mentioned above
+#' degree_distribution calculate the degree distribution of the network,
+#' adjust exponential, power-law and truncated power-law distribution model,
+#' calculate de AIC to  recognize the best fit, and finally do
+#' a plot of the degree distribution in a log-log scale fitting
+#' the three models mentioned above
 
 #' @param Network a trophic network of class network
 #' @param name a categorical variable that represent
