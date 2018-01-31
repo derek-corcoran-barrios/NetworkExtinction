@@ -325,6 +325,7 @@ RandomExtinctions <- function(Network, nsim = 10){
   for(i in 1:nsim){
     sims[[i]] <- ExtinctionOrder(Network = network, Order = sample(1:network.size(network)))$DF
     sims[[i]]$simulation <- i
+    message(paste("Simulation", i, "of", nsim, "ready"))
   }
 
   sims <- do.call(rbind, sims)
