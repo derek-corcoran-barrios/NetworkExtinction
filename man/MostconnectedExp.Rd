@@ -2,7 +2,7 @@
 % Please edit documentation in R/Extintions.R
 \name{MostconnectedExp}
 \alias{MostconnectedExp}
-\title{Extnction analyses from more to less conected in a network}
+\title{Extinction analyses from more to less conected specie in a network}
 \usage{
 MostconnectedExp(Network)
 }

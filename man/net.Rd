@@ -9,6 +9,6 @@
 net
 }
 \description{
-A trophic network with 10 species
+A trophic network with 10 species where the first four species are primery producters
 }
 \keyword{datasets}

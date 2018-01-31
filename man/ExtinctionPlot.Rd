@@ -4,7 +4,7 @@
 \alias{ExtinctionPlot}
 \title{Plots the extinctions history of a network}
 \usage{
-ExtinctionPlot(History, Variable = "Secondary_extinctions")
+ExtinctionPlot(History, Variable = "AccSecondaryExtinction")
 }
 \arguments{
 \item{History}{a NetworkTopology object obtained from the Mostconnected function

@@ -10,11 +10,18 @@
 #' @param name a categorical variable that represent
 #' the distribution model
 #' @return exports three principal results:
-#' 1. A list with network degree distribution results
-#' 2. A list with the fit values and AIC of the distribution models
+#' 1. A list with network degree distribution values and with the value of each fit model
+#' 2. A list with each model results and AIC of the distribution models
 #' 3. A Ghraph of the degree distribution with the models adjust
-#' In the first results, k represent the degree of the network and cumulative
+#' In DDvalues, k represent the degree of the network and cumulative
 #' the probability that each specie could be have this degree (pk).
+#' Observation: In the graph, the zero values are not represented but this result are incorporate in the DF result
+#'
+#'@examples
+#'library(NetworkExtintion)
+#'data("net")
+#'degree_distribution(net, name = "Test")
+#'
 #'@importFrom sna degree
 #'@importFrom stats nls
 #'@importFrom broom glance
@@ -73,8 +80,7 @@ degree_distribution <- function(Network, name){
 
   g
 
-  return(list(DF = For.Graph, models = Summs, graph = g))
+  return(list(DDvalues = For.Graph, models = Summs, graph = g))
 }
 
 
-#######a <- degree_distribution(net.intertidal, name = "Test")

@@ -23,7 +23,7 @@
 #' @seealso [NetworkExtintion::ExtinctionOrder()]
 #' @export
 
-ExtinctionPlot <- function(History, Variable = "Secondary_extinctions"){
+ExtinctionPlot <- function(History, Variable = "AccSecondaryExtinction"){
   History$X <- 1:nrow(History)
   ggplot(History, aes_string(x = "X", y = Variable)) + geom_line()
 }

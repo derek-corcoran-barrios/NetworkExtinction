@@ -14,18 +14,25 @@ the distribution model}
 }
 \value{
 exports three principal results:
-1. A list with network degree distribution results
-2. A list with the fit values and AIC of the distribution models
+1. A list with network degree distribution values and with the value of each fit model
+2. A list with each model results and AIC of the distribution models
 3. A Ghraph of the degree distribution with the models adjust
-In the first results, k represent the degree of the network and cumulative
+In DDvalues, k represent the degree of the network and cumulative
 the probability that each specie could be have this degree (pk).
+Observation: In the graph, the zero values are not represented but this result are incorporate in the DF result
 }
 \description{
-Calculate the degree distribution of the network. Then, adjust
-the exponential, power law and power law truncated distribution
-to the network degree distribution and calculate de AIC to  evaluate
-the best model. Finally, do a plot of the degree distribution in a log-log scale
-and adjust the three models mentioned above
+degree_distribution calculate the degree distribution of the network,
+adjust exponential, power-law and truncated power-law distribution model,
+calculate de AIC to  recognize the best fit, and finally do
+a plot of the degree distribution in a log-log scale fitting
+the three models mentioned above
+}
+\examples{
+library(NetworkExtintion)
+data("net")
+degree_distribution(net, name = "Test")
+
 }
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>

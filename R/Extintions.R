@@ -4,6 +4,10 @@
 #' of the network, then it extinguishes that species, and calculates the
 #' secundary extintions. After that it recalculates the conections and
 #' repeats the process until every species becomes extinct.
+#' The most connected species are define like is defined as that species
+#' that has the highest value of the total degree. A secondary extinction occurs when following a primary removal,
+#' any remaining species lost all of their resources species (Solé et al. 2001, Dunne et al. 2002, Dunne & Williams 2009)
+#'
 #'
 #' @param Network a trophic network of class network
 #' @return exports data frame with the characteristics of the network after every
@@ -86,7 +90,7 @@ Mostconnected <- function(Network){
   return(DF)
 }
 
-#' Extnction analyses from more to less conected in a network
+#' Extinction analyses from more to less conected specie in a network
 #'
 #' It takes a network and it calculates wich species is the most conected
 #' of the network, then it extinguishes that species, and calculates the
@@ -177,8 +181,12 @@ MostconnectedExp <- function(Network){
     if (DF$linksS[i] == 0) break
   }
   DF <- DF[complete.cases(DF),]
+    DF$AccSecondaryExtinction<- cumsum(DF$Secondary_extinctions)
+  DF$NumExt <- 1:nrow(DF)
+  DF$TotalExt <- DF$AccSecondaryExtinction + DF$NumExt
   return(DF)
 }
+
 
 #' Extinction analysis by custom order
 #'
@@ -190,8 +198,13 @@ MostconnectedExp <- function(Network){
 #' @return exports data frame with the characteristics of the network after every
 #' extintion, and a graph with the mean and 95% interval
 #' @examples
+#' #first example
 #' data("net")
 #' ExtinctionOrder(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10))
+#' #Second example
+#' data("net")
+#' ExtinctionOrder(Network = net, Order = c(2,8,9))
+#'
 #' @importFrom ggplot2 aes_string
 #' @importFrom ggplot2 geom_line
 #' @importFrom ggplot2 ggplot
@@ -217,7 +230,7 @@ ExtinctionOrder <- function(Network, Order){
   indegreebasenet <- degree(Network, cmode = "indegree")
   indegreebasenetzeros <- sum(degree(Network, cmode = "indegree") == 0)
   Producers <- (1:length(degree(Network, cmode = "indegree")))[degree(Network, cmode = "indegree") == 0]
-  DF <- data.frame(Spp = rep(NA, network.size(Network)), nodesS = rep(NA, network.size(Network)), linksS = rep(NA, network.size(Network)),  indegreecero = rep(NA,network.size(Network)))
+  DF <- data.frame(Spp = rep(NA, network.size(Network)), nodesS = rep(NA, network.size(Network)), linksS = rep(NA, network.size(Network)), Conectance = rep(NA, network.size(Network)),  Secondary_extinctions = rep(NA,network.size(Network)))
 
   Secundaryext <- c()
   accExt <- c()
@@ -251,13 +264,14 @@ ExtinctionOrder <- function(Network, Order){
 
     DF$nodesS[i] <- network.size(Temp)
     DF$linksS[i] <- network.edgecount(Temp)
+    DF$Conectance[i] <- network.density(Temp)
     SecundaryextTemp <- (1:length(degree(Temp, cmode = "indegree")))[degree(Temp, cmode = "indegree") == 0]
     for(j in sort(unique(c(c(DF$Spp[1:i]),accExt)))){
       SecundaryextTemp <- ifelse(SecundaryextTemp < j, SecundaryextTemp, SecundaryextTemp + 1)
     }
     Secundaryext <- SecundaryextTemp
     Secundaryext <- Secundaryext[!(Secundaryext %in% Producers)]
-    DF$indegreecero[i]<- length(Secundaryext)
+    DF$Secondary_extinctions[i]<- length(Secundaryext)
     print(i)
     FinalExt[[i]] <-(Secundaryext)
     accExt <- append(accExt, DF$Spp[1:i])
@@ -266,9 +280,43 @@ ExtinctionOrder <- function(Network, Order){
     if (DF$linksS[i] == 0) break
   }
   DF <- DF[complete.cases(DF),]
-  DF$Cumsec <- cumsum(DF$indegreecero)
+  DF$AccSecondaryExtinction <- cumsum(DF$Secondary_extinctions)
   DF$NumExt <- 1:nrow(DF)
-  DF$TotalExt <- DF$Cumsec + DF$NumExt
-  G <- ggplot(DF, aes_string(x = "NumExt", y = "Cumsec")) + geom_line() + ylab("Secondary extinctions") + xlab("number of exctinctions")
+  DF$TotalExt <- DF$AccSecondaryExtinction + DF$NumExt
+  G <- ggplot(DF, aes_string(x = "NumExt", y = "AccSecondaryExtinction")) + geom_line() + ylab("Secondary extinctions") + xlab("number of exctinctions")
   return(list(DF= DF, Graph = G))
+}
+
+#' Neutral model
+#'
+#' It takes a network extinguishes species using a given order, then
+#' it calculates the secundary extintions.
+#'
+#' @param Network a trophic network of class network
+#' @param nsim number of simulations
+#' @return exports data frame with the characteristics of the network after every
+#' extintion, and a graph with the mean and 95% interval
+#' @examples
+#' #first example
+#' data("net")
+#' ExtinctionOrder(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10))
+#' #Second example
+#' data("net")
+#' ExtinctionOrder(Network = net, Order = c(2,8,9))
+#'
+#' @importFrom network network.size
+#' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
+#' @author Isidora Avila <msavila@uc.cl>
+#' @export
+
+RandomExtinctions <- function(Network, nsim = 10){
+  network <- Network
+  sims <- list()
+  for(i in 1:nsim){
+    sims[[i]] <- ExtinctionOrder(Network = network, Order = sample(1:network.size(network)))$DF
+    sims[[i]]$simulation <- i
+  }
+
+  sims <- do.call(rbind, sims)
+  return(sims)
 }
