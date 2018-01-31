@@ -10,8 +10,9 @@ vignette: >
   %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography: biblio.bib
+  
 ---
-
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -19,13 +20,23 @@ knitr::opts_chunk$set(
 )
 ```
 
-The objective of the NetworkExtinction package is to analyze and visualize extinctions in a food network.
+The objective of the NetworkExtinction package is to analyze and visualize the topology of the foodwebs and at the same time to analyze and visualize how the foodweb responds  to the primary extinction of species.
+
+The principal index that are incorporate are: 
+1. Node numbers: Number of species in the network (sole2001complexity)
+2. Links numbers (define)
+3. Connectance (define)
+3. Secondary extinctions (define)
+4. Total extinctions (define)
+
+
+
 
 ## How to install the package
 
 ### Extinctions from most connected to less conected
 
-The function to do this analisis is called *MostConected*
+The function to do this analisis is called *MostconnectedExp*
 
 ```{r}
 library(NetworkExtintion)
@@ -34,12 +45,21 @@ MostconnectedExp(Network = net)
 ```
 
 ### Extinctions from custom order
+The function to do this analisis is called *ExtinctionOrder*
 
 ```{r}
+data("net")
 ExtinctionOrder(Network = net, Order = c(2,4,7))
 ```
 
-## Degree distribution
+### Degree distribution
+The function to do this analisis is called *degree_distribution*
+```{r}
+data("net")
+degree_distribution(net, name = "Test")
+```
+
+
 
 Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
 
@@ -56,9 +76,8 @@ The `html_vignette` template includes a basic CSS theme. To override this theme 
 
 The figure sizes have been customised so that you can easily put two images side-by-side. 
 
-```{r, fig.show='hold'}
+```{r, fig.cap="Fig 1. This graph shows something"}
 plot(1:10)
-plot(10:1)
 ```
 
 You can enable figure captions by `fig_caption: yes` in YAML:
@@ -81,3 +100,8 @@ Also a quote using `>`:
 
 > "He who gives up [code] safety for [code] speed deserves neither."
 ([via](https://twitter.com/hadleywickham/status/504368538874703872))
+
+dsfjhsdjhf [@sole2001complexity]
+
+#Bibliography
+
