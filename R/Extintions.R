@@ -304,12 +304,22 @@ ExtinctionOrder <- function(Network, Order){
 #' data("net")
 #' ExtinctionOrder(Network = net, Order = c(2,8,9))
 #'
+#' @importFrom dplyr group_by
+#' @importFrom dplyr summarise
+#' @importFrom ggplot2 aes_string
+#' @importFrom ggplot2 geom_line
+#' @importFrom ggplot2 geom_ribbon
+#' @importFrom ggplot2 ggplot
+#' @importFrom ggplot2 theme_classic
+#' @importFrom magrittr "%>%"
 #' @importFrom network network.size
+#' @importFrom stats sd
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
 #' @author Isidora Avila <msavila@uc.cl>
 #' @export
 
 RandomExtinctions <- function(Network, nsim = 10){
+  NumExt <- sd <- AccSecondaryExtinction <- NULL
   network <- Network
   sims <- list()
   for(i in 1:nsim){
@@ -318,5 +328,15 @@ RandomExtinctions <- function(Network, nsim = 10){
   }
 
   sims <- do.call(rbind, sims)
-  return(sims)
+  sims <- sims %>% group_by(NumExt) %>% summarise(SdAccSecondaryExtinction = sd(AccSecondaryExtinction), AccSecondaryExtinction = mean(AccSecondaryExtinction))
+  g <- ggplot(sims, aes_string(x = "NumExt", y = "AccSecondaryExtinction")) + geom_ribbon(aes_string(ymin = "AccSecondaryExtinction - SdAccSecondaryExtinction", ymax = "AccSecondaryExtinction + SdAccSecondaryExtinction"), fill = "red") + geom_line() + theme_classic()
+  g
+  return(list(sims = sims, graph = g))
 }
+
+#library(readxl)
+#chilean_TI_consumercolum_resourcesrow_withhumans_R <- read_excel("C:/Users/Isidora/Google Drive/Doctorado/Tesis/datos/INTERMAREAL/chilean_TI_consumercolum_resourcesrow_withhumans_R.xlsx")
+#chilean <- chilean_TI_consumercolum_resourcesrow_withhumans_R
+#chilean <- chilean_TI_consumercolum_resourcesrow_withhumans_R[,-1]
+#library(network)
+#chilean <- as.network(chilean, loops = TRUE)
