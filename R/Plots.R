@@ -18,6 +18,7 @@
 #' @importFrom ggplot2 aes_string
 #' @importFrom ggplot2 geom_line
 #' @importFrom ggplot2 ggplot
+#' @importFrom ggplot2 theme_classic
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
 #' @author Isidora Avila <msavila@uc.cl>
 #' @seealso [NetworkExtintion::ExtinctionOrder()]
@@ -25,5 +26,5 @@
 
 ExtinctionPlot <- function(History, Variable = "AccSecondaryExtinction"){
   History$X <- 1:nrow(History)
-  ggplot(History, aes_string(x = "X", y = Variable)) + geom_line()
+  ggplot(History, aes_string(x = "X", y = Variable)) + geom_line() + theme_classic()
 }

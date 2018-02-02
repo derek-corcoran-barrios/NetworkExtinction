@@ -12,7 +12,7 @@
 
 <meta name="author" content="Isidora Avila and Derek Corcoran" />
 
-<meta name="date" content="2018-01-31" />
+<meta name="date" content="2018-02-02" />
 
 <title>How to use the NetworExtinction Package</title>
 
@@ -70,30 +70,107 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">How to use the NetworExtinction Package</h1>
 <h4 class="author"><em>Isidora Avila and Derek Corcoran</em></h4>
-<h4 class="date"><em>2018-01-31</em></h4>
+<h4 class="date"><em>2018-02-02</em></h4>
 
 
 <div id="TOC">
 <ul>
-<li><a href="#how-to-install-the-package">How to install the package</a><ul>
+<li><a href="#introduction">Introduction</a><ul>
+<li><a href="#how-to-install-the-package">How to install the package</a></li>
+<li><a href="#how-to-create-a-network-object">How to create a network object</a><ul>
 <li><a href="#extinctions-from-most-connected-to-less-conected">Extinctions from most connected to less conected</a></li>
 <li><a href="#extinctions-from-custom-order">Extinctions from custom order</a></li>
-<li><a href="#degree-distribution">Degree distribution</a></li>
+<li><a href="#random-extinction">Random extinction</a></li>
+<li><a href="#degree-distribution-analysis">Degree distribution analysis</a></li>
 </ul></li>
 <li><a href="#styles">Styles</a></li>
 <li><a href="#figures">Figures</a></li>
 <li><a href="#more-examples">More Examples</a></li>
+</ul></li>
 <li><a href="#bibliography">Bibliography</a></li>
 </ul>
 </div>
 
-<p>The objective of the NetworkExtinction package is to analyze and visualize the topology of the foodwebs and at the same time to analyze and visualize how the foodweb responds to the primary extinction of species.</p>
-<p>The principal index that are incorporate are: 1. Node numbers: Number of species in the network (sole2001complexity) 2. Links numbers (define) 3. Connectance (define) 3. Secondary extinctions (define) 4. Total extinctions (define)</p>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>The objective of the NetworkExtinction package is to analyze and visualize the topology of the foodwebs. At the same time to analyze and visualize how the foodweb responds to the primary removal of species.</p>
+<p>The principal index that are incorporate are:</p>
+<ol style="list-style-type: decimal">
+<li><p>Node numbers: Total number of species in the network <span class="citation">(Dunne, Williams, and Martinez 2002)</span>.</p></li>
+<li><p>Links numbers: Number of trophic relationships represented in the food web <span class="citation">(Dunne, Williams, and Martinez 2002)</span>.</p></li>
+<li><p>Connectance: Proportion of all possible trophic links that are actually realized <span class="citation">(Dunne, Williams, and Martinez 2002)</span>.</p></li>
+<li><p>Primary removals: Occurs when the researcher intentionally remove species.</p></li>
+<li><p>Secondary extinctions: A secondary extinction occurs when a non-basal species loses all of its prey items like a results of the primary removal. In this context, basal species may experience primary removal, but not secondary extinctions <span class="citation">(Dunne, Williams, and Martinez 2002)</span>.</p></li>
+<li><p>Total extinctions: Primary species removal plus secondary extinctions</p></li>
+</ol>
 <div id="how-to-install-the-package" class="section level2">
 <h2>How to install the package</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#install.packages(NetworkExtintion)</span>
+<span class="co">#library(NetworkExtintion)</span></code></pre></div>
+<p>This package have four different functions (see above for details):</p>
+<ul>
+<li><p>Extinctions from most connected to less conected</p></li>
+<li><p>Extinctions from custom order</p></li>
+<li><p>Random Extinctions</p></li>
+<li><p>Degree distribution analysis</p></li>
+</ul>
+</div>
+<div id="how-to-create-a-network-object" class="section level2">
+<h2>How to create a network object</h2>
+<p>NetworkExtinction package use a network object.</p>
+<p>For create a network object you can start with a matrix or a edgelist object (for more details see network package <span class="citation">(Butts and others 2008)</span>).</p>
+<div id="a-example" class="section level4">
+<h4>A Example</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#create a matrix</span>
+a&lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>), <span class="dt">nrow=</span><span class="dv">10</span>, <span class="dt">ncol=</span><span class="dv">10</span>)
+
+<span class="co">#the matrix of the data(net) used below is the transpose of a</span>
+a&lt;-<span class="st"> </span><span class="kw">t</span>(a) <span class="co">#transpose matrix a</span>
+a
+<span class="co">#&gt;       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]</span>
+<span class="co">#&gt;  [1,]    0    0    0    0    1    0    0    0    0     0</span>
+<span class="co">#&gt;  [2,]    0    0    0    0    0    1    0    0    0     1</span>
+<span class="co">#&gt;  [3,]    0    0    0    0    0    0    1    0    0     0</span>
+<span class="co">#&gt;  [4,]    0    0    0    0    0    0    1    0    0     0</span>
+<span class="co">#&gt;  [5,]    0    0    0    0    0    0    0    1    0     0</span>
+<span class="co">#&gt;  [6,]    0    0    0    0    0    0    0    1    1     0</span>
+<span class="co">#&gt;  [7,]    0    0    0    0    0    0    0    0    0     1</span>
+<span class="co">#&gt;  [8,]    0    0    0    0    0    0    0    0    0     1</span>
+<span class="co">#&gt;  [9,]    0    0    0    0    0    0    0    0    0     0</span>
+<span class="co">#&gt; [10,]    0    0    0    0    0    0    0    0    0     0</span>
+<span class="co">#create a network</span>
+<span class="kw">library</span>(network)
+<span class="co">#&gt; network: Classes for Relational Data</span>
+<span class="co">#&gt; Version 1.13.0 created on 2015-08-31.</span>
+<span class="co">#&gt; copyright (c) 2005, Carter T. Butts, University of California-Irvine</span>
+<span class="co">#&gt;                     Mark S. Handcock, University of California -- Los Angeles</span>
+<span class="co">#&gt;                     David R. Hunter, Penn State University</span>
+<span class="co">#&gt;                     Martina Morris, University of Washington</span>
+<span class="co">#&gt;                     Skye Bender-deMoll, University of Washington</span>
+<span class="co">#&gt;  For citation information, type citation(&quot;network&quot;).</span>
+<span class="co">#&gt;  Type help(&quot;network-package&quot;) to get started.</span>
+net &lt;-<span class="st"> </span><span class="kw">as.network</span>(a, <span class="dt">loops =</span> <span class="ot">TRUE</span>)
+net
+<span class="co">#&gt;  Network attributes:</span>
+<span class="co">#&gt;   vertices = 10 </span>
+<span class="co">#&gt;   directed = TRUE </span>
+<span class="co">#&gt;   hyper = FALSE </span>
+<span class="co">#&gt;   loops = TRUE </span>
+<span class="co">#&gt;   multiple = FALSE </span>
+<span class="co">#&gt;   bipartite = FALSE </span>
+<span class="co">#&gt;   total edges= 10 </span>
+<span class="co">#&gt;     missing edges= 0 </span>
+<span class="co">#&gt;     non-missing edges= 10 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  Vertex attribute names: </span>
+<span class="co">#&gt;     vertex.names </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; No edge attributes</span></code></pre></div>
+</div>
 <div id="extinctions-from-most-connected-to-less-conected" class="section level3">
 <h3>Extinctions from most connected to less conected</h3>
 <p>The function to do this analisis is called <em>MostconnectedExp</em></p>
+<p>This function orders the species from the most connected species to the least connected species, using total degree. Then, remove the most connected species in the network and calculate the topological indexes of the network (which were mentioned above) and count how many species have indegree 0 (secondary extinction), without count primery producers. Then, remove the species that were secondarily extinct in the previous step and recalculate which is the new most connected species and so on, until the number of links in the network is zero <span class="citation">(Sole and Montoya 2001; Dunne, Williams, and Martinez 2002; Dunne and Williams 2009)</span></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(NetworkExtintion)
 <span class="kw">data</span>(<span class="st">&quot;net&quot;</span>)
 <span class="kw">MostconnectedExp</span>(<span class="dt">Network =</span> net)
@@ -111,10 +188,24 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="co">#&gt; 2             2                      1      2        3</span>
 <span class="co">#&gt; 3             3                      2      3        5</span>
 <span class="co">#&gt; 4             4                      3      4        7</span></code></pre></div>
+<p>The result is a dataframe. The first column (Spp) indicates which was the species that was removed as a primary removal.</p>
+<p>The column Secondary_extinctions represent the numbers of the species that are extinguished in a secondary form, and the AccSecondaryExtinction column represente the accumulated secondary extinction.</p>
+<p>to plot the results, see function ExtinctionPlot</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;net&quot;</span>)
+history &lt;-<span class="st"> </span><span class="kw">MostconnectedExp</span>(<span class="dt">Network =</span> net)
+<span class="co">#&gt; [1] 1</span>
+<span class="co">#&gt; [1] 2</span>
+<span class="co">#&gt; [1] 3</span>
+<span class="co">#&gt; [1] 4</span>
+<span class="kw">ExtinctionPlot</span>(<span class="dt">History =</span> history, <span class="dt">Variable =</span> <span class="st">&quot;AccSecondaryExtinction&quot;</span>)</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+<span class="co">#&quot;Fig 1. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most connected to the least connected&quot;</span></code></pre></div>
 </div>
 <div id="extinctions-from-custom-order" class="section level3">
 <h3>Extinctions from custom order</h3>
 <p>The function to do this analisis is called <em>ExtinctionOrder</em></p>
+<p>It takes a network extinguishes species using a given order, then it calculates the topological foodweb index and the secundary extinctions.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;net&quot;</span>)
 <span class="kw">ExtinctionOrder</span>(<span class="dt">Network =</span> net, <span class="dt">Order =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">7</span>))
 <span class="co">#&gt; [1] 1</span>
@@ -131,11 +222,84 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="co">#&gt; 3                      2      3        5</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Graph</span></code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>The results it is a dataframe with the topological index of the foodweb in each extiction step (like MostConnected results). Adittionaly, te result generate a plot that show the number of accumulated secondary extinctions that occur when removing species</p>
 </div>
-<div id="degree-distribution" class="section level3">
-<h3>Degree distribution</h3>
+<div id="random-extinction" class="section level3">
+<h3>Random extinction</h3>
+<p>The function to do this analisis is called <em>RandomExtinctions</em> From a network, a certain amount of simulations is done (nsim), in which the species are extinguished in a random order.</p>
+<p>the objective is to compare whether the number of secondary extinctions that occur when extinguishing species in a particular order (MostConnected or Extinctionorder) is different from the number of secondary extinctions that occur when executing primary extinction orders in a random manner.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(net)
+<span class="kw">RandomExtinctions</span>(<span class="dt">Network=</span> net, <span class="dt">nsim=</span> <span class="dv">5</span>)
+<span class="co">#&gt; [1] 1</span>
+<span class="co">#&gt; [1] 2</span>
+<span class="co">#&gt; [1] 3</span>
+<span class="co">#&gt; [1] 4</span>
+<span class="co">#&gt; [1] 5</span>
+<span class="co">#&gt; [1] 6</span>
+<span class="co">#&gt; [1] 7</span>
+<span class="co">#&gt; [1] 8</span>
+<span class="co">#&gt; Simulation 1 of 5 ready</span>
+<span class="co">#&gt; [1] 1</span>
+<span class="co">#&gt; [1] 2</span>
+<span class="co">#&gt; [1] 3</span>
+<span class="co">#&gt; [1] 4</span>
+<span class="co">#&gt; [1] 5</span>
+<span class="co">#&gt; [1] 6</span>
+<span class="co">#&gt; [1] 7</span>
+<span class="co">#&gt; Simulation 2 of 5 ready</span>
+<span class="co">#&gt; [1] 1</span>
+<span class="co">#&gt; [1] 2</span>
+<span class="co">#&gt; [1] 3</span>
+<span class="co">#&gt; [1] 4</span>
+<span class="co">#&gt; [1] 5</span>
+<span class="co">#&gt; [1] 6</span>
+<span class="co">#&gt; [1] 7</span>
+<span class="co">#&gt; [1] 8</span>
+<span class="co">#&gt; Simulation 3 of 5 ready</span>
+<span class="co">#&gt; [1] 1</span>
+<span class="co">#&gt; [1] 2</span>
+<span class="co">#&gt; [1] 3</span>
+<span class="co">#&gt; [1] 4</span>
+<span class="co">#&gt; [1] 5</span>
+<span class="co">#&gt; [1] 6</span>
+<span class="co">#&gt; [1] 7</span>
+<span class="co">#&gt; Simulation 4 of 5 ready</span>
+<span class="co">#&gt; [1] 1</span>
+<span class="co">#&gt; [1] 2</span>
+<span class="co">#&gt; [1] 3</span>
+<span class="co">#&gt; [1] 4</span>
+<span class="co">#&gt; [1] 5</span>
+<span class="co">#&gt; [1] 6</span>
+<span class="co">#&gt; Simulation 5 of 5 ready</span>
+<span class="co">#&gt; $sims</span>
+<span class="co">#&gt; # A tibble: 8 x 3</span>
+<span class="co">#&gt;   NumExt SdAccSecondaryExtinction AccSecondaryExtinction</span>
+<span class="co">#&gt;    &lt;int&gt;                    &lt;dbl&gt;                  &lt;dbl&gt;</span>
+<span class="co">#&gt; 1      1                    0                      0    </span>
+<span class="co">#&gt; 2      2                    0.447                  0.200</span>
+<span class="co">#&gt; 3      3                    0.447                  0.200</span>
+<span class="co">#&gt; 4      4                    0.447                  0.200</span>
+<span class="co">#&gt; 5      5                    0.548                  0.400</span>
+<span class="co">#&gt; 6      6                    1.00                   1.00 </span>
+<span class="co">#&gt; 7      7                    1.29                   1.50 </span>
+<span class="co">#&gt; 8      8                    2.12                   2.50 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $graph</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>The result is a dataframe and a graph.</p>
+<ul>
+<li><p>In the dataframe, The first column (NumExt) represents the number of extinction that occurs by primary removal. The second one, represents the deviation to the average of the accumulated secondary extinctions that occur when, independently of species identity, a certain number of species is extracted by primary removal. The third one, represents the average of the accumulated secondary extinctions that occur when, regardless of the specie identity, a certain number of species is extracted by primary removal.</p></li>
+<li><p>In the graph, the figure shows the accumulated secondary extinction with their desviation (red shadow) that occur as the number of primary removal increases</p></li>
+</ul>
+</div>
+<div id="degree-distribution-analysis" class="section level3">
+<h3>Degree distribution analysis</h3>
 <p>The function to do this analisis is called <em>degree_distribution</em></p>
+<p>degree_distribution function calculate the cumulative distribution of the number of links that each species in the food network has <span class="citation">(Estrada 2007)</span>. Then, three expected distribution to the observed distribution, this are: * Exponential distribution model * Power-law distribution model<br />
+* Truncated power-law distribution model</p>
+<p>At the same time, the degree_distribution function calculate de AIC to recognize among the three models mentioned above, which is the one that best fits to the observed distribution.</p>
+<p>Finally, the degree_distribution function generate a plot of the observed degree distribution in a log-log scale fitting the three models mentioned above</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;net&quot;</span>)
 <span class="kw">degree_distribution</span>(net, <span class="dt">name =</span> <span class="st">&quot;Test&quot;</span>)
 <span class="co">#&gt; Joining, by = c(&quot;K&quot;, &quot;Cumulative&quot;, &quot;Scenario&quot;, &quot;Exp&quot;)</span>
@@ -161,6 +325,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $graph</span></code></pre></div>
 <p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASAAAAEgCAMAAAAjXV6yAAAA1VBMVEUAAAAAADoAAGYAOmYAOpAAZrYAujgzMzM6AAA6ADo6AGY6OmY6OpA6ZrY6kJA6kNtNTU1NTW5NTY5NbqtNjshhnP9mAABmADpmAGZmOgBmZjpmZmZmkJBmtttmtv9uTY5ubqtuq+SOTU2OTW6OTY6OyP+QOgCQOjqQZgCQkDqQkGaQtpCQ2/+rbk2ryKur5P+2ZgC2Zjq225C2/7a2///Ijk3I///bkDrb/7bb/9vb///kq27k///4dm3/tmb/yI7/25D/5Kv//7b//8j//9v//+T///+R7WOZAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAKu0lEQVR4nO2dCV/TSBTAI0tHPHZBEcQ96o2ui9pVpC5y1IL5/h9p50hI0rR5c8+b+v4/oU1hmpm/c2TeTEpREoMUqTOAHRIEQIIASBAACQIgQQAWgn4upyQIgAQBkCAAEgRAggBIEAAJAhgu7fenJ/Lx6sXO7pleknVjsLSXOw+loB/vX5ffHmklWTuGSvvlwQdVg65endxUJhLUprLy/dlZefXyI392myOTsOA5Q4KWoMvdWlCThLGQ2cKDYQ1qJ2HhcoUILUEr+iAWLFeI0BL04/3zpaPYz9DMYEHia+V1EAuULTy4XkkzT/lAi/NUY92bmYe5GPORD7T4mKwyD/lAi5fZ/Do3M0/hDuaaD7T4igcxx3ygxVvAbF2bmceIInPJB1p8hlyZQz7Q4jUmvY7NzHPQntnmAy2+VzWYZT7Q4n3ZZ92aWYB1MWaTD7SEWDhcq0oUZmWVmb8rVgItPTPzt0VKqLX5tWlm4TYvMPN3xkjA3R3M/K0REnL7y1o0s7D7g5j5u2Mj8AYqZv72yAi9wyz7ZhZ+Cx4zPwMmIuxRZOanQESMTZxZN7M4u1yZeRIsRNoGzCzS4CDWPulsm1m8jeTMLllqIu60Z5bp0hLzVoQsm1ncezWYfdJURL6ZhTmkTUPsu32ya2bxb4dibsljYymoKOw15VWJ7AQVhYuhrCpREkE5GXIQ5FSHmH3auDj1QU49kXXKuNiOYnv1gbUjZpkuMtbD/F5zbOkoj2bmQVBp7YjZJIqM/YXi3sKrNo6YeZLYOFxJ7/V+YO4IfzOzFXR+3hdU2jhi5hmIin0NOj9fZsjcETPPQUxcJqsrDJk6wt3MnGbze7yhrfolE0fMPBPRcAt37JWrFZk4Yua5iIVjPGivHFKk7whvM3MXNKxI2xEzz0gUXCOKqp8eVKTpiJnnJAbOIddqJBtWpOUIZzPzJQhUpOOImWcmOO5B++ZiCFIEO0JYiTysarQuF0FFJRSIZOb5CYtfQTqKgIrEzDM0wMXGcf10dufI5h18rIt1Zxw6ioYceW1mOAQtzuvPHR0x0xytBqegUrMarXTEzDLEy/7PVlFsz/i3cVleHxbFiL863y9uveOCxDF/SCloWWhIT9EKR4bNbLa1eVpOC/Ft4/j6cFSKr/n+Nv9Sx+V08zSpoKXBM01Fyx0xgwxxQeP6250j2ar4N/k4rR7n+2Mvgqa8jnLZJkkUyyNDuoqWOWKaSQWy7PW3C5F//ijLMbt7PFWLnNs+BE02v+6PZZXUTlKzInamrajvyKCZDQuq/sM9COL1kP9r9/xgkoZV0UV9RT1HTDdhV9Cto6aJicdbR80vmRNckJGiBUdMM1VHUNNJj6pOmlchbslHE5uKJiZ6f/0kDasNGSnqONJsZh1BS4d5Xou8dNIXsjszStIwYMhMUdsRM0kXAo9b8IYEmSpqHDGjZP7xuUdx2JCpotpR4hBIt5OGWlcvSRfAkLGiyhEzTOWVbiddyMmMSZIOkCDdeWznbNwRc9qq5cbieSeyxzdK0gI2ZFGNuB3GkhlactqJ1XWQQseQlSI0giYyNGCUpI2WIKv+GoUgjfa1mGQRTUPWo350FqYapkn66BqyaGhJ8HkdJNEWlImim9LKmaoKnTh00qWRoRwUea9BZobwK1rSB9mFOxqMBAVWJOL4WiPPSgIIMjUUUtHsLnDNAtKUtordFiqYopVkFaaGwimqBU22y+lofvC3eWXyPsxLjA25KjrvoV6vBc0PPh8cz/c3T6Hm0SNAJ13aCApUi1QfJFfNtmUFuH5jWIU6pVVv5zjMS2wMWUz1QW76IBFwnT/mciZaraShXdrrw+3rwzHY0LQqnZUh/9XoRtDkj5EU5FSDhBrem10AK4chBflWVAua3f/vzZFY54AK12NR0HTkPsxLrA15VVR1Gn8djrmar49/dxvFyom0A609a/br9oZCjfqyDzKlU1reCZUTl4hiGwdBgRS5C/KbxMkQmklaQEGOhpAoaoU7bqYaXjrp0lkQDkUha5C7IQSKggryYCi5ou51kN8m5kVQakX90oKDoUml82IoqaIlpfUy1ajxY6hMZ2iZIH9NzJugdCxbevZZg7I3tKST9jTVqMncUNhhXkCCIPI2FCjk2iFrQ92QK7Dg00+iRUJB9UoP717FjumxjE3z6xh5XM7uPQEXOcIs+ywQ3hDroV6vV3pUJHm6XU6Lcckf5DqZuv8FoFuDAglKV4eqlZ75wbGYIczun/77biSO+WyBv6az7toprd6qWlaC1EqPMCE9fT74dFcuIcrLGWNBgTrpMp2haqWnqkHl5M9fr9+8G4naI35qKkiEpDWw2gyXyFC90lOtZl0Uqheqjk0FBeuky3SCqpUeNWqpMUzdgSjvbzGuQeEEJTJktZDRodsHae2msdxvmsSQX0H+I4ptMr2ejjAXq8nTUERBeRqK18TWQJDCa9C+S46GQgftu2RoKHTQvst6CPIbtO+Sn6HwQfsu2RmKOcwLSBBEboZapZWTeflJF9pJbMjMUFPa2ZaKBkH39GYlCJ5+d3+jH9BoSjsZLT5ZgevdozENeRTURMsCXgcp4hkScbJP955sfOIWuInZ/bfykxOqcJn4TDgZSavCafzhlydrKmivh3pdWNkay2oin8pI63W1rVyGFMWP1CKQjMP2PnniprRNQNrTRvKh4ji/gy6VgVpQ86BQSz/VIpCI5A/1QdOq4oChew93sEcztFzQfVUD5IcoCEGtRaDezUCt0k7kJbRYixw+af6CZA0SfYo6qBaBoBpULYvBd3v4+AyEWIYqHaIRTTdqQXKN/q7suO8cVX1QvTa0ug/Sx8uHREQydH0oRzBxQ+5vBzeVSY1i/DU+aPHfOFbH4sPOBkYxfXIS5E4qQdkYSiYoF0MkCCCdoEwMJRSUhyESBJBSUBaGkgrKwRAJAkgrKANDiQXhN0SCAFILQm8ouSDshkgQQHpByA0hEITbEAkCwCAItSEUgjAbIkEAOAQhNoREEF5DJAgAiyC0htAIwmqIBAHgEYTUECJBOA1hEoTSEAkCQCUIoyFcghAaIkEAyAThM4RNEDpDJAgAnSBshvAJQmaIBAEgFITLEEZBqAyRIACUgjAZwikIkSESBIBUEB5DWAWhMUSCANAKwmIIryAkhkgQAGJBOAxhFoTCEAkCQC0IgyHcghAYIkEAyAWlN4RdUHJDJAhgqLRXL3Z2z6rn35+e6CQJQGJDA6X98f51+e2Ren658zCVoMSGBkp79eqkrjhfHnxIVoPwCvr+7Ky8evmxOlCCbnNiC0praKC0l7t9QUCSQKQ0ZFiDgCSBQCqo1QclFpTS0OAo9vxmFEssKKEh+DpIqSFBQZNkDAkCIEEAJAiABAGQIAASBECCAEgQAAkCsBEkuF2kwH/54dJaprvtNReIIUEAJAjg5+pxLSBBACQIgAQBkCAAS0GtEPWaYyeovVS/5lgJ6izVrznUxABIEAAJAiBBACQIgAQB0JU0AAkCIEEAJAiABAGQIAASBECCACIKqv5O+0UxindOd6ILuoD/HDkqYgu62DiOd0YfRBaUnZ/Igvp/7x49UQUVm28z64EiC9o8FV/xzuiD2J30bGs73hl9EH2Yn2bWDcW/UJzkNZDFFzTfz6oborkYAAkCIEEAJAiABAGQIAASBPA/Iv785u0rn8wAAAAASUVORK5CYII=" /><!-- --></p>
+<p>The function generate three results:</p>
+<ol style="list-style-type: decimal">
+<li><p>A list with the observed value of the network degree distribution (colum K and Cummulative) and the expected values of the each fitting model (Exp = Exponential model, Power = Power-law model, truncated = Truncated Power-law model). k represent the degree of the network and cumulative the probability that each specie could be have this degree (pk).</p></li>
+<li><p>A list with the results if the AIC among the three models. In this case the model list are order from the best to the worst model.</p></li>
+<li><p>A Ghraph of the observed degree distribution with the fit of the three models.</p></li>
+</ol>
+<ul>
+<li>Observation: In the graph, the zero values are not represented but this result are incorporate in the DDvalues result.</li>
+</ul>
 <p>Note the various macros within the <code>vignette</code> section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the <code>title</code> field and the <code>\VignetteIndexEntry</code> to match the title of your vignette.</p>
 </div>
 </div>
@@ -352,11 +525,23 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <blockquote>
 <p>“He who gives up [code] safety for [code] speed deserves neither.” (<a href="https://twitter.com/hadleywickham/status/504368538874703872">via</a>)</p>
 </blockquote>
-<p>dsfjhsdjhf <span class="citation">(Sole and Montoya 2001)</span></p>
+</div>
 </div>
 <div id="bibliography" class="section level1 unnumbered">
 <h1>Bibliography</h1>
 <div id="refs" class="references">
+<div id="ref-butts2008network">
+<p>Butts, Carter T, and others. 2008. “Network: A Package for Managing Relational Data in R.” <em>Journal of Statistical Software</em> 24 (2): 1–36.</p>
+</div>
+<div id="ref-dunne2009cascading">
+<p>Dunne, Jennifer A, and Richard J Williams. 2009. “Cascading Extinctions and Community Collapse in Model Food Webs.” <em>Philosophical Transactions of the Royal Society B: Biological Sciences</em> 364 (1524). The Royal Society: 1711–23.</p>
+</div>
+<div id="ref-dunne2002food">
+<p>Dunne, Jennifer A, Richard J Williams, and Neo D Martinez. 2002. “Food-Web Structure and Network Theory: The Role of Connectance and Size.” <em>Proceedings of the National Academy of Sciences</em> 99 (20). National Acad Sciences: 12917–22.</p>
+</div>
+<div id="ref-estrada2007food">
+<p>Estrada, Ernesto. 2007. “Food Webs Robustness to Biodiversity Loss: The Roles of Connectance, Expansibility and Degree Distribution.” <em>Journal of Theoretical Biology</em> 244 (2). Elsevier: 296–307.</p>
+</div>
 <div id="ref-sole2001complexity">
 <p>Sole, Ricard V, and M Montoya. 2001. “Complexity and Fragility in Ecological Networks.” <em>Proceedings of the Royal Society of London B: Biological Sciences</em> 268 (1480). The Royal Society: 2039–45.</p>
 </div>

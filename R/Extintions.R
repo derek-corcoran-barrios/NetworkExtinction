@@ -208,6 +208,7 @@ MostconnectedExp <- function(Network){
 #' @importFrom ggplot2 aes_string
 #' @importFrom ggplot2 geom_line
 #' @importFrom ggplot2 ggplot
+#' @importFrom ggplot2 theme_classic
 #' @importFrom ggplot2 xlab
 #' @importFrom ggplot2 ylab
 #' @importFrom network as.matrix.network.edgelist
@@ -283,7 +284,7 @@ ExtinctionOrder <- function(Network, Order){
   DF$AccSecondaryExtinction <- cumsum(DF$Secondary_extinctions)
   DF$NumExt <- 1:nrow(DF)
   DF$TotalExt <- DF$AccSecondaryExtinction + DF$NumExt
-  G <- ggplot(DF, aes_string(x = "NumExt", y = "AccSecondaryExtinction")) + geom_line() + ylab("Secondary extinctions") + xlab("number of exctinctions")
+  G <- ggplot(DF, aes_string(x = "NumExt", y = "AccSecondaryExtinction")) + geom_line() + ylab("Secondary extinctions") + xlab("number of exctinctions") + theme_classic()
   return(list(DF= DF, Graph = G))
 }
 
