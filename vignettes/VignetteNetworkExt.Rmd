@@ -41,9 +41,9 @@ The principal index that are incorporate are:
 
 ## How to install the package
 
-```{r}
-#install.packages(NetworkExtintion)
-#library(NetworkExtintion)
+```{r, eval=FALSE}
+install.packages(NetworkExtinction)
+library(NetworkExtinction)
 ```
 
 This package have four different functions (see above for details):  
@@ -84,7 +84,7 @@ The function to do this analisis is called *MostconnectedExp*
 This function orders the species from the most connected species to the least connected species, using total degree. Then, remove the most connected species in the network and calculate the topological indexes of the network (which were mentioned above) and count how many species have indegree 0 (secondary extinction), without count primery producers. Then, remove the species that were secondarily extinct in the previous step and recalculate which is the new most connected species and so on, until the number of links in the network is zero [@sole2001complexity; @dunne2002food; @dunne2009cascading]
 
 ```{r}
-library(NetworkExtintion)
+library(NetworkExtinction)
 data("net")
 MostconnectedExp(Network = net)
 ```

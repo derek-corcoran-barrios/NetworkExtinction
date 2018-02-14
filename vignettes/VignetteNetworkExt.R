@@ -4,9 +4,9 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-## ------------------------------------------------------------------------
-#install.packages(NetworkExtintion)
-#library(NetworkExtintion)
+## ---- eval=FALSE---------------------------------------------------------
+#  install.packages(NetworkExtinction)
+#  library(NetworkExtinction)
 
 ## ------------------------------------------------------------------------
 #create a matrix
@@ -21,7 +21,7 @@ net <- as.network(a, loops = TRUE)
 net
 
 ## ------------------------------------------------------------------------
-library(NetworkExtintion)
+library(NetworkExtinction)
 data("net")
 MostconnectedExp(Network = net)
 

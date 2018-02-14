@@ -29,7 +29,7 @@ a plot of the degree distribution in a log-log scale fitting
 the three models mentioned above
 }
 \examples{
-library(NetworkExtintion)
+library(NetworkExtinction)
 data("net")
 degree_distribution(net, name = "Test")
 

@@ -18,7 +18,7 @@
 #' Observation: In the graph, the zero values are not represented but this result are incorporate in the DF result
 #'
 #'@examples
-#'library(NetworkExtintion)
+#'library(NetworkExtinction)
 #'data("net")
 #'degree_distribution(net, name = "Test")
 #'
