@@ -26,5 +26,5 @@
 
 ExtinctionPlot <- function(History, Variable = "AccSecondaryExtinction"){
   History$X <- 1:nrow(History)
-  ggplot(History, aes_string(x = "X", y = Variable)) + geom_line() + theme_classic()
+  ggplot(History, aes_string(x = "X", y = Variable)) + geom_line() + theme_classic() + ylab(Variable) + xlab("Number of extinctions")
 }

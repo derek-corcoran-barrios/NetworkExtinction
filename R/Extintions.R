@@ -1,95 +1,3 @@
-#' Extnction analyses from more to less conected species
-#'
-#' It takes a network and it calculates wich species is the most conected
-#' of the network, then it extinguishes that species, and calculates the
-#' secundary extintions. After that it recalculates the conections and
-#' repeats the process until every species becomes extinct.
-#' The most connected species are define like is defined as that species
-#' that has the highest value of the total degree. A secondary extinction occurs when following a primary removal,
-#' any remaining species lost all of their resources species (Solé et al. 2001, Dunne et al. 2002, Dunne & Williams 2009)
-#'
-#'
-#' @param Network a trophic network of class network
-#' @return exports data frame with the characteristics of the network after every
-#' extintion
-#' @examples
-#' data("net")
-#' Mostconnected(Network = net)
-#' @importFrom network as.matrix.network.edgelist
-#' @importFrom network delete.vertices
-#' @importFrom network network.edgecount
-#' @importFrom network network.size
-#' @importFrom sna degree
-#' @importFrom stats complete.cases
-#' @importFrom dplyr arrange
-#' @importFrom dplyr desc
-#' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author Isidora Avila <msavila@uc.cl>
-#' @export
-
-Mostconnected <- function(Network){
-  Grado <- NULL
-  edgelist <- as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
-  Conected <- data.frame(ID = 1:network.size(Network), Grado = degree(edgelist, c("total")))
-  Conected <- arrange(Conected, desc(Grado))
-  Conected1<- c(Conected$ID)
-  indegreebasenet <- degree(Network, cmode = "indegree")
-  indegreebasenetzeros <- sum(degree(Network, cmode = "indegree") == 0)
-  Producers <- (1:length(degree(Network, cmode = "indegree")))[degree(Network, cmode = "indegree") == 0]
-  DF <- data.frame(Spp = rep(NA, network.size(Network)), nodesS = rep(NA, network.size(Network)), linksS = rep(NA, network.size(Network)),  indegreecero = rep(NA,network.size(Network)))
-
-  Secundaryext <- c()
-  accExt <- c()
-  totalExt <- c()
-  FinalExt <- list()
-  Conected3 <- c()
-
-  ####LOOP####
-  for (i in 1:network.size(Network)){
-    #esta lista tiene el mismo orden que conected 1, hay que
-    #volver a hacer la red y calcular el grado
-    if (length(accExt)==0){
-      Temp <- Network
-      DF$Spp[i] <- Conected1[i]
-      delete.vertices(Temp, c(DF$Spp[1:i]))
-    }
-    if (length(accExt)>0){
-      Temp <- Network
-      Temp <- delete.vertices(Temp, c(accExt))
-      edgelist <- as.matrix.network.edgelist(Temp,matrix.type="edgelist")
-      Conected2 <- data.frame(ID = 1:network.size(Temp), Grado = degree(edgelist, c("total")))
-      Conected2 <- arrange(Conected2, desc(Grado))
-      for(j in sort(accExt)){
-        Conected2$ID <- ifelse(Conected2$ID < j, Conected2$ID, Conected2$ID + 1)
-      }
-
-      DF$Spp[i] <- Conected2$ID[1]
-      Temp <- Network
-
-      delete.vertices(Temp, unique(c(c(DF$Spp[1:i]),accExt)))
-    }
-
-    DF$nodesS[i] <- network.size(Temp)
-    DF$linksS[i] <- network.edgecount(Temp)
-    SecundaryextTemp <- (1:length(degree(Temp, cmode = "indegree")))[degree(Temp, cmode = "indegree") == 0]
-    for(j in sort(unique(c(c(DF$Spp[1:i]),accExt)))){
-      SecundaryextTemp <- ifelse(SecundaryextTemp < j, SecundaryextTemp, SecundaryextTemp + 1)
-    }
-    Secundaryext <- SecundaryextTemp
-    Secundaryext <- Secundaryext[!(Secundaryext %in% Producers)]
-    DF$indegreecero[i]<- length(Secundaryext)
-    print(i)
-    FinalExt[[i]] <-(Secundaryext)
-    accExt <- append(accExt, DF$Spp[1:i])
-    accExt <- unique(append(accExt,Secundaryext))
-
-    if (DF$linksS[i] == 0) break
-  }
-  DF <- DF[complete.cases(DF),]
-  class(DF) <- c("NetworkTopology", "data.frame")
-  return(DF)
-}
-
 #' Extinction analyses from more to less conected specie in a network
 #'
 #' It takes a network and it calculates wich species is the most conected
@@ -102,7 +10,7 @@ Mostconnected <- function(Network){
 #' extintion. The resulting data frame contains seven columns
 #' @examples
 #' data("net")
-#' MostconnectedExp(Network = net)
+#' Mostconnected(Network = net)
 #' @importFrom network as.matrix.network.edgelist
 #' @importFrom network delete.vertices
 #' @importFrom network network.density
@@ -118,7 +26,7 @@ Mostconnected <- function(Network){
 #' @export
 
 
-MostconnectedExp <- function(Network){
+Mostconnected <- function(Network){
   Grado <- NULL
   Network <- Network
   edgelist <- as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
@@ -273,7 +181,7 @@ ExtinctionOrder <- function(Network, Order){
     Secundaryext <- SecundaryextTemp
     Secundaryext <- Secundaryext[!(Secundaryext %in% Producers)]
     DF$Secondary_extinctions[i]<- length(Secundaryext)
-    print(i)
+    message(i)
     FinalExt[[i]] <-(Secundaryext)
     accExt <- append(accExt, DF$Spp[1:i])
     accExt <- unique(append(accExt,Secundaryext))
@@ -312,8 +220,10 @@ ExtinctionOrder <- function(Network, Order){
 #' @importFrom ggplot2 geom_ribbon
 #' @importFrom ggplot2 ggplot
 #' @importFrom ggplot2 theme_classic
+#' @importFrom ggplot2 scale_fill_manual
 #' @importFrom magrittr "%>%"
 #' @importFrom network network.size
+#' @importFrom scales muted
 #' @importFrom stats sd
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
 #' @author Isidora Avila <msavila@uc.cl>
@@ -332,7 +242,7 @@ RandomExtinctions <- function(Network, nsim = 10){
   sims <- sims[cond]
   sims <- do.call(rbind, sims)
   sims <- sims %>% group_by(NumExt) %>% summarise(SdAccSecondaryExtinction = sd(AccSecondaryExtinction), AccSecondaryExtinction = mean(AccSecondaryExtinction))
-  g <- ggplot(sims, aes_string(x = "NumExt", y = "AccSecondaryExtinction")) + geom_ribbon(aes_string(ymin = "AccSecondaryExtinction - SdAccSecondaryExtinction", ymax = "AccSecondaryExtinction + SdAccSecondaryExtinction"), fill = "red") + geom_line() + theme_classic()
+  g <- ggplot(sims, aes_string(x = "NumExt", y = "AccSecondaryExtinction")) + geom_ribbon(aes_string(ymin = "AccSecondaryExtinction - SdAccSecondaryExtinction", ymax = "AccSecondaryExtinction + SdAccSecondaryExtinction"), fill = muted("red")) + geom_line() + theme_classic()
   g
   return(list(sims = sims, graph = g))
 }

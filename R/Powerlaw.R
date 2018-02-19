@@ -1,10 +1,10 @@
 #' Degree distribution of the network
 #'
-#' degree_distribution calculate the degree distribution of the network,
-#' adjust exponential, power-law and truncated power-law distribution model,
-#' calculate de AIC to  recognize the best fit, and finally do
-#' a plot of the degree distribution in a log-log scale fitting
-#' the three models mentioned above
+#' This function calculates the degree distribution of the network. First it
+#' fits exponential, power-law and truncated power-law distribution models,
+#' and calculates the AIC values to select the best fit, and finally it plots
+#' the degree distribution in a log-log scale showing the three fitted models
+#' mentioned above against the observed distribution.
 
 #' @param Network a trophic network of class network
 #' @param name a categorical variable that represent

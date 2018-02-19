@@ -3,6 +3,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+knitr::opts_chunk$set(fig.width=6, fig.height=4) 
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  install.packages(NetworkExtinction)
@@ -23,30 +24,23 @@ net
 ## ------------------------------------------------------------------------
 library(NetworkExtinction)
 data("net")
-MostconnectedExp(Network = net)
+Mostconnected(Network = net)
 
-## ------------------------------------------------------------------------
+## ---- fig.cap="Fig 1. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most connected to the least connected"----
 data("net")
-history <- MostconnectedExp(Network = net)
+history <- Mostconnected(Network = net)
 ExtinctionPlot(History = history, Variable = "AccSecondaryExtinction")
 
-#"Fig 1. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most connected to the least connected"
 
 ## ------------------------------------------------------------------------
 data("net")
 ExtinctionOrder(Network = net, Order = c(2,4,7))
 
-## ------------------------------------------------------------------------
+## ---- message=FALSE------------------------------------------------------
 data(net)
-RandomExtinctions(Network= net, nsim= 5)
+RandomExtinctions(Network= net, nsim= 10)
 
 ## ------------------------------------------------------------------------
 data("net")
 degree_distribution(net, name = "Test")
-
-## ---- fig.cap="Fig 1. This graph shows something"------------------------
-plot(1:10)
-
-## ---- echo=FALSE, results='asis'-----------------------------------------
-knitr::kable(head(mtcars, 10))
 

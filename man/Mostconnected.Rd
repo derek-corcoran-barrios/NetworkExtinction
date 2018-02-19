@@ -2,7 +2,7 @@
 % Please edit documentation in R/Extintions.R
 \name{Mostconnected}
 \alias{Mostconnected}
-\title{Extnction analyses from more to less conected species}
+\title{Extinction analyses from more to less conected specie in a network}
 \usage{
 Mostconnected(Network)
 }
@@ -11,20 +11,20 @@ Mostconnected(Network)
 }
 \value{
 exports data frame with the characteristics of the network after every
-extintion
+extintion. The resulting data frame contains seven columns
 }
 \description{
 It takes a network and it calculates wich species is the most conected
 of the network, then it extinguishes that species, and calculates the
 secundary extintions. After that it recalculates the conections and
 repeats the process until every species becomes extinct.
-The most connected species are define like is defined as that species
-that has the highest value of the total degree. A secondary extinction occurs when following a primary removal,
-any remaining species lost all of their resources species (Solé et al. 2001, Dunne et al. 2002, Dunne & Williams 2009)
 }
 \examples{
 data("net")
 Mostconnected(Network = net)
+}
+\seealso{
+[NetworkExtinction::ExtinctionOrder()]
 }
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>

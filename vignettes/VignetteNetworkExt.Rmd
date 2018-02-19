@@ -18,23 +18,24 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+knitr::opts_chunk$set(fig.width=6, fig.height=4) 
 ```
 
 #Introduction
 
-The objective of the NetworkExtinction package is to analyze and visualize the topology of the foodwebs. At the same time to analyze and visualize how the foodweb responds to the primary removal of species.
+The objective of the NetworkExtinction package is to analyze and visualize the topology of the food-webs. At the same time to analyze and visualize how the food-web responds to the primary removal of species.
 
-The principal index that are incorporate are: 
+The principal index that are incorporated are: 
 
 1. Node numbers: Total number of species in the network [@dunne2002food].
 
-2. Links numbers: Number of trophic relationships represented in the food web [@dunne2002food].
+2. Link number: Number of trophic relationships represented in the food web [@dunne2002food].
 
 3. Connectance: Proportion of all possible trophic links that are actually realized [@dunne2002food].
 
-4. Primary removals: Occurs when the researcher intentionally remove species.
+4. Primary removals: Occurs when the researcher intentionally removes a species simulating an extinction.
 
-5. Secondary extinctions: A secondary extinction occurs when a non-basal species loses all of its prey items like a results of the primary removal. In this context, basal species may experience primary removal, but not secondary extinctions [@dunne2002food].
+5. Secondary extinctions: A secondary extinction occurs when a non-basal species loses all of its prey items resulting from the primary removal of another species. In this context, basal species may experience primary removal, but not secondary extinctions [@dunne2002food].
 
 6. Total extinctions: Primary species removal plus secondary extinctions
 
@@ -46,19 +47,20 @@ install.packages(NetworkExtinction)
 library(NetworkExtinction)
 ```
 
-This package have four different functions (see above for details):  
+This package has four different functions (see above for details):  
 
-* Extinctions from most connected to less conected  
+* *Mostconnected:* Extinctions from most connected to less connected  
 
-* Extinctions from custom order  
+* *ExtinctionOrder:* Extinctions from custom order  
 
-* Random Extinctions  
+* *RandomExtinctions:* 
 
-* Degree distribution analysis  
+* *degree_distribution:* Degree distribution analysis  
 
 
 ## How to create a network object
-NetworkExtinction package use a network object.  
+
+NetworkExtinction package use a network object to make an analysis.  
 
 For create a network object you can start with a matrix or a edgelist object (for more details see network package [@butts2008network]).
 
@@ -79,68 +81,67 @@ net
 
 ### Extinctions from most connected to less conected
 
-The function to do this analisis is called *MostconnectedExp*
+The function to do this analysis is called *Mostconnected*
 
-This function orders the species from the most connected species to the least connected species, using total degree. Then, remove the most connected species in the network and calculate the topological indexes of the network (which were mentioned above) and count how many species have indegree 0 (secondary extinction), without count primery producers. Then, remove the species that were secondarily extinct in the previous step and recalculate which is the new most connected species and so on, until the number of links in the network is zero [@sole2001complexity; @dunne2002food; @dunne2009cascading]
+This function orders the species from the most connected species to the least connected species, using total degree. Then, remove the most connected species in the network and calculate the topological indexes of the network (which were mentioned above) and count how many species have indegree 0 (secondary extinction), without count primary producers. Then, remove the species that were secondarily extinct in the previous step and recalculate which is the new most connected species and so on, until the number of links in the network is zero [@sole2001complexity; @dunne2002food; @dunne2009cascading]
 
 ```{r}
 library(NetworkExtinction)
 data("net")
-MostconnectedExp(Network = net)
+Mostconnected(Network = net)
 ```
 
 The result is a dataframe. The first column (Spp) indicates which was the species that was removed as a primary removal. 
 
-The column Secondary_extinctions represent the numbers of the species that are extinguished in a secondary form, and the AccSecondaryExtinction column represente the accumulated secondary extinction.
+The column Secondary_extinctions represent the numbers of the species that are extinguished in a secondary form, and the AccSecondaryExtinction column represents the accumulated secondary extinction.
 
 to plot the results, see function ExtinctionPlot
-```{r}
+```{r, fig.cap="Fig 1. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most connected to the least connected"}
 data("net")
-history <- MostconnectedExp(Network = net)
+history <- Mostconnected(Network = net)
 ExtinctionPlot(History = history, Variable = "AccSecondaryExtinction")
 
-#"Fig 1. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most connected to the least connected"
 ```
 
 
 ### Extinctions from custom order
-The function to do this analisis is called *ExtinctionOrder*
+The function to do this analysis is called *ExtinctionOrder*
 
-It takes a network extinguishes species using a given order, then it calculates the topological foodweb index and the secundary extinctions.
+It takes a network extinguishes species using a given order, then it calculates the topological food-web index and the secondary extinctions.
 
 ```{r}
 data("net")
 ExtinctionOrder(Network = net, Order = c(2,4,7))
 ```
 
-The results it is a dataframe with the topological index of the foodweb in each extiction step (like MostConnected results). Adittionaly, te result generate a plot that show the number of  accumulated secondary extinctions that occur when removing species
+The results it is a dataframe with the topological index of the food-web in each extinction step (like MostConnected results). Additionally, the result generate a plot that show the number of  accumulated secondary extinctions that occur when removing species
 
 ### Random extinction
-The function to do this analisis is called *RandomExtinctions*
+The function to do this analysis is called *RandomExtinctions*
 From a network, a certain amount of simulations is done (nsim), in which the species are extinguished in a random order.
 
 the objective is to compare whether the number of secondary extinctions that occur when extinguishing species in a particular order (MostConnected or Extinctionorder) is different from the number of secondary extinctions that occur when executing primary extinction orders in a random manner.
 
-```{r}
+```{r, message=FALSE}
 data(net)
-RandomExtinctions(Network= net, nsim= 5)
+RandomExtinctions(Network= net, nsim= 10)
 ```
 
 The result is a dataframe and a graph. 
 
 *  In the dataframe,  The first column (NumExt) represents the number of extinction that occurs by primary removal. The second one, represents the deviation to the average of the accumulated secondary extinctions that occur when, independently of species identity, a certain number of species is extracted by primary removal. The third one, represents the average of the accumulated secondary extinctions that occur when, regardless of the specie identity, a certain number of species is extracted by primary removal.
 
-*  In the graph, the figure shows the accumulated secondary extinction with their desviation (red shadow) that occur as the number of primary removal increases
+*  In the graph, the figure shows the accumulated secondary extinction with their deviation (red shadow) that occur as the number of primary removal increases
 
 ### Degree distribution analysis
-The function to do this analisis is called *degree_distribution*
+The function to do this analysis is called *degree_distribution*
 
 degree_distribution function calculate the cumulative distribution of the number of links that each species in the food network has [@estrada2007food]. Then, three expected distribution to the observed distribution, this are:
 *  Exponential distribution model 
 *  Power-law distribution model  
 *  Truncated power-law distribution model  
 
-At the same time, the degree_distribution function calculate de AIC to recognize among the three models mentioned above, which is the one that best fits to the observed distribution.
+At the same time, the degree_distribution function calculate the AIC to recognize among the three models mentioned above, which is the one that best fits to the observed distribution.
 
 Finally, the degree_distribution function generate a plot of the observed degree distribution in a log-log scale fitting the three models mentioned above
 ```{r}
@@ -151,55 +152,16 @@ degree_distribution(net, name = "Test")
 The function generate three results:
 
 
-1.  A list with the observed value of the network degree distribution (colum K and Cummulative) and the expected values of the each fitting model (Exp = Exponential model, Power = Power-law model, truncated = Truncated Power-law model). k represent the degree of the network and cumulative the probability that each specie could be have this degree (pk).
+1.  A list with the observed value of the network degree distribution (column K and Cumulative) and the expected values of the each fitting model (Exp = Exponential model, Power = Power-law model, truncated = Truncated Power-law model). k represent the degree of the network and cumulative the probability that each specie could be have this degree (pk).
 
 2.  A list with the results if the AIC among the three models. In this case the model list are order from the best to the worst model.
 
-3.  A Ghraph of the observed degree distribution with the fit of the three models.
+3.  A Graph of the observed degree distribution with the fit of the three models.
 
 *   Observation: In the graph, the zero values are not represented but this result are incorporate in the DDvalues result.
 
 
 Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
-
-## Styles
-
-
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.cap="Fig 1. This graph shows something"}
-plot(1:10)
-```
-
-You can enable figure captions by `fig_caption: yes` in YAML:
-
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
-
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
-
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
-```
-
-Also a quote using `>`:
-
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
-
 
 
 #Bibliography
