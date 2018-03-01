@@ -40,6 +40,21 @@ ExtinctionOrder(Network = net, Order = c(2,4,7))
 data(net)
 RandomExtinctions(Network= net, nsim= 10)
 
+## ----message=FALSE, warning=FALSE----------------------------------------
+data("net")
+History <- ExtinctionOrder(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10))
+
+set.seed(2)
+NullHyp <- RandomExtinctions(Network = net, nsim = 100)
+
+Comparison <- CompareExtinctions(Nullmodel = NullHyp, Hypothesis = History)
+
+## ------------------------------------------------------------------------
+Comparison$graph
+
+## ------------------------------------------------------------------------
+Comparison$Test
+
 ## ------------------------------------------------------------------------
 data("net")
 degree_distribution(net, name = "Test")

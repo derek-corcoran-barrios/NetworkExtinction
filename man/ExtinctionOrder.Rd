@@ -16,8 +16,9 @@ exports data frame with the characteristics of the network after every
 extintion, and a graph with the mean and 95% interval
 }
 \description{
-It takes a network extinguishes species using a given order, then
-it calculates the secundary extintions.
+It takes a trophic network, and extinguishes species using a custom order,
+then it calculates the secondary extinctions and plots the accumulated
+secondary extinctions.
 }
 \examples{
 #first example
