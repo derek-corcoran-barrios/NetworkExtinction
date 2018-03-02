@@ -2,7 +2,7 @@
 % Please edit documentation in R/Extintions.R
 \name{Mostconnected}
 \alias{Mostconnected}
-\title{Extinction analyses from more to less conected specie in a network}
+\title{Extinctions analysis from most connected to less conected nodes in the network}
 \usage{
 Mostconnected(Network)
 }
@@ -11,13 +11,18 @@ Mostconnected(Network)
 }
 \value{
 exports data frame with the characteristics of the network after every
-extintion. The resulting data frame contains seven columns
+extintion. The resulting data frame contains 10 columns that incorporate the
+topological index, the secondary extinctions, and total extinctions of the network
+in each primary extinction.
 }
 \description{
-It takes a network and it calculates wich species is the most conected
-of the network, then it extinguishes that species, and calculates the
-secundary extintions. After that it recalculates the conections and
-repeats the process until every species becomes extinct.
+It takes a network and it calculates wich node is the most conected
+of the network, using total degree. Then remove the most connected node,
+and calculates the the topological indexes of the network and the number of
+secundary extintions (how many species have indegree 0, without considered
+primary producers). After that, remove the nodes that were secondarily extinct
+in the previous step and recalculate which is the new most connected
+node and so on, until the number of links in the network is zero.
 }
 \examples{
 data("net")
@@ -29,5 +34,5 @@ Mostconnected(Network = net)
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>
 
-Isidora Avila <msavila@uc.cl>
+M.Isidora Ávila-Thieme <msavila@uc.cl>
 }

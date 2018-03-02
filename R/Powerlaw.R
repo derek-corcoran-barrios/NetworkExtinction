@@ -5,7 +5,8 @@
 #' and calculates the AIC values to select the best fit, and finally it plots
 #' the degree distribution in a log-log scale showing the three fitted models
 #' mentioned above against the observed distribution.
-
+#'
+#'
 #' @param Network a trophic network of class network
 #' @param name a categorical variable that represent
 #' the distribution model
@@ -38,7 +39,7 @@
 #'@importFrom ggplot2 theme_classic
 #'@importFrom stats predict
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author Isidora Avila <msavila@uc.cl>
+#' @author M.Isidora Ávila-Thieme <msavila@uc.cl>
 #' @export
 
 

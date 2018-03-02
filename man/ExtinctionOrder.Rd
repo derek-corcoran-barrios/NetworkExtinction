@@ -2,12 +2,12 @@
 % Please edit documentation in R/Extintions.R
 \name{ExtinctionOrder}
 \alias{ExtinctionOrder}
-\title{Extinction analysis by custom order}
+\title{Extinctions analysis from custom order}
 \usage{
 ExtinctionOrder(Network, Order)
 }
 \arguments{
-\item{Network}{a trophic network of class network}
+\item{Network}{a network of class network}
 
 \item{Order}{Vector with the order of extinctions by ID}
 }
@@ -16,7 +16,7 @@ exports data frame with the characteristics of the network after every
 extintion, and a graph with the mean and 95% interval
 }
 \description{
-It takes a trophic network, and extinguishes species using a custom order,
+It takes a network, and extinguishes nodes using a custom order,
 then it calculates the secondary extinctions and plots the accumulated
 secondary extinctions.
 }
@@ -32,5 +32,5 @@ ExtinctionOrder(Network = net, Order = c(2,8,9))
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>
 
-Isidora Avila <msavila@uc.cl>
+M.Isidora Ávila-Thieme <msavila@uc.cl>
 }

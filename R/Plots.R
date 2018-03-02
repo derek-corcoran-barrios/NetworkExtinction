@@ -6,7 +6,7 @@
 #' @param History a NetworkTopology object obtained from the Mostconnected function
 #' or the ExtinctionOrder function
 #' @param Variable the variable of the NetworkTopology object that you want as a y variable
-#' @return A plot of number of exctincions in the x axis vs the choosen variable in the Y axis
+#' @return A plot of number of extinctions in the x axis vs the choosen variable in the Y axis
 #' @examples
 #' # If you don't specify the y variable it will plot the secondary extinctions
 #' # by default
@@ -20,7 +20,7 @@
 #' @importFrom ggplot2 ggplot
 #' @importFrom ggplot2 theme_classic
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author Isidora Avila <msavila@uc.cl>
+#' @author M.Isidora Ávila-Thieme <msavila@uc.cl>
 #' @seealso [NetworkExtintion::ExtinctionOrder()]
 #' @export
 

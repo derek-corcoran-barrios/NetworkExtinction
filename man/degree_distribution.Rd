@@ -37,5 +37,5 @@ degree_distribution(net, name = "Test")
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>
 
-Isidora Avila <msavila@uc.cl>
+M.Isidora Ávila-Thieme <msavila@uc.cl>
 }

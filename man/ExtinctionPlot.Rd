@@ -13,7 +13,7 @@ or the ExtinctionOrder function}
 \item{Variable}{the variable of the NetworkTopology object that you want as a y variable}
 }
 \value{
-A plot of number of exctincions in the x axis vs the choosen variable in the Y axis
+A plot of number of extinctions in the x axis vs the choosen variable in the Y axis
 }
 \description{
 It takes a NetworkTopology class object and plots the network index
@@ -34,5 +34,5 @@ ExtinctionPlot(History = history, Variable = "LinksPerSpecies")
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>
 
-Isidora Avila <msavila@uc.cl>
+M.Isidora Ávila-Thieme <msavila@uc.cl>
 }

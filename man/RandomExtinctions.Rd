@@ -2,7 +2,7 @@
 % Please edit documentation in R/Extintions.R
 \name{RandomExtinctions}
 \alias{RandomExtinctions}
-\title{Neutral model}
+\title{Random extinction}
 \usage{
 RandomExtinctions(Network, nsim = 10)
 }
@@ -32,5 +32,5 @@ ExtinctionOrder(Network = net, Order = c(2,8,9))
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>
 
-Isidora Avila <msavila@uc.cl>
+M.Isidora Ávila-Thieme <msavila@uc.cl>
 }

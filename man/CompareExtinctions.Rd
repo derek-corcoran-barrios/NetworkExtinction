@@ -2,7 +2,7 @@
 % Please edit documentation in R/Extintions.R
 \name{CompareExtinctions}
 \alias{CompareExtinctions}
-\title{Compare extinction hypothesis}
+\title{Comparison of Null hypothesis with other extinction histories}
 \usage{
 CompareExtinctions(Nullmodel, Hypothesis)
 }
@@ -13,9 +13,10 @@ CompareExtinctions(Nullmodel, Hypothesis)
 fuction}
 }
 \value{
-a plot comparing the Nullmodel and the observed model, and a goodness of
-fit test showing if there are significant differences between the null model and
-the observed extinction history.
+a plot comparing the expected value of secondary extinctions originated at random
+with the observed extinction history. Also, and a goodness of fit test
+showing if there are significant differences between expected value of
+secondary extinctions and the observed secondary extinction history.
 }
 \description{
 It compares an object genrated either by the Mostconected or ExtinctionOrder functions
@@ -33,5 +34,5 @@ CompareExtinctions(Nullmodel = NullHyp, Hypothesis = History)
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>
 
-Isidora Avila <msavila@uc.cl>
+M.Isidora Ávila-Thieme <msavila@uc.cl>
 }
