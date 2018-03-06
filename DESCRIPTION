@@ -4,7 +4,7 @@ Title: Extinction Simulation in Food Webs
 Version: 0.1.0
 Authors@R: c(person("Derek", "Corcoran", email = "derek.corcoran.barrios@gmail.com",
   role = c("aut", "cre")), person("M.Isidora", "Ávila-Thieme", email = "msavila@uc.cl ",
-  role = c("aut")))
+  role = c("aut")), person("Pablo A.", "Marquet", role = c("aut")), person("Sergio A.", "Navarrete", role = c("aut")), person("Fernanda S.", "Valdovinos", role = c("aut")))
 Maintainer: Derek Corcoran <derek.corcoran.barrios@gmail.com>
 Description: Simulates the extintion of species in the food web and it analizes
              its cascading effects.
