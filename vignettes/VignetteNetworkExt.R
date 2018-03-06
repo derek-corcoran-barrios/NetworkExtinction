@@ -3,55 +3,49 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-knitr::opts_chunk$set(fig.width=6, fig.height=4) 
+knitr::opts_chunk$set(fig.width=6, fig.height=4, message = FALSE) 
 
 ## ---- eval=FALSE---------------------------------------------------------
 #  install.packages(NetworkExtinction)
 #  library(NetworkExtinction)
 
 ## ------------------------------------------------------------------------
-##To import the matrix from excel:
+a<- matrix(c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0),nrow=10, ncol=10)
 
-#library(readxl)
-#MatrixB <- read_excel(HERE YOU WRITE THE DIRECTORY WHERE YOU EXCEL MATRIX ARE)
-#View(MatrixB)
-
-##Once the matrix was already imported, you need to build a network object, to do this:
-
-#library(network)
-#net <- as.network(MatrixB, loops = TRUE)
-#net 
+a
 
 ## ------------------------------------------------------------------------
-#To create the matrix a
-a<- matrix(c(0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0), nrow=10, ncol=10)
-a
-
-#Note that, the previous matrix a, the consumers are in the rows and the resources in the columns. For this reason, you need to  transpose the matrix a. 
-
-#To transpose, this is the form:
-a<- t(a) #transpose matrix a
-a
-
-#Once the matrix is ready, you need to build a network object, to do this:
 library(network)
 net <- as.network(a, loops = TRUE)
 net
 
-## ------------------------------------------------------------------------
+## ---- eval=FALSE---------------------------------------------------------
+#  library(NetworkExtinction)
+#  data("net")
+#  Mostconnected(Network = net)
+
+## ---- echo=FALSE, message=FALSE------------------------------------------
 library(NetworkExtinction)
 data("net")
-Mostconnected(Network = net)
+knitr::kable(Mostconnected(Network = net), caption = "Table 1: The resulting dataframe of the Mostconnected function")
 
-## ---- fig.cap="Fig 1. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most connected to the least connected"----
+## ---- fig.cap="Figure 3. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most to the least connected species"----
 data("net")
 history <- Mostconnected(Network = net)
 ExtinctionPlot(History = history, Variable = "AccSecondaryExtinction")
 
 
-## ------------------------------------------------------------------------
+## ---- eval=FALSE---------------------------------------------------------
+#  data("net")
+#  ExtinctionOrder(Network = net, Order = c(2,4,7))
+
+## ---- echo=FALSE---------------------------------------------------------
 data("net")
-ExtinctionOrder(Network = net, Order = c(2,4,7))
+knitr::kable(ExtinctionOrder(Network = net, Order = c(2,4,7))$DF, caption = "Table 2: The resulting dataframe of the ExtinctionOrder function")
+
+## ---- echo=FALSE, fig.cap= "Figure 4. The graph shows the number of accumulated secondary extinctions that occur when removing species in a custom order. In this example species 2 is removed followed by 4 and lastly species 7 is removed"----
+data("net")
+ExtinctionOrder(Network = net, Order = c(2,4,7))$Graph
 
 ## ---- message=FALSE------------------------------------------------------
 data(net)

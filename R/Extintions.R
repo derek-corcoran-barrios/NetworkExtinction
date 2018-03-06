@@ -200,7 +200,7 @@ ExtinctionOrder <- function(Network, Order){
   DF$AccSecondaryExtinction <- cumsum(DF$Secondary_extinctions)
   DF$NumExt <- 1:nrow(DF)
   DF$TotalExt <- DF$AccSecondaryExtinction + DF$NumExt
-  G <- ggplot(DF, aes_string(x = "NumExt", y = "AccSecondaryExtinction")) + geom_line() + ylab("Secondary extinctions") + xlab("number of exctinctions") + theme_classic()
+  G <- ggplot(DF, aes_string(x = "NumExt", y = "AccSecondaryExtinction")) + geom_line() + ylab("Secondary extinctions") + xlab("number of extinctions") + theme_classic()
   Results <- list(DF= DF, Graph = G)
   class(Results) <- c("ExtinctionOrder")
   return(Results)
