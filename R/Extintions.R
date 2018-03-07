@@ -279,6 +279,7 @@ RandomExtinctions <- function(Network, nsim = 10){
 #' NullHyp <- RandomExtinctions(Network = net, nsim = 100)
 #'
 #' CompareExtinctions(Nullmodel = NullHyp, Hypothesis = History)
+#' @importFrom broom tidy
 #' @importFrom ggplot2 geom_line
 #' @importFrom ggplot2 geom_point
 #' @importFrom stats chisq.test
@@ -300,7 +301,7 @@ CompareExtinctions <- function(Nullmodel, Hypothesis){
   g <- Nullmodel$graph
   g <- g + geom_point(data = Hypothesis) + geom_line(data = Hypothesis, lty = 2)
   g
-  Test <- chisq.test(x = Hypothesis$AccSecondaryExtinction, y = Nullmodel$sims$AccSecondaryExtinction[1:length(Hypothesis$AccSecondaryExtinction)])
+  Test <- tidy(chisq.test(x = Hypothesis$AccSecondaryExtinction, y = Nullmodel$sims$AccSecondaryExtinction[1:length(Hypothesis$AccSecondaryExtinction)]))
   return(list(Test = Test, graph = g))
   }
   else{

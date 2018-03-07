@@ -47,9 +47,20 @@ knitr::kable(ExtinctionOrder(Network = net, Order = c(2,4,7))$DF, caption = "Tab
 data("net")
 ExtinctionOrder(Network = net, Order = c(2,4,7))$Graph
 
-## ---- message=FALSE------------------------------------------------------
+## ---- eval = FALSE-------------------------------------------------------
+#  data(net)
+#  RandomExtinctions(Network= net, nsim= 50)
+
+## ---- echo = FALSE-------------------------------------------------------
 data(net)
-RandomExtinctions(Network= net, nsim= 50)
+set.seed(123)
+Test <- RandomExtinctions(Network= net, nsim= 50)
+knitr::kable(Test$sims, caption = "Table 3: The resulting dataframe of the RandomExtinctions function")
+
+## ---- echo = FALSE, fig.cap= "Figure 5. The resulting graph of the RandomExtinctions function"----
+data(net)
+set.seed(123)
+Test$graph
 
 ## ----message=FALSE, warning=FALSE----------------------------------------
 data("net")
@@ -60,10 +71,10 @@ NullHyp <- RandomExtinctions(Network = net, nsim = 100)
 
 Comparison <- CompareExtinctions(Nullmodel = NullHyp, Hypothesis = History)
 
-## ------------------------------------------------------------------------
+## ---- echo=FALSE, fig.cap= "Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random"----
 Comparison$graph
 
-## ------------------------------------------------------------------------
+## ---- warning= FALSE-----------------------------------------------------
 Comparison$Test
 
 ## ------------------------------------------------------------------------
@@ -76,7 +87,15 @@ ExtinctionPlot(History = history)
 ExtinctionPlot(History = history, Variable = "LinksPerSpecies")
 
 
-## ------------------------------------------------------------------------
+## ---- eval=FALSE---------------------------------------------------------
+#  data("chilean_intertidal")
+#  degree_distribution(chilean_intertidal, name = "Test")
+
+## ---- echo=FALSE---------------------------------------------------------
 data("chilean_intertidal")
-degree_distribution(chilean_intertidal, name = "Test")
+Dist <- degree_distribution(chilean_intertidal, name = "Test")
+knitr::kable(Dist$models, caption = "Table x: Model selection analysis")
+
+## ---- echo = FALSE, fig.cap= "Figure x: Fitted vs observed values, the black line and points shows the observed values the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution respectively"----
+Dist$graph
 
