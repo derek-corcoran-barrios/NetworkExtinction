@@ -42,7 +42,7 @@ Mostconnected <- function(Network){
   indegreebasenet <- degree(Network, cmode = "indegree")
   indegreebasenetzeros <- sum(degree(Network, cmode = "indegree") == 0)
   Producers <- (1:length(degree(Network, cmode = "indegree")))[degree(Network, cmode = "indegree") == 0]
-  DF <- data.frame(Spp = rep(NA, network.size(Network)), nodesS = rep(NA, network.size(Network)), linksS = rep(NA, network.size(Network)), Conectance = rep(NA, network.size(Network)), LinksPerSpecies = rep(NA, network.size(Network)),Secondary_extinctions = rep(NA,network.size(Network)), aislate_nodes =rep (NA,network.size(Network)))
+  DF <- data.frame(Spp = rep(NA, network.size(Network)), nodesS = rep(NA, network.size(Network)), linksS = rep(NA, network.size(Network)), Conectance = rep(NA, network.size(Network)), LinksPerSpecies = rep(NA, network.size(Network)),Secondary_extinctions = rep(NA,network.size(Network)), isolated_nodes =rep (NA,network.size(Network)))
 
   Secundaryext <- c()
   accExt <- c()
@@ -86,7 +86,7 @@ Mostconnected <- function(Network){
     Secundaryext <- SecundaryextTemp
     Secundaryext <- Secundaryext[!(Secundaryext %in% Producers)]
     DF$Secondary_extinctions[i]<- length(Secundaryext)
-    DF$aislate_nodes[i] <- sum(degree(Temp) == 0)
+    DF$isolated_nodes[i] <- sum(degree(Temp) == 0)
     print(i)
     FinalExt[[i]] <-(Secundaryext)
     accExt <- append(accExt, DF$Spp[1:i])

@@ -23,7 +23,7 @@ knitr::opts_chunk$set(fig.width=6, fig.height=4, message = FALSE)
 
 #Introduction
 
-The objectives of the NetworkExtinction package is to analyze and visualize the topology of food-webs and its responses to the simulated extinction of species.
+The objectives of the *NetworkExtinction* package is to analyze and visualize the topology of food-webs and its responses to the simulated extinction of species.
 
 The main indexes used for these analyzes are: 
 
@@ -45,7 +45,7 @@ Functions to analyze the cascading effect of extinctions are the following:
 
 * *Mostconnected:* To simulate extinctions from the most connected species to less connected in the network.
 
-* *ExtinctionOrder:* To simulate extinctions in a custom order.  
+* *ExtinctionOrder:* To simulate extinctions in a customized order.  
 
 * *RandomExtinctions:* To develop a null hypothesis by generating random orders of simulated extinctions.
 
@@ -60,39 +60,29 @@ The function to analize the degree distribution is:
 
 * *degree_distribution:* To test if the degrees in the network follow a power law, exponential, or truncated distribution.
 
-
-
 ## How to install the package
+
+As any package in cran the *install.packages* function can be used to intall de *NetworkExtinction* package as shown in the following code.
 
 ```{r, eval=FALSE}
 install.packages(NetworkExtinction)
 library(NetworkExtinction)
 ```
 
-
 ## How to represent a food-web in R
 
-NetworkExtinction package needs a representation of a food-web, by creating a Network object, using the network package [@butts2008network].
+The first step to make any analysis in the *NetworkExtinction* package is to build a representation of a food-web, using the network package [@butts2008network].
 
-In order to create a network object you can start with a matrix or a edgelist object (for more details see network package).
-
-### The network example
+In order to create a network object you can start with a matrix or an edgelist object (for more details see the [network package vignette]((https://cran.r-project.org/web/packages/network/vignettes/networkVignette.pdf))).
 
 As an example of how to build a food-web we will explain how to create the network shown in figure 1.
 
 ![Figure 1. Food-web to be contructed in R](toymodel_trophic-network5.jpg) 
 
 
-The network has ten nodes where each node represents one species. Here, four nodes are basal species (primary producers, from sp.1 to sp.4), three nodes are intermediate (primary consumers, from sp.5 to sp.7), and the remaining three are top predators (from sp.8 to sp.10).
+This network has ten nodes where each node represents one species. Here, four nodes are basal species (primary producers, from sp.1 to sp.4), three nodes are intermediate (primary consumers, from sp.5 to sp.7), and the remaining three are top predators (from sp.8 to sp.10).
 
-### How to build a network using an interaction matrix
-
-We show you how to build the matrix that represent throphic interactions (Figure 2). Here, columns represent the consumers and the rows the resources. Note that in the columns, the first four species have only zeros because they are not consumers
-
-The matrix is binary, where:
-1 represents a trophic interaction 
-0 represents the absence of a trophic interaction. 
-
+In order to build an interaction matrix (Figure 2) that represent the food-web, we create a square matrix with a column and a row representing each species. Columns represent the consumers and the rows the resources, where 1 represents a trophic interaction and 0 its absence. Note that in the columns, the first four species only have zeros because they are not consumers. For example, if we look at species 7, it feeds on species 4 and 3. In order to represent that, we would go to column 7 and put a 1 in rows 3 and 4.
 
 ![Figure 2. Matrix representation of the food-web](matrix.jpg)
 
@@ -104,8 +94,7 @@ a<- matrix(c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 a
 ```
 
-
-Once the matrix is ready, you need to build a network object using the network package:
+Once the matrix is ready, we use the *as.network* function from the *network* package to build a network object.
 
 ```{r}
 library(network)
@@ -120,7 +109,7 @@ net
 
 ### Extinctions from most to less conected species in the network
 
-The function to do this analysis is called *Mostconnected*. This function sorts the species from the most connected node to the least connected node, using total degree. First, it removes the most connected node in the network, simulating its extinction, and calculates the topological indexes of the network and counts how many species have indegree 0 (secondary extinction), not considering primary producers. Then, it removes the nodes that were secondarily extinct in the previous step and recalculates which is the new most connected node. This step is repeated until the number of links in the network is zero [@sole2001complexity; @dunne2002food; @dunne2009cascading].
+The *Mostconnected* function sorts the species from the most connected node to the least connected node, using total degree. Then, it removes the most connected node in the network, simulating its extinction, and recalculates the topological indexes of the network and counts how many species have indegree 0 (secondary extinction), not considering primary producers. Then, it removes the nodes that were secondarily extinct in the previous step and recalculates which node is the new most connected species. This step is repeated until the number of links in the network is zero [@sole2001complexity; @dunne2002food; @dunne2009cascading].
 
 ```{r, eval=FALSE}
 library(NetworkExtinction)
@@ -134,11 +123,7 @@ data("net")
 knitr::kable(Mostconnected(Network = net), caption = "Table 1: The resulting dataframe of the Mostconnected function")
 ```
 
-The result of this function is the dataframe shown in table 1. The first column called *Spp* indicates the order in which the species were removed simulating an extinction. 
-
-The column *Secondary_extinctions* represents the numbers of species that become extinct given that they do not have any food items left in the food-web, while the *AccSecondaryExtinction* column represents the accumulated secondary extinctions.
-
-To plot the results, see function *ExtinctionPlot*
+The result of this function is the dataframe shown in table 1. The first column called *Spp* indicates the order in which the species were removed simulating an extinction. The column *Secondary_extinctions* represents the numbers of species that become extinct given that they do not have any food items left in the food-web, while the *AccSecondaryExtinction* column represents the accumulated secondary extinctions. (To plot the results, see function *ExtinctionPlot*.)
 
 ```{r, fig.cap="Figure 3. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most to the least connected species"}
 data("net")
@@ -148,11 +133,9 @@ ExtinctionPlot(History = history, Variable = "AccSecondaryExtinction")
 ```
 
 
-### Extinctions using a custom order
+### Extinctions using a customized order
 
-The function to do this analysis is called *ExtinctionOrder*
-
-It takes a network and extinguishes nodes using a custom order, then it calculates the topological network index and the secondary extinctions.
+The *ExtinctionOrder* function takes a network and extinguishes nodes using a customized order. Then, it calculates the topological network indexes and the secondary extinctions.
 
 ```{r, eval=FALSE}
 data("net")
@@ -169,13 +152,11 @@ data("net")
 ExtinctionOrder(Network = net, Order = c(2,4,7))$Graph
 ```
 
-The results of this function are a dataframe with the topological index of the network in each extinction step (Table 2), and a plot that shows the number of accumulated secondary extinctions that occur with each removed node (Figure 4).
+The results of this function are a dataframe with the topological indexes of the network calculated from each extinction step (Table 2), and a plot that shows the number of accumulated secondary extinctions that occured with each removed node (Figure 4).
 
 ### Random extinction
 
-The *RandomExtinctions* function generates n random extinction orders, determined by the argument *nsim*. The first result of this function is a dataframe (table 3), where the column *NumExt* represents the number of species removed, *AccSecondaryExtinction* is the average number of secondary extinctions for each species removed, and *SdAccSecondaryExtinction* is its standard deviation. The second result is a graph (figure 5) where the x axis is the number of species removed and the y axis is the number of accumulated species.
-
-The aim of random primary removals is to generate a null hypothesis.  compare the number of secondary extinctions that occur when you remove nodes with a particular order (MostConnected or Extinctionorder) is different from the number of secondary extinctions that occur when executing primary removal orders in a random manner (To do this, see the function below *CompareExtinctions*).
+The *RandomExtinctions* function generates n random extinction orders, determined by the argument *nsim*. The first result of this function is a dataframe (table 3). The column *NumExt* represents the number of species removed, *AccSecondaryExtinction* is the average number of secondary extinctions for each species removed, and *SdAccSecondaryExtinction* is its standard deviation. The second result is a graph (figure 5), where the x axis is the number of species removed and the y axis is the number of accumulated secondary extinctions. The solid line is the average number of secondary extinctions for every simulated primary extinction, and the red area represents the mean $\pm$ the standard deviation of the simulations.
 
 ```{r, eval = FALSE}
 data(net)
@@ -198,9 +179,7 @@ Test$graph
  
 ###Comparison of Null hypothesis with other extinction histories
 
-As stated above, using the *RandomExtinctons* function, generates a null hypothesis for us to compare it with either an extinction history generated by the *ExtinctionOrder* function or the *Mostconnected* function. In order to compare the expected extinctions developed by our null hypothesis with the observed extinction history we developed the *CompareExtinctions* function.
-
-The way to use this function is to first create the extinction history and the null hypothesis and then use the function to compare them:
+The *RandomExtinctons* function generates a null hypothesis for us to compare it with either an extinction history generated by the *ExtinctionOrder* function or the *Mostconnected* function. In order to compare the expected extinctions developed by our null hypothesis with the observed extinction history, we developed the *CompareExtinctions* function. The way to use this last function is to first create the extinction history and the null hypothesis, and then the *CompareExtinctins* function to compare both extinction histories.
 
 ```{r,message=FALSE, warning=FALSE}
 data("net")
@@ -212,34 +191,30 @@ NullHyp <- RandomExtinctions(Network = net, nsim = 100)
 Comparison <- CompareExtinctions(Nullmodel = NullHyp, Hypothesis = History)
 ```
 
-the resulting object will have a graph (Figue 6) with a dashed line showing the observed extinction history, and a solid line showing the expected value of secondary extinctions originated at random:
+The first result will be a graph (Figue 6) with a dashed line showing the observed extinction history and a solid line showing the expected value of secondary extinctions randomly generated. 
+
+The second result will be a Test object which will show the goodness of fit statistics of the comparison. In this case, since the p value is `r round(Comparison$Test$p.value, 2)` which is larger than 0.05, we consider that the generated extinction history is significantly different than the null hypothesis.
 
 ```{r, echo=FALSE, fig.cap= "Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random"}
 Comparison$graph
 ```
 
-We will also get a Test object which will show the goodness of fit statistics of the comparison:
 
 ```{r, warning= FALSE}
 Comparison$Test
 ```
 
-since the p value is `r round(Comparison$Test$p.value, 2)` which is larger than 0.05, we consider that the generated extinction history is significantly different than the null hypothesis.
+## Plotting the extinction histories of a network
 
+The *ExtinctionPlot* function takes a NetworkTopology class object and plots the index of interest after every extinction. By default, the function plots the number of accumulated secondary extinctions after every primary extinction (Figure 7), but any of the indexes can be ploted with the function by changing the Variable argument (Figure 8).
 
-## Plots of the extinctions history of a network function
-
-The function to do this analysis is called *ExtinctionPlot*
-
-It takes a NetworkTopology class object and plots the network index of interest after every extinction. By default, the function plot the numbers of accumulated secondary extinctions in function of each step of primary extinction.
-
-```{r}
+```{r, fig.cap= "Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions"}
 data(net)
 history <- Mostconnected(Network = net)
 ExtinctionPlot(History = history)
+```
 
-# To specify the variable to be ploted in the y axis, you need to
-# add the name of the variable that you want plot
+```{r, fig.cap= "Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions"}
 ExtinctionPlot(History = history, Variable = "LinksPerSpecies")
 
 ```
@@ -247,40 +222,39 @@ ExtinctionPlot(History = history, Variable = "LinksPerSpecies")
 
 ## Degree distribution function
 
-The function to do this analysis is called *degree_distribution*
+The *degree_distribution* function calculates the cumulative distribution of the number of links that each species in the food network has [@estrada2007food]. Then, the observed distribution is fitted to the exponential, power-law and truncated power-law distribution models.  
 
-degree_distribution function calculate the cumulative distribution of the number of links that each species in the food network has [@estrada2007food]. Then, three expected distribution to the observed distribution, this are:
-*  Exponential distribution model 
-*  Power-law distribution model  
-*  Truncated power-law distribution model  
+The results of this function are shown in figure 9 and table 4. The graph shows the observed degree distribution in a log-log scale fitting the three models mentioned above, for this example we use an example dataset of Chilean litoral rocky shores [@kefi2015network].
+The table shows
 
+2.  A list with the results if the AIC among the three models. In this case the model list are order from the best to the worst model.
+
+3.  A Graph of the observed degree distribution with the fit of the three models.
 At the same time, the degree_distribution function calculate the AIC to recognize among the three models mentioned above, which is the one that best fits to the observed distribution.
 
-Finally, the degree_distribution function generate a plot of the observed degree distribution in a log-log scale fitting the three models mentioned above
+
 ```{r, eval=FALSE}
 data("chilean_intertidal")
 degree_distribution(chilean_intertidal, name = "Test")
 ```
 
-The function generate three results:
 
-
-1.  A list with the observed value of the network degree distribution (column K and Cumulative) and the expected values of the each fitting model (Exp = Exponential model, Power = Power-law model, truncated = Truncated Power-law model). k represent the degree of the network and cumulative the probability that each specie could be have this degree (pk).
-
-2.  A list with the results if the AIC among the three models. In this case the model list are order from the best to the worst model.
-
-3.  A Graph of the observed degree distribution with the fit of the three models.
 
 ```{r, echo=FALSE}
 data("chilean_intertidal")
 Dist <- degree_distribution(chilean_intertidal, name = "Test")
-knitr::kable(Dist$models, caption = "Table x: Model selection analysis")
 ```
 
 
-```{r, echo = FALSE, fig.cap= "Figure x: Fitted vs observed values, the black line and points shows the observed values the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution respectively"}
+```{r, echo = FALSE, fig.cap= "Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively"}
 Dist$graph
 ```
+
+```{r}
+knitr::kable(Dist$models, caption = "Table 4: Model selection analysis")
+```
+
+
 
 The principal objective is to observe if the vulnerability of the network to the removal of the most connected species is related to their degree distribution.
 
