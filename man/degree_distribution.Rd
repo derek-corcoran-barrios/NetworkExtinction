@@ -23,9 +23,9 @@ Observation: In the graph, the zero values are not represented but this result a
 }
 \description{
 This function calculates the degree distribution of the network. First it
-fits exponential, power-law and truncated power-law distribution models,
+fits exponential, power law and truncated power law distribution models,
 and calculates the AIC values to select the best fit, and finally it plots
-the degree distribution in a log-log scale showing the three fitted models
+the degree distribution in a log log scale showing the three fitted models
 mentioned above against the observed distribution.
 }
 \examples{
@@ -37,5 +37,5 @@ degree_distribution(net, name = "Test")
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>
 
-M.Isidora Ávila-Thieme <msavila@uc.cl>
+M.Isidora Avila Thieme <msavila@uc.cl>
 }

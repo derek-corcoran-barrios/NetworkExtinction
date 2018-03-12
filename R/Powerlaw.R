@@ -1,9 +1,9 @@
 #' Degree distribution of the network
 #'
 #' This function calculates the degree distribution of the network. First it
-#' fits exponential, power-law and truncated power-law distribution models,
+#' fits exponential, power law and truncated power law distribution models,
 #' and calculates the AIC values to select the best fit, and finally it plots
-#' the degree distribution in a log-log scale showing the three fitted models
+#' the degree distribution in a log log scale showing the three fitted models
 #' mentioned above against the observed distribution.
 #'
 #'
@@ -39,7 +39,7 @@
 #'@importFrom ggplot2 theme_classic
 #'@importFrom stats predict
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author M.Isidora Ávila-Thieme <msavila@uc.cl>
+#' @author M.Isidora Avila Thieme <msavila@uc.cl>
 #' @export
 
 

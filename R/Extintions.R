@@ -27,7 +27,7 @@
 #' @importFrom dplyr arrange
 #' @importFrom dplyr desc
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author M.Isidora Ávila-Thieme <msavila@uc.cl>
+#' @author M.Isidora Avila Thieme <msavila@uc.cl>
 #' @seealso [NetworkExtinction::ExtinctionOrder()]
 #' @export
 
@@ -134,7 +134,7 @@ Mostconnected <- function(Network){
 #' @importFrom sna degree
 #' @importFrom stats complete.cases
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author M.Isidora Ávila-Thieme <msavila@uc.cl>
+#' @author M.Isidora Avila Thieme <msavila@uc.cl>
 #' @export
 
 ExtinctionOrder <- function(Network, Order){
@@ -155,10 +155,8 @@ ExtinctionOrder <- function(Network, Order){
   FinalExt <- list()
   Conected3 <- c()
 
-  ####LOOP####
   for (i in 1:length(Order)){
-    #esta lista tiene el mismo orden que conected 1, hay que
-    #volver a hacer la red y calcular el grado
+
     if (length(accExt)==0){
       Temp <- Network
       DF$Spp[i] <- Conected1[i]
@@ -237,7 +235,7 @@ ExtinctionOrder <- function(Network, Order){
 #' @importFrom scales muted
 #' @importFrom stats sd
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author M.Isidora Ávila-Thieme <msavila@uc.cl>
+#' @author M.Isidora Avila Thieme <msavila@uc.cl>
 #' @export
 
 RandomExtinctions <- function(Network, nsim = 10){
@@ -284,7 +282,7 @@ RandomExtinctions <- function(Network, nsim = 10){
 #' @importFrom ggplot2 geom_point
 #' @importFrom stats chisq.test
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author M.Isidora Ávila-Thieme <msavila@uc.cl>
+#' @author M.Isidora Avila Thieme <msavila@uc.cl>
 #' @export
 
 CompareExtinctions <- function(Nullmodel, Hypothesis){

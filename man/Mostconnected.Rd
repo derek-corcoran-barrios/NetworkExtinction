@@ -34,5 +34,5 @@ Mostconnected(Network = net)
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>
 
-M.Isidora Ávila-Thieme <msavila@uc.cl>
+M.Isidora Avila Thieme <msavila@uc.cl>
 }

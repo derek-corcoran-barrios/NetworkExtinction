@@ -73,7 +73,7 @@ library(NetworkExtinction)
 
 The first step to make any analysis in the *NetworkExtinction* package is to build a representation of a food web, using the network package [@butts2008network].
 
-In order to create a network object you can start with a matrix or an edgelist object (for more details see the [network package vignette]((https://cran.r-project.org/web/packages/network/index.html))).
+In order to create a network object you can start with a matrix or an edgelist object (for more details see the network package vignette).
 
 As an example of how to build a food web we will explain how to create the network shown in figure 1.
 
