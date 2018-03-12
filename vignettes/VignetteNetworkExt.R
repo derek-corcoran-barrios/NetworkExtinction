@@ -77,13 +77,12 @@ Comparison$graph
 ## ---- warning= FALSE-----------------------------------------------------
 Comparison$Test
 
-## ------------------------------------------------------------------------
+## ---- fig.cap= "Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions"----
 data(net)
 history <- Mostconnected(Network = net)
 ExtinctionPlot(History = history)
 
-# To specify the variable to be ploted in the y axis, you need to
-# add the name of the variable that you want plot
+## ---- fig.cap= "Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions"----
 ExtinctionPlot(History = history, Variable = "LinksPerSpecies")
 
 
@@ -94,8 +93,10 @@ ExtinctionPlot(History = history, Variable = "LinksPerSpecies")
 ## ---- echo=FALSE---------------------------------------------------------
 data("chilean_intertidal")
 Dist <- degree_distribution(chilean_intertidal, name = "Test")
-knitr::kable(Dist$models, caption = "Table x: Model selection analysis")
 
-## ---- echo = FALSE, fig.cap= "Figure x: Fitted vs observed values, the black line and points shows the observed values the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution respectively"----
+## ---- echo = FALSE, fig.cap= "Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively"----
 Dist$graph
+
+## ---- echo = FALSE-------------------------------------------------------
+knitr::kable(Dist$models, caption = "Table 4: Model selection analysis")
 
