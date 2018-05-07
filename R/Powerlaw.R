@@ -10,6 +10,8 @@
 #' @param Network a trophic network of class network
 #' @param name a categorical variable that represent
 #' the distribution model
+#' @param scale a character stating if the graph is on a log-log scale
+#' ("loglog") or arithmetic scale ("arithmetic"), defaults to arithmetic
 #' @return exports three principal results:
 #' 1. A list with network degree distribution values and with the value of each fit model
 #' 2. A list with each model results and AIC of the distribution models
@@ -43,7 +45,7 @@
 #' @export
 
 
-degree_distribution <- function(Network, name){
+degree_distribution <- function(Network, name, scale = "arithmetic"){
   AIC <- Cumulative <- Exp <- fit <- model <- truncated <- NULL
   totaldegree<- degree(Network)
   K <- 0:max(totaldegree)
@@ -77,7 +79,11 @@ degree_distribution <- function(Network, name){
 
   DF2 <- For.Graph %>% filter(K != 0 & Cumulative != 0) %>% gather(key = model, value = fit, Exp, power, truncated)
 
-  g <- ggplot(DF2, aes_string(x = "K", y = "Cumulative")) + geom_line() + geom_point()+ scale_x_log10() + scale_y_log10() + theme_classic() + geom_line(aes_string(y ="fit", color = "model"))
+  g <- ggplot(DF2, aes_string(x = "K", y = "Cumulative")) + geom_line() + geom_point()+ theme_classic() + geom_line(aes_string(y ="fit", color = "model"))
+
+  if(scale == "LogLog"){
+   g <- g  + scale_x_log10() + scale_y_log10()
+  }
 
   g
 

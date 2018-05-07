@@ -4,13 +4,16 @@
 \alias{degree_distribution}
 \title{Degree distribution of the network}
 \usage{
-degree_distribution(Network, name)
+degree_distribution(Network, name, scale = "arithmetic")
 }
 \arguments{
 \item{Network}{a trophic network of class network}
 
 \item{name}{a categorical variable that represent
 the distribution model}
+
+\item{scale}{a character stating if the graph is on a log-log scale
+("loglog") or arithmetic scale ("arithmetic"), defaults to arithmetic}
 }
 \value{
 exports three principal results:
