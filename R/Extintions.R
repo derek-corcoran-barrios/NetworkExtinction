@@ -27,7 +27,7 @@
 #' @importFrom dplyr arrange
 #' @importFrom dplyr desc
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author M.Isidora Ávila-Thieme <msavila@uc.cl>
+#' @author M.Isidora Avila Thieme <msavila@uc.cl>
 #' @seealso [NetworkExtinction::ExtinctionOrder()]
 #' @export
 
@@ -42,7 +42,7 @@ Mostconnected <- function(Network){
   indegreebasenet <- degree(Network, cmode = "indegree")
   indegreebasenetzeros <- sum(degree(Network, cmode = "indegree") == 0)
   Producers <- (1:length(degree(Network, cmode = "indegree")))[degree(Network, cmode = "indegree") == 0]
-  DF <- data.frame(Spp = rep(NA, network.size(Network)), nodesS = rep(NA, network.size(Network)), linksS = rep(NA, network.size(Network)), Conectance = rep(NA, network.size(Network)), LinksPerSpecies = rep(NA, network.size(Network)),Secondary_extinctions = rep(NA,network.size(Network)), aislate_nodes =rep (NA,network.size(Network)))
+  DF <- data.frame(Spp = rep(NA, network.size(Network)), nodesS = rep(NA, network.size(Network)), linksS = rep(NA, network.size(Network)), Conectance = rep(NA, network.size(Network)), LinksPerSpecies = rep(NA, network.size(Network)),Secondary_extinctions = rep(NA,network.size(Network)), isolated_nodes =rep (NA,network.size(Network)))
 
   Secundaryext <- c()
   accExt <- c()
@@ -86,7 +86,7 @@ Mostconnected <- function(Network){
     Secundaryext <- SecundaryextTemp
     Secundaryext <- Secundaryext[!(Secundaryext %in% Producers)]
     DF$Secondary_extinctions[i]<- length(Secundaryext)
-    DF$aislate_nodes[i] <- sum(degree(Temp) == 0)
+    DF$isolated_nodes[i] <- sum(degree(Temp) == 0)
     print(i)
     FinalExt[[i]] <-(Secundaryext)
     accExt <- append(accExt, DF$Spp[1:i])
@@ -134,7 +134,7 @@ Mostconnected <- function(Network){
 #' @importFrom sna degree
 #' @importFrom stats complete.cases
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author M.Isidora Ávila-Thieme <msavila@uc.cl>
+#' @author M.Isidora Avila Thieme <msavila@uc.cl>
 #' @export
 
 ExtinctionOrder <- function(Network, Order){
@@ -155,10 +155,8 @@ ExtinctionOrder <- function(Network, Order){
   FinalExt <- list()
   Conected3 <- c()
 
-  ####LOOP####
   for (i in 1:length(Order)){
-    #esta lista tiene el mismo orden que conected 1, hay que
-    #volver a hacer la red y calcular el grado
+
     if (length(accExt)==0){
       Temp <- Network
       DF$Spp[i] <- Conected1[i]
@@ -200,7 +198,7 @@ ExtinctionOrder <- function(Network, Order){
   DF$AccSecondaryExtinction <- cumsum(DF$Secondary_extinctions)
   DF$NumExt <- 1:nrow(DF)
   DF$TotalExt <- DF$AccSecondaryExtinction + DF$NumExt
-  G <- ggplot(DF, aes_string(x = "NumExt", y = "AccSecondaryExtinction")) + geom_line() + ylab("Secondary extinctions") + xlab("number of exctinctions") + theme_classic()
+  G <- ggplot(DF, aes_string(x = "NumExt", y = "AccSecondaryExtinction")) + geom_line() + ylab("Secondary extinctions") + xlab("number of extinctions") + theme_classic()
   Results <- list(DF= DF, Graph = G)
   class(Results) <- c("ExtinctionOrder")
   return(Results)
@@ -237,7 +235,7 @@ ExtinctionOrder <- function(Network, Order){
 #' @importFrom scales muted
 #' @importFrom stats sd
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author M.Isidora Ávila-Thieme <msavila@uc.cl>
+#' @author M.Isidora Avila Thieme <msavila@uc.cl>
 #' @export
 
 RandomExtinctions <- function(Network, nsim = 10){
@@ -279,11 +277,12 @@ RandomExtinctions <- function(Network, nsim = 10){
 #' NullHyp <- RandomExtinctions(Network = net, nsim = 100)
 #'
 #' CompareExtinctions(Nullmodel = NullHyp, Hypothesis = History)
+#' @importFrom broom tidy
 #' @importFrom ggplot2 geom_line
 #' @importFrom ggplot2 geom_point
 #' @importFrom stats chisq.test
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author M.Isidora Ávila-Thieme <msavila@uc.cl>
+#' @author M.Isidora Avila Thieme <msavila@uc.cl>
 #' @export
 
 CompareExtinctions <- function(Nullmodel, Hypothesis){
@@ -300,7 +299,7 @@ CompareExtinctions <- function(Nullmodel, Hypothesis){
   g <- Nullmodel$graph
   g <- g + geom_point(data = Hypothesis) + geom_line(data = Hypothesis, lty = 2)
   g
-  Test <- chisq.test(x = Hypothesis$AccSecondaryExtinction, y = Nullmodel$sims$AccSecondaryExtinction[1:length(Hypothesis$AccSecondaryExtinction)])
+  Test <- tidy(chisq.test(x = Hypothesis$AccSecondaryExtinction, y = Nullmodel$sims$AccSecondaryExtinction[1:length(Hypothesis$AccSecondaryExtinction)]))
   return(list(Test = Test, graph = g))
   }
   else{

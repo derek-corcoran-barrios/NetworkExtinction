@@ -20,7 +20,7 @@
 #' @importFrom ggplot2 ggplot
 #' @importFrom ggplot2 theme_classic
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author M.Isidora Ávila-Thieme <msavila@uc.cl>
+#' @author M.Isidora Avila Thieme <msavila@uc.cl>
 #' @seealso [NetworkExtintion::ExtinctionOrder()]
 #' @export
 
