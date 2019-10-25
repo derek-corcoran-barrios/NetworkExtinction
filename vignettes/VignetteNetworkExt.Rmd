@@ -16,7 +16,8 @@ bibliography: biblio.bib
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  warning = FALSE
 )
 knitr::opts_chunk$set(fig.width=6, fig.height=4, message = FALSE) 
 ```
@@ -77,14 +78,20 @@ In order to create a network object you can start with a matrix or an edgelist o
 
 As an example of how to build a food web we will explain how to create the network shown in figure 1.
 
-![Figure 1. Food-web to be contructed in R](toymodel_trophic-network5.jpg) 
+
+```{r Network, echo=FALSE, fig.cap= "Figure 1. Food-web to be contructed in R"}
+knitr::include_graphics("toymodel_trophic-network5.jpg")
+```
 
 
 This network has ten nodes where each node represents one species. Here, four nodes are basal species (primary producers, from sp.1 to sp.4), three nodes are intermediate (primary consumers, from sp.5 to sp.7), and the remaining three are top predators (from sp.8 to sp.10).
 
 In order to build an interaction matrix (Figure 2) that represent the food web, we create a square matrix with a column and a row representing each species. Columns represent the consumers and the rows the resources, where 1 represents a trophic interaction and 0 its absence. Note that in the columns, the first four species only have zeros because they are not consumers. For example, if we look at species 7, it feeds on species 4 and 3. In order to represent that, we would go to column 7 and put a 1 in rows 3 and 4.
 
-![Figure 2. Matrix representation of the food web](matrix.jpg)
+```{r Matrix, echo=FALSE, fig.cap= "Figure 2. Matrix representation of the food web"}
+knitr::include_graphics("matrix.jpg")
+```
+
 
 The following code is an example of how to build the matrix in figure 2 using R:
 
@@ -245,6 +252,6 @@ Dist$graph
 knitr::kable(Dist$models, caption = "Table 4: Model selection analysis")
 ```
 
-The main objective of fitting the cumulative distribution of the degrees to those models, is to determine if the vulnerability of the network to the removal of the most connected species is related to their degree distribution. Networks that follow a power law distribution are very vulnerable to the removal of the most connected nodes, while networks that follow exponential degree distribution are less vulnerable to the removal of the most connected nodes [see @albert2002statistical, @dunne2002food, @estrada2007food, @de2013topological].
+The main objective of fitting the cumulative distribution of the degrees to those models, is to determine if the vulnerability of the network to the removal of the most connected species is related to their degree distribution. Networks that follow a power law distribution are very vulnerable to the removal of the most connected nodes, while networks that follow exponential degree distribution are less vulnerable to the removal of the most connected nodes [@albert2002statistical; @dunne2002food; @estrada2007food; @de2013topological].
 
-#Bibliography
+# Bibliography
