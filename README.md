@@ -40,7 +40,8 @@ producers. Then, it removes the nodes that were secondarily extinct in
 the previous step and recalculates which node is the new most connected
 species. This step is repeated until the number of links in the network
 is zero (Sole and Montoya 2001; Dunne, Williams, and Martinez 2002;
-Dunne and Williams 2009).
+Dunne and Williams 2009). In this new version it also calculates the
+Predatory release.
 
 ``` r
 library(NetworkExtinction)
@@ -53,12 +54,12 @@ Mostconnected(Network = net)
     #> [1] 3
     #> [1] 4
 
-| Spp | nodesS | linksS | Conectance | LinksPerSpecies | Secondary\_extinctions | isolated\_nodes | AccSecondaryExtinction | NumExt | TotalExt |
-| --: | -----: | -----: | ---------: | --------------: | ---------------------: | --------------: | ---------------------: | -----: | -------: |
-|   6 |      9 |      7 |  0.0864198 |       0.7777778 |                      1 |               1 |                      1 |      1 |        2 |
-|   7 |      7 |      4 |  0.0816327 |       0.5714286 |                      0 |               2 |                      1 |      2 |        3 |
-|   5 |      6 |      2 |  0.0555556 |       0.3333333 |                      1 |               3 |                      2 |      3 |        5 |
-|   2 |      4 |      0 |  0.0000000 |       0.0000000 |                      1 |               4 |                      3 |      4 |        7 |
+| Spp | nodesS | linksS | Conectance | LinksPerSpecies | Secondary\_extinctions | Predation\_release | isolated\_nodes | AccSecondaryExtinction | NumExt | TotalExt |
+| --: | -----: | -----: | ---------: | --------------: | ---------------------: | -----------------: | --------------: | ---------------------: | -----: | -------: |
+|   6 |      9 |      7 |  0.0864198 |       0.7777778 |                      1 |                  0 |               1 |                      1 |      1 |        2 |
+|   7 |      7 |      4 |  0.0816327 |       0.5714286 |                      0 |                  2 |               2 |                      1 |      2 |        3 |
+|   5 |      6 |      2 |  0.0555556 |       0.3333333 |                      1 |                  3 |               3 |                      2 |      3 |        5 |
+|   2 |      4 |      0 |  0.0000000 |       0.0000000 |                      1 |                  3 |               4 |                      3 |      4 |        7 |
 
 Table 1: The resulting dataframe of the Mostconnected function
 
@@ -93,11 +94,11 @@ data("net")
 ExtinctionOrder(Network = net, Order = c(2,4,7))
 ```
 
-| Spp | nodesS | linksS | Conectance | Secondary\_extinctions | AccSecondaryExtinction | NumExt | TotalExt |
-| --: | -----: | -----: | ---------: | ---------------------: | ---------------------: | -----: | -------: |
-|   2 |      9 |      8 |  0.0987654 |                      1 |                      1 |      1 |        2 |
-|   4 |      7 |      5 |  0.1020408 |                      1 |                      2 |      2 |        4 |
-|   7 |      5 |      3 |  0.1200000 |                      0 |                      2 |      3 |        5 |
+| Spp | nodesS | linksS | Conectance | Secondary\_extinctions | Predation\_release | AccSecondaryExtinction | NumExt | TotalExt |
+| --: | -----: | -----: | ---------: | ---------------------: | -----------------: | ---------------------: | -----: | -------: |
+|   2 |      9 |      8 |  0.0987654 |                      1 |                  0 |                      1 |      1 |        2 |
+|   4 |      7 |      5 |  0.1020408 |                      1 |                  0 |                      2 |      2 |        4 |
+|   7 |      5 |      3 |  0.1200000 |                      0 |                  1 |                      2 |      3 |        5 |
 
 Table 2: The resulting dataframe of the ExtinctionOrder
 function

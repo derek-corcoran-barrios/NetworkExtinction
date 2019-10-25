@@ -11,8 +11,8 @@ Mostconnected(Network)
 }
 \value{
 exports data frame with the characteristics of the network after every
-extintion. The resulting data frame contains 10 columns that incorporate the
-topological index, the secondary extinctions, and total extinctions of the network
+extintion. The resulting data frame contains 11 columns that incorporate the
+topological index, the secondary extinctions, predation release, and total extinctions of the network
 in each primary extinction.
 }
 \description{

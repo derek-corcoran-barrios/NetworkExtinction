@@ -41,7 +41,7 @@ devtools::install_github("derek-corcoran-barrios/NetworkExtintion")
 
 ### Extinctions from most to less conected species in the network
 
-The *Mostconnected* function sorts the species from the most connected node to the least connected node, using total degree. Then, it removes the most connected node in the network, simulating its extinction, and recalculates the topological indexes of the network and counts how many species have indegree 0 (secondary extinction), not considering primary producers. Then, it removes the nodes that were secondarily extinct in the previous step and recalculates which node is the new most connected species. This step is repeated until the number of links in the network is zero [@sole2001complexity; @dunne2002food; @dunne2009cascading].
+The *Mostconnected* function sorts the species from the most connected node to the least connected node, using total degree. Then, it removes the most connected node in the network, simulating its extinction, and recalculates the topological indexes of the network and counts how many species have indegree 0 (secondary extinction), not considering primary producers. Then, it removes the nodes that were secondarily extinct in the previous step and recalculates which node is the new most connected species. This step is repeated until the number of links in the network is zero [@sole2001complexity; @dunne2002food; @dunne2009cascading]. In this new version it also calculates the Predatory release.
 
 ```{r, eval=FALSE}
 library(NetworkExtinction)

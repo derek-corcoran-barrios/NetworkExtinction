@@ -8,11 +8,11 @@
 #' in the previous step and recalculate which is the new most connected
 #' node and so on, until the number of links in the network is zero.
 #'
-#,
+#
 #' @param Network a trophic network of class network
 #' @return exports data frame with the characteristics of the network after every
-#' extintion. The resulting data frame contains 10 columns that incorporate the
-#' topological index, the secondary extinctions, and total extinctions of the network
+#' extintion. The resulting data frame contains 11 columns that incorporate the
+#' topological index, the secondary extinctions, predation release, and total extinctions of the network
 #' in each primary extinction.
 #' @examples
 #' data("net")
@@ -41,10 +41,13 @@ Mostconnected <- function(Network){
   Conected1<- c(Conected$ID)
   indegreebasenet <- degree(Network, cmode = "indegree")
   indegreebasenetzeros <- sum(degree(Network, cmode = "indegree") == 0)
+  indegreetopnetzeros <- sum(degree(Network, cmode = "outdegree") == 0)
   Producers <- (1:length(degree(Network, cmode = "indegree")))[degree(Network, cmode = "indegree") == 0]
-  DF <- data.frame(Spp = rep(NA, network.size(Network)), nodesS = rep(NA, network.size(Network)), linksS = rep(NA, network.size(Network)), Conectance = rep(NA, network.size(Network)), LinksPerSpecies = rep(NA, network.size(Network)),Secondary_extinctions = rep(NA,network.size(Network)), isolated_nodes =rep (NA,network.size(Network)))
+  TopPredators <- (1:length(degree(Network, cmode = "outdegree")))[degree(Network, cmode = "outdegree") == 0]
+  DF <- data.frame(Spp = rep(NA, network.size(Network)), nodesS = rep(NA, network.size(Network)), linksS = rep(NA, network.size(Network)), Conectance = rep(NA, network.size(Network)), LinksPerSpecies = rep(NA, network.size(Network)),Secondary_extinctions = rep(NA,network.size(Network)), Predation_release = rep(NA,network.size(Network)), isolated_nodes =rep (NA,network.size(Network)))
 
   Secundaryext <- c()
+  Predationrel <- c()
   accExt <- c()
   totalExt <- c()
   FinalExt <- list()
@@ -86,6 +89,15 @@ Mostconnected <- function(Network){
     Secundaryext <- SecundaryextTemp
     Secundaryext <- Secundaryext[!(Secundaryext %in% Producers)]
     DF$Secondary_extinctions[i]<- length(Secundaryext)
+
+    PredationrelTemp <- (1:length(degree(Temp, cmode = "outdegree")))[degree(Temp, cmode = "outdegree") == 0]
+    for(j in sort(unique(c(c(DF$Spp[1:i]),accExt)))){
+      PredationrelTemp <- ifelse(PredationrelTemp < j, PredationrelTemp, PredationrelTemp + 1)
+    }
+    Predationrel <- PredationrelTemp
+    Predationrel <- Predationrel[!(Predationrel %in% TopPredators)]
+    DF$Predation_release[i]<- length(Predationrel)
+
     DF$isolated_nodes[i] <- sum(degree(Temp) == 0)
     print(i)
     FinalExt[[i]] <-(Secundaryext)
@@ -145,11 +157,17 @@ ExtinctionOrder <- function(Network, Order){
   Conected1<-  Order
 
   indegreebasenet <- degree(Network, cmode = "indegree")
+
   indegreebasenetzeros <- sum(degree(Network, cmode = "indegree") == 0)
+  indegreetopnetzeros <- sum(degree(Network, cmode = "outdegree") == 0)
+
   Producers <- (1:length(degree(Network, cmode = "indegree")))[degree(Network, cmode = "indegree") == 0]
-  DF <- data.frame(Spp = rep(NA, network.size(Network)), nodesS = rep(NA, network.size(Network)), linksS = rep(NA, network.size(Network)), Conectance = rep(NA, network.size(Network)),  Secondary_extinctions = rep(NA,network.size(Network)))
+  TopPredators <- (1:length(degree(Network, cmode = "outdegree")))[degree(Network, cmode = "outdegree") == 0]
+
+  DF <- data.frame(Spp = rep(NA, network.size(Network)), nodesS = rep(NA, network.size(Network)), linksS = rep(NA, network.size(Network)), Conectance = rep(NA, network.size(Network)),  Secondary_extinctions = rep(NA,network.size(Network)), Predation_release = rep(NA,network.size(Network)))
 
   Secundaryext <- c()
+  Predationrel <- c()
   accExt <- c()
   totalExt <- c()
   FinalExt <- list()
@@ -180,6 +198,7 @@ ExtinctionOrder <- function(Network, Order){
     DF$nodesS[i] <- network.size(Temp)
     DF$linksS[i] <- network.edgecount(Temp)
     DF$Conectance[i] <- network.density(Temp)
+
     SecundaryextTemp <- (1:length(degree(Temp, cmode = "indegree")))[degree(Temp, cmode = "indegree") == 0]
     for(j in sort(unique(c(c(DF$Spp[1:i]),accExt)))){
       SecundaryextTemp <- ifelse(SecundaryextTemp < j, SecundaryextTemp, SecundaryextTemp + 1)
@@ -187,6 +206,15 @@ ExtinctionOrder <- function(Network, Order){
     Secundaryext <- SecundaryextTemp
     Secundaryext <- Secundaryext[!(Secundaryext %in% Producers)]
     DF$Secondary_extinctions[i]<- length(Secundaryext)
+
+    PredationrelTemp <- (1:length(degree(Temp, cmode = "outdegree")))[degree(Temp, cmode = "outdegree") == 0]
+    for(j in sort(unique(c(c(DF$Spp[1:i]),accExt)))){
+      PredationrelTemp <- ifelse(PredationrelTemp < j, PredationrelTemp, PredationrelTemp + 1)
+    }
+    Predationrel <- PredationrelTemp
+    Predationrel <- Predationrel[!(Predationrel %in% TopPredators)]
+    DF$Predation_release[i]<- length(Predationrel)
+
     message(i)
     FinalExt[[i]] <-(Secundaryext)
     accExt <- append(accExt, DF$Spp[1:i])
