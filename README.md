@@ -9,7 +9,7 @@
 
 The goal of NetworkExtinction is to Simulate the extinction of species
 in the food web and to analyze its cascading effects, as described in
-Dunne et al. (2002) <doi:10.1073/pnas.192407699>.
+Dunne et al. (2002) 
 
 ## Installation
 
