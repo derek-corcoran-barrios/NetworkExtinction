@@ -2,5 +2,5 @@ pandoc: 2.3.1
 pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
-  VignetteNetworkExt: VignetteNetworkExt.html
+  How_to_use_the_NetworkExtinction_Package: How_to_use_the_NetworkExtinction_Package.html
 

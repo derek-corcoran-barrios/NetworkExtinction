@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 knitr::opts_chunk$set(fig.width=6, fig.height=4, message = FALSE) 
 ```
 
-#Introduction
+# Introduction
 
 The objectives of the *NetworkExtinction* package is to analyze and visualize the topology of food webs and its responses to the simulated extinction of species.
 
