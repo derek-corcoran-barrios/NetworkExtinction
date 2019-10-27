@@ -22,11 +22,8 @@ by making n random extinction histories
 }
 \examples{
 #first example
-data("net")
-ExtinctionOrder(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10))
-#Second example
-data("net")
-ExtinctionOrder(Network = net, Order = c(2,8,9))
+data("More_Connected")
+RandomExtinctions(Network = More_Connected, nsim = 20)
 
 }
 \author{
