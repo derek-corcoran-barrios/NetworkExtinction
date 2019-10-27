@@ -9,7 +9,7 @@ Authors@R: c(person("Derek", "Corcoran", email = "derek.corcoran.barrios@gmail.c
 Maintainer: Derek Corcoran <derek.corcoran.barrios@gmail.com>
 Description: Simulates the extinction of species in the food web and it analyzes
              its cascading effects, described in Dunne et al. (2002) <doi:10.1073/pnas.192407699>.
-URL: https://derek-corcoran-barrios.github.io/VignetteNetworkExt.html
+URL: https://derek-corcoran-barrios.github.io/NetworkExtintion/
 Depends: R (>= 2.10)
 Imports: broom, dplyr, ggplot2, magrittr, network, scales, sna, stats, tidyr
 License: GPL (>= 2)

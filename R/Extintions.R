@@ -271,11 +271,11 @@ RandomExtinctions <- function(Network, nsim = 10){
   network <- Network
   sims <- list()
   for(i in 1:nsim){
-    sims[[i]] <- try(ExtinctionOrder(Network = network, Order = sample(1:network.size(network)))$DF)
+    sims[[i]] <- try(ExtinctionOrder(Network = network, Order = sample(1:network.size(network)))$DF, silent = T)
     sims[[i]]$simulation <- i
     message(paste("Simulation", i, "of", nsim, "ready"))
   }
-  cond <- sapply(sims, function(x) class(x) != "try-error")
+  cond <- sapply(sims, function(x) class(x) == "data.frame")
   sims <- sims[cond]
   sims <- do.call(rbind, sims)
   sims <- sims %>% group_by(NumExt) %>% summarise(SdAccSecondaryExtinction = sd(AccSecondaryExtinction), AccSecondaryExtinction = mean(AccSecondaryExtinction))
