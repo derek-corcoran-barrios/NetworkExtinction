@@ -9,6 +9,8 @@
 status](https://travis-ci.org/derek-corcoran-barrios/NetworkExtintion.svg?branch=master)](https://travis-ci.org/derek-corcoran-barrios/NetworkExtintion)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/NetworkExtinction)](https://CRAN.R-project.org/package=NetworkExtinction)
+[![Lifecycle:
+maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 <!-- badges: end -->
 
 The goal of NetworkExtinction is to Simulate the extinction of species
