@@ -3,6 +3,8 @@
 
 # NetworkExtinction
 
+# pkgdown <img src="pkgdown/favicon/apple-touch-icon-180x180.png" align="right" />
+
 <!-- badges: start -->
 
 [![Travis build
@@ -246,14 +248,11 @@ degree_distribution(chilean_intertidal, name = "Test")
 
 <img src="man/figures/README-unnamed-chunk-18-1.png" title="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" alt="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" width="100%" />
 
-|      logLik |          AIC |          BIC | model        | Normal.Resid |
-| ----------: | -----------: | -----------: | :----------- | :----------- |
-|   83.147529 | \-160.295059 | \-153.636536 | Exp          | No           |
-|    5.420293 |   \-6.840586 |   \-2.461276 | Power        | No           |
-|  \-9.281940 |    26.563879 |    35.322498 | LogTruncated | No           |
-| \-27.482221 |    60.964443 |    67.533407 | LogExp       | No           |
-| \-45.321942 |    94.643884 |    99.023194 | Truncated    | No           |
-| \-80.841717 |   167.683433 |   174.252397 | LogPower     | No           |
+|    logLik |         AIC |         BIC | model        | Normal.Resid | family      |
+| --------: | ----------: | ----------: | :----------- | :----------- | :---------- |
+|  83.14753 | \-160.29506 | \-153.63654 | Exp          | No           | Exponential |
+|  13.38647 |  \-20.77293 |  \-14.20397 | Power        | No           | PowerLaw    |
+| \-9.28194 |    26.56388 |    35.32250 | LogTruncated | No           | Truncated   |
 
 Table 4: Model selection analysis
 

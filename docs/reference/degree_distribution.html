@@ -8,6 +8,13 @@
 
 <title>Degree distribution of the network — degree_distribution • NetworkExtinction</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -41,6 +48,7 @@ fits exponential, power law and truncated power law distribution models,
 and calculates the AIC values to select the best fit, and finally it plots
 the degree distribution in a log log scale showing the three fitted models
 mentioned above against the observed distribution." />
+<meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -73,7 +81,7 @@ mentioned above against the observed distribution." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NetworkExtinction</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -165,42 +173,167 @@ Observation: In the graph, the zero values are not represented but this result a
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>NetworkExtinction</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"net"</span>)
-<span class='fu'>degree_distribution</span>(<span class='no'>net</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Test"</span>)</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("K", "Cumulative", "Scenario", "LogK", "LogCum", "Exp")</span></div><div class='output co'>#&gt; <span class='warning'>Warning: ties should not be present for the Kolmogorov-Smirnov test</span></div><div class='output co'>#&gt; <span class='warning'>Warning: ties should not be present for the Kolmogorov-Smirnov test</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("K", "Cumulative", "Scenario", "LogK", "LogCum", "Exp", "LogExp")</span></div><div class='output co'>#&gt; <span class='warning'>Warning: ties should not be present for the Kolmogorov-Smirnov test</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("sigma", "isConv", "finTol", "logLik", "AIC", "BIC", "deviance", "df.residual", "model", "Normal.Resid")</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("sigma", "isConv", "finTol", "logLik", "AIC", "BIC", "deviance", "df.residual", "model", "Normal.Resid")</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("logLik", "AIC", "BIC", "deviance", "df.residual", "model", "Normal.Resid")</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("logLik", "AIC", "BIC", "deviance", "df.residual", "model", "Normal.Resid", "null.deviance", "df.null")</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("logLik", "AIC", "BIC", "deviance", "df.residual", "model", "Normal.Resid", "null.deviance", "df.null")</span></div><div class='output co'>#&gt; $DDvalues
-#&gt;   K Cumulative Scenario      LogK     LogCum       Exp LogExp     Power
-#&gt; 1 0        1.0     Test      -Inf  0.0000000 1.0248015     NA        NA
-#&gt; 2 1        0.6     Test 0.0000000 -0.5108256 0.5578753    0.6 1.0000000
-#&gt; 3 2        0.4     Test 0.6931472 -0.9162907 0.3036928    0.4 0.4000002
-#&gt; 4 3        0.0     Test 1.0986123       -Inf 0.1653224     NA        NA
-#&gt;   LogPower  Truncated LogTruncated
-#&gt; 1       NA         NA           NA
-#&gt; 2      0.6 0.58194330          0.6
-#&gt; 3      0.4 0.09412862          0.4
-#&gt; 4       NA         NA           NA
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"chilean_intertidal"</span>)
+<span class='fu'>degree_distribution</span>(<span class='no'>chilean_intertidal</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Test"</span>)</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("K", "Cumulative", "Scenario", "LogK", "LogCum", "Exp")</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("K", "Cumulative", "Scenario", "LogK", "LogCum", "Exp", "LogExp")</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("sigma", "isConv", "finTol", "logLik", "AIC", "BIC", "deviance", "df.residual", "model", "Normal.Resid", "family", "AICcNorm")</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("sigma", "isConv", "finTol", "logLik", "AIC", "BIC", "deviance", "df.residual", "model", "Normal.Resid", "family", "AICcNorm")</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("logLik", "AIC", "BIC", "deviance", "df.residual", "model", "Normal.Resid", "family", "AICcNorm")</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("logLik", "AIC", "BIC", "deviance", "df.residual", "model", "Normal.Resid", "family", "AICcNorm", "null.deviance", "df.null")</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("logLik", "AIC", "BIC", "deviance", "df.residual", "model", "Normal.Resid", "family", "AICcNorm", "null.deviance", "df.null")</span></div><div class='output co'>#&gt; $DDvalues
+#&gt;     K  Cumulative Scenario      LogK      LogCum        Exp     LogExp
+#&gt; 1   0 1.000000000     Test      -Inf  0.00000000 1.17799969         NA
+#&gt; 2   1 1.000000000     Test 0.0000000  0.00000000 1.12910049 1.83049523
+#&gt; 3   2 1.000000000     Test 0.6931472  0.00000000 1.08223111 1.70946324
+#&gt; 4   3 0.943925234     Test 1.0986123 -0.05770832 1.03730730 1.59643387
+#&gt; 5   4 0.934579439     Test 1.3862944 -0.06765865 0.99424830 1.49087797
+#&gt; 6   5 0.915887850     Test 1.6094379 -0.08786136 0.95297669 1.39230142
+#&gt; 7   6 0.906542056     Test 1.7917595 -0.09811786 0.91341828 1.30024272
+#&gt; 8   7 0.906542056     Test 1.9459101 -0.09811786 0.87550195 1.21427093
+#&gt; 9   8 0.897196262     Test 2.0794415 -0.10848064 0.83915954 1.13398357
+#&gt; 10  9 0.869158879     Test 2.1972246 -0.14022934 0.80432572 1.05900480
+#&gt; 11 10 0.859813084     Test 2.3025851 -0.15104026 0.77093787 0.98898361
+#&gt; 12 11 0.822429907     Test 2.3978953 -0.19549202 0.73893595 0.92359221
+#&gt; 13 12 0.785046729     Test 2.4849066 -0.24201204 0.70826245 0.86252447
+#&gt; 14 13 0.757009346     Test 2.5649494 -0.27837968 0.67886222 0.80549453
+#&gt; 15 14 0.728971963     Test 2.6390573 -0.31612001 0.65068240 0.75223539
+#&gt; 16 15 0.691588785     Test 2.7080502 -0.36876374 0.62367233 0.70249773
+#&gt; 17 16 0.663551402     Test 2.7725887 -0.41014896 0.59778347 0.65604872
+#&gt; 18 17 0.663551402     Test 2.8332133 -0.41014896 0.57296925 0.61267091
+#&gt; 19 18 0.626168224     Test 2.8903718 -0.46813622 0.54918509 0.57216123
+#&gt; 20 19 0.588785047     Test 2.9444390 -0.52969411 0.52638822 0.53433004
+#&gt; 21 20 0.588785047     Test 2.9957323 -0.52969411 0.50453765 0.49900024
+#&gt; 22 21 0.570093458     Test 3.0445224 -0.56195497 0.48359411 0.46600644
+#&gt; 23 22 0.560747664     Test 3.0910425 -0.57848427 0.46351994 0.43519419
+#&gt; 24 23 0.542056075     Test 3.1354942 -0.61238582 0.44427905 0.40641923
+#&gt; 25 24 0.495327103     Test 3.1780538 -0.70253692 0.42583687 0.37954688
+#&gt; 26 25 0.495327103     Test 3.2188758 -0.70253692 0.40816022 0.35445131
+#&gt; 27 26 0.467289720     Test 3.2580965 -0.76080583 0.39121734 0.33101506
+#&gt; 28 27 0.420560748     Test 3.2958369 -0.86616634 0.37497777 0.30912841
+#&gt; 29 28 0.420560748     Test 3.3322045 -0.86616634 0.35941230 0.28868890
+#&gt; 30 29 0.383177570     Test 3.3672958 -0.95925677 0.34449297 0.26960085
+#&gt; 31 30 0.327102804     Test 3.4011974 -1.11748077 0.33019294 0.25177489
+#&gt; 32 31 0.299065421     Test 3.4339872 -1.20709293 0.31648651 0.23512758
+#&gt; 33 32 0.299065421     Test 3.4657359 -1.20709293 0.30334904 0.21958099
+#&gt; 34 33 0.299065421     Test 3.4965076 -1.20709293 0.29075691 0.20506234
+#&gt; 35 34 0.289719626     Test 3.5263605 -1.23884163 0.27868748 0.19150366
+#&gt; 36 35 0.271028037     Test 3.5553481 -1.30553300 0.26711906 0.17884148
+#&gt; 37 36 0.242990654     Test 3.5835189 -1.41473230 0.25603085 0.16701651
+#&gt; 38 37 0.205607477     Test 3.6109179 -1.58178638 0.24540292 0.15597341
+#&gt; 39 38 0.186915888     Test 3.6375862 -1.67709656 0.23521615 0.14566048
+#&gt; 40 39 0.140186916     Test 3.6635616 -1.96477863 0.22545224 0.13602944
+#&gt; 41 40 0.130841121     Test 3.6888795 -2.03377150 0.21609364 0.12703520
+#&gt; 42 41 0.102803738     Test 3.7135721 -2.27493356 0.20712351 0.11863566
+#&gt; 43 42 0.102803738     Test 3.7376696 -2.27493356 0.19852574 0.11079149
+#&gt; 44 43 0.093457944     Test 3.7612001 -2.37024374 0.19028486 0.10346598
+#&gt; 45 44 0.093457944     Test 3.7841896 -2.37024374 0.18238607 0.09662483
+#&gt; 46 45 0.093457944     Test 3.8066625 -2.37024374 0.17481516 0.09023601
+#&gt; 47 46 0.093457944     Test 3.8286414 -2.37024374 0.16755852 0.08426963
+#&gt; 48 47 0.084112150     Test 3.8501476 -2.47560426 0.16060310 0.07869774
+#&gt; 49 48 0.084112150     Test 3.8712010 -2.47560426 0.15393641 0.07349426
+#&gt; 50 49 0.084112150     Test 3.8918203 -2.47560426 0.14754645 0.06863483
+#&gt; 51 50 0.084112150     Test 3.9120230 -2.47560426 0.14142174 0.06409671
+#&gt; 52 51 0.084112150     Test 3.9318256 -2.47560426 0.13555127 0.05985865
+#&gt; 53 52 0.074766355     Test 3.9512437 -2.59338729 0.12992449 0.05590081
+#&gt; 54 53 0.074766355     Test 3.9702919 -2.59338729 0.12453128 0.05220466
+#&gt; 55 54 0.074766355     Test 3.9889840 -2.59338729 0.11936194 0.04875289
+#&gt; 56 55 0.074766355     Test 4.0073332 -2.59338729 0.11440718 0.04552936
+#&gt; 57 56 0.056074766     Test 4.0253517 -2.88106937 0.10965810 0.04251897
+#&gt; 58 57 0.046728972     Test 4.0430513 -3.06339092 0.10510615 0.03970762
+#&gt; 59 58 0.046728972     Test 4.0604430 -3.06339092 0.10074315 0.03708216
+#&gt; 60 59 0.037383178     Test 4.0775374 -3.28653447 0.09656127 0.03463030
+#&gt; 61 60 0.018691589     Test 4.0943446 -3.97968165 0.09255298 0.03234055
+#&gt; 62 61 0.018691589     Test 4.1108739 -3.97968165 0.08871107 0.03020220
+#&gt; 63 62 0.018691589     Test 4.1271344 -3.97968165 0.08502864 0.02820524
+#&gt; 64 63 0.009345794     Test 4.1431347 -4.67282883 0.08149907 0.02634031
+#&gt; 65 64 0.009345794     Test 4.1588831 -4.67282883 0.07811601 0.02459869
+#&gt; 66 65 0.009345794     Test 4.1743873 -4.67282883 0.07487339 0.02297223
+#&gt; 67 66 0.009345794     Test 4.1896547 -4.67282883 0.07176537 0.02145331
+#&gt; 68 67 0.000000000     Test 4.2046926        -Inf 0.06878636         NA
+#&gt;      LogPower     Power    Truncated LogTruncated
+#&gt; 1          NA        NA           NA           NA
+#&gt; 2  9.44903010 1.5397399 6.488089e-01   0.58288480
+#&gt; 3  4.12868593 1.1281356 8.480057e-02   0.81414350
+#&gt; 4  2.54374592 0.9404615 2.155154e-02   0.95170402
+#&gt; 5  1.80399970 0.8265616 7.191137e-03   1.03430241
+#&gt; 6  1.38190772 0.7478031 2.785516e-03   1.08005987
+#&gt; 7  1.11147154 0.6890567 1.185752e-03   1.09970659
+#&gt; 8  0.92455235 0.6430028 5.387190e-04   1.10035958
+#&gt; 9  0.78824473 0.6056046 2.567024e-04   1.08705322
+#&gt; 10 0.68479445 0.5744268 1.268548e-04   1.06349257
+#&gt; 11 0.60381467 0.5478999 6.451413e-05   1.03247476
+#&gt; 12 0.53884118 0.5249602 3.358087e-05   0.99614671
+#&gt; 13 0.48564952 0.5048576 1.781804e-05   0.95617368
+#&gt; 14 0.44136734 0.4870455 9.607795e-06   0.91385516
+#&gt; 15 0.40397652 0.4711148 5.252248e-06   0.87020773
+#&gt; 16 0.37201936 0.4567525 2.905371e-06   0.82602610
+#&gt; 17 0.34441788 0.4437140 1.623789e-06   0.78192924
+#&gt; 18 0.32035847 0.4318054 9.157708e-07   0.73839585
+#&gt; 19 0.29921602 0.4208706 5.206233e-07   0.69579204
+#&gt; 20 0.28050271 0.4107822 2.981011e-07   0.65439336
+#&gt; 21 0.26383249 0.4014349 1.717862e-07   0.61440223
+#&gt; 22 0.24889605 0.3927412 9.956934e-08   0.57596216
+#&gt; 23 0.23544279 0.3846275 5.801524e-08   0.53916910
+#&gt; 24 0.22326760 0.3770311 3.396525e-08   0.50408082
+#&gt; 25 0.21220107 0.3698987 1.997225e-08   0.47072452
+#&gt; 26 0.20210211 0.3631844 1.179135e-08   0.43910306
+#&gt; 27 0.19285229 0.3568482 6.987270e-09   0.40920012
+#&gt; 28 0.18435152 0.3508555 4.154681e-09   0.38098438
+#&gt; 29 0.17651464 0.3451761 2.478254e-09   0.35441301
+#&gt; 30 0.16926877 0.3397832 1.482638e-09   0.32943454
+#&gt; 31 0.16255119 0.3346531 8.894449e-10   0.30599113
+#&gt; 32 0.15630763 0.3297650 5.349570e-10   0.28402055
+#&gt; 33 0.15049092 0.3251001 3.225254e-10   0.26345769
+#&gt; 34 0.14505987 0.3206417 1.948901e-10   0.24423584
+#&gt; 35 0.13997833 0.3163749 1.180152e-10   0.22628773
+#&gt; 36 0.13521452 0.3122862 7.160688e-11   0.20954632
+#&gt; 37 0.13074029 0.3083632 4.353028e-11   0.19394544
+#&gt; 38 0.12653074 0.3045950 2.650959e-11   0.17942033
+#&gt; 39 0.12256365 0.3009716 1.617142e-11   0.16590800
+#&gt; 40 0.11881922 0.2974837 9.880726e-12   0.15334755
+#&gt; 41 0.11527971 0.2941231 6.046300e-12   0.14168034
+#&gt; 42 0.11192920 0.2908819 3.705255e-12   0.13085017
+#&gt; 43 0.10875334 0.2877534 2.273757e-12   0.12080338
+#&gt; 44 0.10573919 0.2847309 1.397137e-12   0.11148886
+#&gt; 45 0.10287504 0.2818086 8.595620e-13   0.10285810
+#&gt; 46 0.10015025 0.2789810 5.294611e-13   0.09486513
+#&gt; 47 0.09755518 0.2762429 3.265027e-13   0.08746655
+#&gt; 48 0.09508101 0.2735898 2.015645e-13   0.08062140
+#&gt; 49 0.09271974 0.2710172 1.245649e-13   0.07429114
+#&gt; 50 0.09046400 0.2685210 7.705721e-14   0.06843952
+#&gt; 51 0.08830707 0.2660977 4.771436e-14   0.06303257
+#&gt; 52 0.08624277 0.2637435 2.957239e-14   0.05803841
+#&gt; 53 0.08426543 0.2614553 1.834467e-14   0.05342723
+#&gt; 54 0.08236980 0.2592299 1.138950e-14   0.04917115
+#&gt; 55 0.08055108 0.2570646 7.077126e-15   0.04524415
+#&gt; 56 0.07880478 0.2549566 4.401021e-15   0.04162193
+#&gt; 57 0.07712681 0.2529034 2.738936e-15   0.03828188
+#&gt; 58 0.07551332 0.2509026 1.705809e-15   0.03520290
+#&gt; 59 0.07396078 0.2489521 1.063134e-15   0.03236540
+#&gt; 60 0.07246588 0.2470497 6.630469e-16   0.02975114
+#&gt; 61 0.07102558 0.2451934 4.137984e-16   0.02734318
+#&gt; 62 0.06963700 0.2433814 2.584117e-16   0.02512580
+#&gt; 63 0.06829750 0.2416120 1.614751e-16   0.02308439
+#&gt; 64 0.06700458 0.2398834 1.009624e-16   0.02120542
+#&gt; 65 0.06575593 0.2381941 6.316366e-17   0.01947636
+#&gt; 66 0.06454937 0.2365426 3.953846e-17   0.01788558
+#&gt; 67 0.06338287 0.2349276 2.476338e-17   0.01642233
+#&gt; 68         NA        NA           NA           NA
 #&gt; 
 #&gt; $models
-#&gt; <span style='color: #949494;'># A tibble: 6 x 5</span><span>
-#&gt;   logLik     AIC      BIC model        Normal.Resid
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> 71.3   -</span><span style='color: #BB0000;'>137.</span><span>   -</span><span style='color: #BB0000;'>141.</span><span>    LogExp       Yes         
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> 70.6   -</span><span style='color: #BB0000;'>135.</span><span>   -</span><span style='color: #BB0000;'>139.</span><span>    LogPower     Yes         
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> 70.6   -</span><span style='color: #BB0000;'>135.</span><span>   -</span><span style='color: #BB0000;'>139.</span><span>    LogTruncated Yes         
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span>  3.59    -</span><span style='color: #BB0000;'>1.17</span><span>   -</span><span style='color: #BB0000;'>3.01</span><span>  Exp          Yes         
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span>  0.221    3.56    0.944 Truncated    Yes         
-#&gt; </span><span style='color: #BCBCBC;'>6</span><span> -</span><span style='color: #BB0000;'>0.312</span><span>    4.62    2.01  Power        Yes         
+#&gt; <span style='color: #949494;'># A tibble: 3 x 6</span><span>
+#&gt;   logLik    AIC    BIC model        Normal.Resid family     
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span>  83.1  -</span><span style='color: #BB0000;'>160.</span><span>  -</span><span style='color: #BB0000;'>154.</span><span>  Exp          No           Exponential
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span>  13.4   -</span><span style='color: #BB0000;'>20.8</span><span>  -</span><span style='color: #BB0000;'>14.2</span><span> Power        No           PowerLaw   
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span>  -</span><span style='color: #BB0000;'>9.28</span><span>   26.6   35.3 LogTruncated No           Truncated  
 #&gt; 
-#&gt; $graph</div><div class='img'><img src='degree_distribution-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
+#&gt; $graph</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 5 rows containing missing values (geom_path).</span></div><div class='img'><img src='degree_distribution-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
 #&gt; $params
 #&gt; </span><span style='color: #949494;'># A tibble: 7 x 6</span><span>
-#&gt;   term        estimate std.error statistic  p.value model   
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> (Intercept)  -</span><span style='color: #BB0000;'>0.511</span><span>    </span><span style='color: #BB0000;'>NaN</span><span>       </span><span style='color: #BB0000;'>NaN</span><span>     </span><span style='color: #BB0000;'>NaN</span><span>      LogPower
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> I(log(K))    -</span><span style='color: #BB0000;'>0.585</span><span>    </span><span style='color: #BB0000;'>NaN</span><span>       </span><span style='color: #BB0000;'>NaN</span><span>     </span><span style='color: #BB0000;'>NaN</span><span>      LogPower
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> y             1.32       1.44      0.916   0.528  Power   
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> lambda       -</span><span style='color: #BB0000;'>0.608</span><span>      0.167    -</span><span style='color: #BB0000;'>3.65</span><span>    0.067</span><span style='text-decoration: underline;'>7</span><span> Exp     
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> c             0.024</span><span style='text-decoration: underline;'>5</span><span>     0.132     0.186   0.870  Exp     
-#&gt; </span><span style='color: #BCBCBC;'>6</span><span> (Intercept)  -</span><span style='color: #BB0000;'>0.105</span><span>    </span><span style='color: #BB0000;'>NaN</span><span>       </span><span style='color: #BB0000;'>NaN</span><span>     </span><span style='color: #BB0000;'>NaN</span><span>      LogExp  
-#&gt; </span><span style='color: #BCBCBC;'>7</span><span> K            -</span><span style='color: #BB0000;'>0.405</span><span>    </span><span style='color: #BB0000;'>NaN</span><span>       </span><span style='color: #BB0000;'>NaN</span><span>     </span><span style='color: #BB0000;'>NaN</span><span>      LogExp  
+#&gt;   term        estimate std.error statistic  p.value model       
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> y            -</span><span style='color: #BB0000;'>0.449</span><span>    0.040</span><span style='text-decoration: underline;'>2</span><span>     -</span><span style='color: #BB0000;'>11.2</span><span>  1.13</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-16</span><span> Power       
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> a             1.54     0.150       10.3  3.63</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-15</span><span> Power       
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> lambda       -</span><span style='color: #BB0000;'>0.042</span><span style='color: #BB0000;text-decoration: underline;'>4</span><span>   0.001</span><span style='text-decoration: underline;'>57</span><span>    -</span><span style='color: #BB0000;'>27.0</span><span>  2.31</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-37</span><span> Exp         
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> c             0.164    0.024</span><span style='text-decoration: underline;'>7</span><span>       6.63 7.39</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 9</span><span> Exp         
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> (Intercept)  -</span><span style='color: #BB0000;'>0.445</span><span>    0.179       -</span><span style='color: #BB0000;'>2.49</span><span> 1.55</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span><span> LogTruncated
+#&gt; </span><span style='color: #BCBCBC;'>6</span><span> I(log(K))     0.619    0.090</span><span style='text-decoration: underline;'>9</span><span>       6.81 4.30</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 9</span><span> LogTruncated
+#&gt; </span><span style='color: #BCBCBC;'>7</span><span> K            -</span><span style='color: #BB0000;'>0.094</span><span style='color: #BB0000;text-decoration: underline;'>8</span><span>   0.004</span><span style='text-decoration: underline;'>29</span><span>    -</span><span style='color: #BB0000;'>22.1</span><span>  2.29</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-31</span><span> LogTruncated
 #&gt; </div><div class='input'>
 </div></span></pre>
   </div>

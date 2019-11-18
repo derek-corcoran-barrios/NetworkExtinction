@@ -33,8 +33,8 @@ mentioned above against the observed distribution.
 }
 \examples{
 library(NetworkExtinction)
-data("net")
-degree_distribution(net, name = "Test")
+data("chilean_intertidal")
+degree_distribution(chilean_intertidal, name = "Test")
 
 }
 \author{
