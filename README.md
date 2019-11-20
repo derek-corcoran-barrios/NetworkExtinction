@@ -229,7 +229,7 @@ ExtinctionPlot(History = history, Variable = "LinksPerSpecies")
 The *degree\_distribution* function calculates the cumulative
 distribution of the number of links that each species in the food
 network has (Estrada 2007). Then, the observed distribution is fitted to
-the exponential, power law and truncated power law distribution models.
+the exponential and power law distribution models.
 
 The results of this function are shown in figure 9 and table 4. The
 graph shows the observed degree distribution in a log log scale fitting
@@ -248,11 +248,10 @@ degree_distribution(chilean_intertidal, name = "Test")
 
 <img src="man/figures/README-unnamed-chunk-18-1.png" title="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" alt="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" width="100%" />
 
-|    logLik |         AIC |         BIC | model        | Normal.Resid | family      |
-| --------: | ----------: | ----------: | :----------- | :----------- | :---------- |
-|  83.14753 | \-160.29506 | \-153.63654 | Exp          | No           | Exponential |
-|  13.38647 |  \-20.77293 |  \-14.20397 | Power        | No           | PowerLaw    |
-| \-9.28194 |    26.56388 |    35.32250 | LogTruncated | No           | Truncated   |
+|   logLik |         AIC |         BIC | model | Normal.Resid | family      |
+| -------: | ----------: | ----------: | :---- | :----------- | :---------- |
+| 83.14753 | \-160.29506 | \-153.63654 | Exp   | No           | Exponential |
+| 13.38647 |  \-20.77293 |  \-14.20397 | Power | No           | PowerLaw    |
 
 Table 4: Model selection analysis
 

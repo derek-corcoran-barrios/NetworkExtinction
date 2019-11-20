@@ -161,7 +161,7 @@ ExtinctionPlot(History = history, Variable = "LinksPerSpecies")
 
 ## Degree distribution function
 
-The *degree_distribution* function calculates the cumulative distribution of the number of links that each species in the food network has [@estrada2007food]. Then, the observed distribution is fitted to the exponential, power law and truncated power law distribution models.  
+The *degree_distribution* function calculates the cumulative distribution of the number of links that each species in the food network has [@estrada2007food]. Then, the observed distribution is fitted to the exponential and power law distribution models.  
 
 The results of this function are shown in figure 9 and table 4. The graph shows the observed degree distribution in a log log scale fitting the three models mentioned above, for this example we use an example dataset of Chilean litoral rocky shores [@kefi2015network].
 The table shows the fitted model information ordered by descending AIC, that is, the model in the first row is the most probable distribution, followed by the second an finally the third distribution in this case (Table 3), the Exponential distribution would be the best model, followed by the Power law and finally the Truncated power law model.

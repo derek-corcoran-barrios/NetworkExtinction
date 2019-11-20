@@ -58,7 +58,7 @@
 
 
 degree_distribution <- function(Network, name, scale = "arithmetic"){
-  AIC <- Cumulative <- Exp <- fit <- model <- LogTruncated <- Truncated  <- LogPower <- logLik <- BIC <- Power <- Normal.Resid <- LogExp <- family <- AICcNorm <- NULL
+  AIC <- Cumulative <- Exp <- fit <- model <- LogPower <- logLik <- BIC <- Power <- Normal.Resid <- LogExp <- family <- AICcNorm <- NULL
   totaldegree<- degree(Network)
   K <- 0:max(totaldegree)
   For.Graph<- data.frame(K = K, Cumulative = NA, Scenario = name)
@@ -84,7 +84,6 @@ degree_distribution <- function(Network, name, scale = "arithmetic"){
   power <- filter(For.Graph, K != 0 & Cumulative != 0)
   logexp.model <- glm(LogCum ~ K, data = power)
   power$LogExp <- exp(predict(logexp.model))
-  For.Graph <- full_join(For.Graph, power)
   Summs.logexp <- glance(logexp.model)
   Summs.logexp$model <- "LogExp"
   Summs.logexp$Normal.Resid <- ifelse(tidy(ks.test(augment(logexp.model)$.resid,y='pnorm',alternative='two.sided'))$p.value < 0.05, "No", "Yes")
@@ -98,6 +97,7 @@ degree_distribution <- function(Network, name, scale = "arithmetic"){
 
   logpower.model <- glm(LogCum ~ I(log(K)), data = power)
   power$LogPower <- exp(predict(logpower.model))
+  For.Graph <- full_join(For.Graph, power)
   Summs.logpower <- glance(logpower.model)
   Summs.logpower$model <- "LogPower"
   Summs.logpower$Normal.Resid <- ifelse(tidy(ks.test(augment(logpower.model)$.resid,y='pnorm',alternative='two.sided'))$p.value < 0.05, "No", "Yes")
@@ -111,6 +111,7 @@ degree_distribution <- function(Network, name, scale = "arithmetic"){
 
   powerlaw.model <- nls(Cumulative~a*K^y, start= list(y=0, a = 1), data = power)
   power$Power <- predict(powerlaw.model)
+  For.Graph <- full_join(For.Graph, power)
   Summs.power <- glance(powerlaw.model)
   Summs.power$model <- "Power"
   Summs.power$Normal.Resid  <- ifelse(tidy(ks.test(augment(powerlaw.model)$.resid,y='pnorm',alternative='two.sided'))$p.value < 0.05, "No", "Yes")
@@ -120,43 +121,13 @@ degree_distribution <- function(Network, name, scale = "arithmetic"){
   Params.power <- tidy(powerlaw.model)
   Params.power$model <- "Power"
 
-
-  #truncated
-
-  truncated.powerlaw.model <- nls(Cumulative~(K^-y)*(exp(-K/y)), start = list(y=1), data = power)
-  power$Truncated <- predict(truncated.powerlaw.model)
-  Summs.truncated <- glance(truncated.powerlaw.model)
-  Summs.truncated$model <- "Truncated"
-  Summs.truncated$Normal.Resid <- ifelse(tidy(ks.test(augment(truncated.powerlaw.model)$.resid,y='pnorm',alternative='two.sided'))$p.value < 0.05, "No", "Yes")
-  Summs.truncated$family <- "Truncated"
-  Summs.truncated$AICcNorm <- logLik(MASS::fitdistr(augment(truncated.powerlaw.model)$.resid, "normal"))[1]
-  Summs.truncated$AICcNorm <- (4 - 2*Summs.truncated$AICcNorm) + (12/(nrow(augment(truncated.powerlaw.model)) - 1))
-  Params.truncated <- tidy(truncated.powerlaw.model)
-  Params.truncated$model <- "Truncated"
-
-  #logtruncated
-
-  logtruncated.powerlaw.model <- glm(LogCum ~ I(log(K)) + K, data = power)
-  power$LogTruncated <- exp(predict(logtruncated.powerlaw.model))
-  For.Graph <- full_join(For.Graph, power)
-  Summs.logtruncated <- glance(logtruncated.powerlaw.model)
-  Summs.logtruncated$model <- "LogTruncated"
-  Summs.logtruncated$Normal.Resid <- ifelse(tidy(ks.test(augment(logtruncated.powerlaw.model)$.resid,y='pnorm',alternative='two.sided'))$p.value < 0.05, "No", "Yes")
-  Summs.logtruncated$family <- "Truncated"
-  Summs.logtruncated$AICcNorm <- logLik(MASS::fitdistr(augment(logtruncated.powerlaw.model)$.resid, "normal"))[1]
-  Summs.logtruncated$AICcNorm <- (4 - 2*Summs.logtruncated$AICcNorm) + (12/(nrow(augment(logtruncated.powerlaw.model)) - 1))
-  Params.logtruncated <- tidy(logtruncated.powerlaw.model)
-  Params.logtruncated$model <- "LogTruncated"
-
   #all together
   Summs <- full_join(Summs.exp, Summs.power)
-  Summs <- full_join(Summs, Summs.truncated)
   Summs <- full_join(Summs, Summs.logexp)
-  Summs <- full_join(Summs, Summs.logpower)
-  Summs <- full_join(Summs, Summs.logtruncated) %>% select(logLik, AIC, BIC, model, Normal.Resid, family, AICcNorm)
+  Summs <- full_join(Summs, Summs.logpower) %>% select(logLik, AIC, BIC, model, Normal.Resid, family, AICcNorm)
   Summs <- arrange(Summs, Normal.Resid, AIC) %>% group_split(family) %>% purrr::map(~mutate(.x, deltaAICc = AICcNorm - min(AICcNorm))) %>% purrr::map(~dplyr::filter(.x, deltaAICc < 2)) %>% reduce(bind_rows) %>% dplyr::select(logLik, AIC, BIC, model, Normal.Resid, family)
-  params <- bind_rows(Params.logpower, Params.power, Params.exp, Params.logexp, Params.truncated, Params.logtruncated) %>% dplyr::filter(model %in% Summs$model)
-  DF2 <- For.Graph %>% filter(K != 0 & Cumulative != 0) %>% gather(key = model, value = fit, Exp, Power, Truncated, LogExp, LogPower, LogTruncated) %>% dplyr::filter(model %in% Summs$model)
+  params <- bind_rows(Params.logpower, Params.power, Params.exp, Params.logexp) %>% dplyr::filter(model %in% Summs$model)
+  DF2 <- For.Graph %>% filter(K != 0 & Cumulative != 0) %>% gather(key = model, value = fit, Exp, Power, LogExp, LogPower) %>% dplyr::filter(model %in% Summs$model)
 
   g <- ggplot(DF2, aes_string(x = "K", y = "Cumulative")) + geom_line() + geom_point()+ theme_classic() + geom_line(aes_string(y ="fit", color = "model")) + ylim(c(0,1))
 
