@@ -85,7 +85,7 @@
       <h1>How to use the NetworkExtinction Package</h1>
                         <h4 class="author">M.Isidora Avila-Thieme and Derek Corcoran</h4>
             
-            <h4 class="date">2019-11-20</h4>
+            <h4 class="date">2019-11-21</h4>
       
       
       <div class="hidden name"><code>How_to_use_the_NetworkExtinction_Package.Rmd</code></div>
@@ -123,7 +123,7 @@
 <p>The function to analize the degree distribution is:</p>
 <ul>
 <li>
-<em>degree_distribution:</em> To test if the degrees in the network follow a power law, exponential, or truncated distribution.</li>
+<em>degree_distribution:</em> To test if the degrees in the network follow a power law, or exponential.</li>
 </ul>
 <div id="how-to-install-the-package" class="section level2">
 <h2 class="hasAnchor">
@@ -464,10 +464,10 @@ Figure 8. Another example of the use of the ExtinctionPlot function showing the 
 <div id="degree-distribution-function" class="section level2">
 <h2 class="hasAnchor">
 <a href="#degree-distribution-function" class="anchor"></a>Degree distribution function</h2>
-<p>The <em>degree_distribution</em> function calculates the cumulative distribution of the number of links that each species in the food network has <span class="citation">(Estrada 2007)</span>. Then, the observed distribution is fitted to the exponential, power law and truncated power law distribution models.</p>
-<p>The results of this function are shown in figure 9 and table 4. The graph shows the observed degree distribution in a log log scale fitting the three models mentioned above, for this example we use an example dataset of Chilean litoral rocky shores <span class="citation">(Kéfi et al. 2015)</span>. The table shows the fitted model information ordered by descending AIC, that is, the model in the first row is the most probable distribution, followed by the second an finally the third distribution in this case (Table 3), the Exponential distribution would be the best model, followed by the Power law and finally the Truncated power law model.</p>
+<p>The <em>degree_distribution</em> function calculates the cumulative distribution of the number of links that each species in the food network has <span class="citation">(Estrada 2007)</span>. Then, the observed distribution is fitted to the exponential, and power law models.</p>
+<p>The results of this function are shown in figure 9 and table 4. The graph shows the observed degree distribution in a log log scale fitting the three models mentioned above, for this example we use an example dataset of Chilean litoral rocky shores <span class="citation">(Kéfi et al. 2015)</span>. The table shows the fitted model information ordered by descending AIC, that is, the model in the first row is the most probable distribution, followed by the second an finally the third distribution in this case (Table 3), the Exponential distribution would be the best model, followed by the Power law model.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"chilean_intertidal"</span>)</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw"><a href="../reference/degree_distribution.html">degree_distribution</a></span>(chilean_intertidal, <span class="dt">name =</span> <span class="st">"Test"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw"><a href="../reference/degree_distribution.html">degree_distribution</a></span>(chilean_intertidal)</a></code></pre></div>
 <div class="figure">
 <img src="How_to_use_the_NetworkExtinction_Package_files/figure-html/unnamed-chunk-20-1.png" alt="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" width="576"><p class="caption">
 Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively

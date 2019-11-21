@@ -379,10 +379,10 @@
 <div id="degree-distribution-function" class="section level2">
 <h2 class="hasAnchor">
 <a href="#degree-distribution-function" class="anchor"></a>Degree distribution function</h2>
-<p>The <em>degree_distribution</em> function calculates the cumulative distribution of the number of links that each species in the food network has (Estrada 2007). Then, the observed distribution is fitted to the exponential, power law and truncated power law distribution models.</p>
+<p>The <em>degree_distribution</em> function calculates the cumulative distribution of the number of links that each species in the food network has (Estrada 2007). Then, the observed distribution is fitted to the exponential and power law distribution models.</p>
 <p>The results of this function are shown in figure 9 and table 4. The graph shows the observed degree distribution in a log log scale fitting the three models mentioned above, for this example we use an example dataset of Chilean litoral rocky shores (Kéfi et al. 2015). The table shows the fitted model information ordered by descending AIC, that is, the model in the first row is the most probable distribution, followed by the second an finally the third distribution in this case (Table 3), the Exponential distribution would be the best model, followed by the Power law and finally the Truncated power law model.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"chilean_intertidal"</span>)</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw"><a href="reference/degree_distribution.html">degree_distribution</a></span>(chilean_intertidal, <span class="dt">name =</span> <span class="st">"Test"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw"><a href="reference/degree_distribution.html">degree_distribution</a></span>(chilean_intertidal)</a></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-18-1.png" title="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" alt="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" width="100%"></p>
 <table class="table">
 <thead><tr class="header">
@@ -409,14 +409,6 @@
 <td align="left">Power</td>
 <td align="left">No</td>
 <td align="left">PowerLaw</td>
-</tr>
-<tr class="odd">
-<td align="right">-9.28194</td>
-<td align="right">26.56388</td>
-<td align="right">35.32250</td>
-<td align="left">LogTruncated</td>
-<td align="left">No</td>
-<td align="left">Truncated</td>
 </tr>
 </tbody>
 </table>

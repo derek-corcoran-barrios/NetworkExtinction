@@ -4,16 +4,13 @@
 \alias{degree_distribution}
 \title{Degree distribution of the network}
 \usage{
-degree_distribution(Network, name, scale = "arithmetic")
+degree_distribution(Network, scale = "arithmetic")
 }
 \arguments{
 \item{Network}{a trophic network of class network}
 
-\item{name}{a categorical variable that represent
-the distribution model}
-
 \item{scale}{a character stating if the graph is on a log-log scale
-("loglog") or arithmetic scale ("arithmetic"), defaults to arithmetic}
+("LogLog") or arithmetic scale ("arithmetic"), defaults to arithmetic}
 }
 \value{
 exports three principal results:
@@ -34,7 +31,7 @@ mentioned above against the observed distribution.
 \examples{
 library(NetworkExtinction)
 data("chilean_intertidal")
-degree_distribution(chilean_intertidal, name = "Test")
+degree_distribution(chilean_intertidal)
 
 }
 \author{
