@@ -168,12 +168,12 @@ The table shows the fitted model information ordered by descending AIC, that is,
 
 ```{r, eval=FALSE}
 data("chilean_intertidal")
-degree_distribution(chilean_intertidal, name = "Test")
+degree_distribution(chilean_intertidal)
 ```
 
 ```{r, echo=FALSE}
 data("chilean_intertidal")
-Dist <- degree_distribution(chilean_intertidal, name = "Test")
+Dist <- degree_distribution(chilean_intertidal)
 ```
 
 ```{r, echo = FALSE, fig.cap= "Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively"}

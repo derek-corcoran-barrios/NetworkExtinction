@@ -7,3 +7,4 @@
 * Fixed parameters in `degree_distribution`, the intercept for power law was not present
 * Fixed `degree_distribution` to select one model per family
 * Eliminated *Truncated* distribution from `degree_distribution` since it didn't have any theoretical support
+* Eliminated the name *argument* `degree_distribution`

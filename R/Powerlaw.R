@@ -8,10 +8,8 @@
 #'
 #'
 #' @param Network a trophic network of class network
-#' @param name a categorical variable that represent
-#' the distribution model
 #' @param scale a character stating if the graph is on a log-log scale
-#' ("loglog") or arithmetic scale ("arithmetic"), defaults to arithmetic
+#' ("LogLog") or arithmetic scale ("arithmetic"), defaults to arithmetic
 #' @return exports three principal results:
 #' 1. A list with network degree distribution values and with the value of each fit model
 #' 2. A list with each model results and AIC of the distribution models
@@ -23,7 +21,7 @@
 #'@examples
 #'library(NetworkExtinction)
 #'data("chilean_intertidal")
-#'degree_distribution(chilean_intertidal, name = "Test")
+#'degree_distribution(chilean_intertidal)
 #'
 #'@importFrom sna degree
 #'@importFrom stats nls
@@ -57,11 +55,11 @@
 #' @export
 
 
-degree_distribution <- function(Network, name, scale = "arithmetic"){
+degree_distribution <- function(Network, scale = "arithmetic"){
   AIC <- Cumulative <- Exp <- fit <- model <- LogPower <- logLik <- BIC <- Power <- Normal.Resid <- LogExp <- family <- AICcNorm <- NULL
   totaldegree<- degree(Network)
   K <- 0:max(totaldegree)
-  For.Graph<- data.frame(K = K, Cumulative = NA, Scenario = name)
+  For.Graph<- data.frame(K = K, Cumulative = NA)
   for(i in 1:length(K)){
     For.Graph$Cumulative[i] <- sum(totaldegree>K[i])/length(totaldegree)
   }

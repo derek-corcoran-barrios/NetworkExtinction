@@ -243,7 +243,7 @@ Power law and finally the Truncated power law model.
 
 ``` r
 data("chilean_intertidal")
-degree_distribution(chilean_intertidal, name = "Test")
+degree_distribution(chilean_intertidal)
 ```
 
 <img src="man/figures/README-unnamed-chunk-18-1.png" title="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" alt="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" width="100%" />
