@@ -318,7 +318,7 @@ CompareExtinctions <- function(Nullmodel, Hypothesis){
   if(class(Hypothesis)[1] == "ExtinctionOrder"){
     NumExt <- sd <- AccSecExt <- AccSecExt_mean <-NULL
     g <- Nullmodel$graph + geom_line(aes(color = "blue"))
-    g <- g + geom_point(data = Hypothesis$DF, aes(y = AccSecExt), color = "blue") + geom_line(data = Hypothesis$DF, aes(y = AccSecExt, color = "black")) + scale_color_manual(values =c("blue", "black"), label = c("Observed","Null hypothesis"))
+    g <- g + geom_point(data = Hypothesis$DF, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis$DF, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison",values =c("black", "blue"), label = c("Observed","Null hypothesis"))
     g
     Test <- chisq.test(x = Hypothesis$DF$AccSecExt, y = Nullmodel$sims$AccSecExt_mean[1:length(Hypothesis$DF$AccSecExt)])
     return(list(Test = Test, graph = g))
@@ -326,7 +326,7 @@ CompareExtinctions <- function(Nullmodel, Hypothesis){
   if(class(Hypothesis)[2] == "Mostconnected"){
   NumExt <- sd <- AccSecExt <- AccSecExt_mean <-NULL
   g <- Nullmodel$graph + geom_line(aes(color = "blue"))
-  g <- g + geom_point(data = Hypothesis, aes(y = AccSecExt), color = "blue") + geom_line(data = Hypothesis, aes(y = AccSecExt, color = "black")) + scale_color_manual(values =c("blue", "black"), label = c("Observed","Null hypothesis"))
+  g <- g + geom_point(data = Hypothesis, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison", values =c("black", "blue"), label = c("Observed","Null hypothesis"))
   g
   Test <- tidy(chisq.test(x = Hypothesis$AccSecExt, y = Nullmodel$sims$AccSecExt_mean[1:length(Hypothesis$AccSecExt)]))
   return(list(Test = Test, graph = g))
