@@ -82,7 +82,7 @@ by making n random extinction histories" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NetworkExtinction</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -139,7 +139,7 @@ the mean and standard deviation of the accumulated secondary extinctions develop
 by making n random extinction histories</p>
     </div>
 
-    <pre class="usage"><span class='fu'>RandomExtinctions</span>(<span class='no'>Network</span>, <span class='kw'>nsim</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
+    <pre class="usage"><span class='fu'>RandomExtinctions</span>(<span class='no'>Network</span>, <span class='kw'>nsim</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>ncores</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -151,6 +151,15 @@ by making n random extinction histories</p>
     <tr>
       <th>nsim</th>
       <td><p>number of simulations</p></td>
+    </tr>
+    <tr>
+      <th>parallel</th>
+      <td><p>if TRUE, it will use parallel procesing, if FALSE (default) it will run
+sequentially</p></td>
+    </tr>
+    <tr>
+      <th>ncores</th>
+      <td><p>number of cores to use if using parallel procesing</p></td>
     </tr>
     </table>
 
@@ -179,7 +188,13 @@ extintion, and a graph with the mean and 95<!-- % interval --></p>
 #&gt; </span><span style='color: #949494;'># … with 19 more rows</span><span>
 #&gt; 
 #&gt; $graph</div><div class='img'><img src='RandomExtinctions-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; </div><div class='input'>
-</div></span></pre>
+<span class='co'># Using parallel procesing</span>
+<span class='co'>## Detect your number of cores divide by 2</span>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='no'>cores</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>ceiling</a></span>(<span class='kw pkg'>parallel</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/r/parallel/detectCores.html'>detectCores</a></span>()/<span class='fl'>2</span>)
+
+<span class='fu'>RandomExtinctions</span>(<span class='kw'>Network</span> <span class='kw'>=</span> <span class='no'>More_Connected</span>, <span class='kw'>nsim</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ncores</span> <span class='kw'>=</span> <span class='no'>cores</span>)
+}</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
