@@ -4,7 +4,9 @@
 \name{More_Connected}
 \alias{More_Connected}
 \title{A densely connected foodweb}
-\format{a network}
+\format{
+a network
+}
 \usage{
 More_Connected
 }

@@ -4,7 +4,9 @@
 \name{net}
 \alias{net}
 \title{A toymodel trophic network}
-\format{a network}
+\format{
+a network
+}
 \usage{
 net
 }

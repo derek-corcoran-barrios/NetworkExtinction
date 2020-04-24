@@ -41,7 +41,7 @@
 #'@importFrom ggplot2 geom_point
 #'@importFrom ggplot2 scale_x_log10
 #'@importFrom ggplot2 scale_y_log10
-#'@importFrom ggplot2 theme_classic
+#'@importFrom ggplot2 theme_bw
 #'@importFrom ggplot2 ylim
 #'@importFrom MASS fitdistr
 #'@importFrom purrr map
@@ -127,7 +127,7 @@ degree_distribution <- function(Network, scale = "arithmetic"){
   params <- bind_rows(Params.logpower, Params.power, Params.exp, Params.logexp) %>% dplyr::filter(model %in% Summs$model)
   DF2 <- For.Graph %>% filter(K != 0 & Cumulative != 0) %>% gather(key = model, value = fit, Exp, Power, LogExp, LogPower) %>% dplyr::filter(model %in% Summs$model)
 
-  g <- ggplot(DF2, aes_string(x = "K", y = "Cumulative")) + geom_line() + geom_point()+ theme_classic() + geom_line(aes_string(y ="fit", color = "model")) + ylim(c(0,1))
+  g <- ggplot(DF2, aes_string(x = "K", y = "Cumulative")) + geom_line() + geom_point()+ theme_bw() + geom_line(aes_string(y ="fit", color = "model")) + ylim(c(0,1))
 
   if(scale == "LogLog"){
     g <- g  + scale_x_log10() + scale_y_log10(breaks=c(0, .001,.01,1))

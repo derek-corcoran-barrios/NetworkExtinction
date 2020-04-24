@@ -14,17 +14,17 @@
 #' history <- Mostconnected(Network = net)
 #' ExtinctionPlot(History = history)
 #' # You can also specify the variable to be ploted in the y axis
-#' ExtinctionPlot(History = history, Variable = "LinksPerSpecies")
+#' ExtinctionPlot(History = history, Variable = "Link_density")
 #' @importFrom ggplot2 aes_string
 #' @importFrom ggplot2 geom_line
 #' @importFrom ggplot2 ggplot
-#' @importFrom ggplot2 theme_classic
+#' @importFrom ggplot2 theme_bw
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
 #' @author M.Isidora Avila Thieme <msavila@uc.cl>
 #' @seealso [NetworkExtintion::ExtinctionOrder()]
 #' @export
 
-ExtinctionPlot <- function(History, Variable = "AccSecondaryExtinction"){
+ExtinctionPlot <- function(History, Variable = "AccSecExt"){
   History$X <- 1:nrow(History)
-  ggplot(History, aes_string(x = "X", y = Variable)) + geom_line() + theme_classic() + ylab(Variable) + xlab("Number of extinctions")
+  ggplot(History, aes_string(x = "X", y = Variable)) + geom_line() + theme_bw() + ylab(Variable) + xlab("Primary extinctions")
 }

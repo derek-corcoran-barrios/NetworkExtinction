@@ -44,7 +44,7 @@ Mostconnected <- function(Network){
   indegreetopnetzeros <- sum(degree(Network, cmode = "outdegree") == 0)
   Producers <- (1:length(degree(Network, cmode = "indegree")))[degree(Network, cmode = "indegree") == 0]
   TopPredators <- (1:length(degree(Network, cmode = "outdegree")))[degree(Network, cmode = "outdegree") == 0]
-  DF <- data.frame(Spp = rep(NA, network.size(Network)), nodesS = rep(NA, network.size(Network)), linksS = rep(NA, network.size(Network)), Conectance = rep(NA, network.size(Network)), LinksPerSpecies = rep(NA, network.size(Network)),Secondary_extinctions = rep(NA,network.size(Network)), Predation_release = rep(NA,network.size(Network)), isolated_nodes =rep (NA,network.size(Network)))
+  DF <- data.frame(Spp = rep(NA, network.size(Network)), S = rep(NA, network.size(Network)), L = rep(NA, network.size(Network)), C = rep(NA, network.size(Network)), Link_density = rep(NA, network.size(Network)),SecExt = rep(NA,network.size(Network)), Pred_release = rep(NA,network.size(Network)), Iso_nodes =rep (NA,network.size(Network)))
 
   Secundaryext <- c()
   Predationrel <- c()
@@ -78,17 +78,17 @@ Mostconnected <- function(Network){
       delete.vertices(Temp, unique(c(c(DF$Spp[1:i]),accExt)))
     }
 
-    DF$nodesS[i] <- network.size(Temp)
-    DF$linksS[i] <- network.edgecount(Temp)
-    DF$Conectance[i] <- network.density(Temp)
-    DF$LinksPerSpecies [i] <- DF$linksS[i]/DF$nodesS[i]
+    DF$S[i] <- network.size(Temp)
+    DF$L[i] <- network.edgecount(Temp)
+    DF$C[i] <- network.density(Temp)
+    DF$Link_density [i] <- DF$L[i]/DF$S[i]
     SecundaryextTemp <- (1:length(degree(Temp, cmode = "indegree")))[degree(Temp, cmode = "indegree") == 0]
     for(j in sort(unique(c(c(DF$Spp[1:i]),accExt)))){
       SecundaryextTemp <- ifelse(SecundaryextTemp < j, SecundaryextTemp, SecundaryextTemp + 1)
     }
     Secundaryext <- SecundaryextTemp
     Secundaryext <- Secundaryext[!(Secundaryext %in% Producers)]
-    DF$Secondary_extinctions[i]<- length(Secundaryext)
+    DF$SecExt[i]<- length(Secundaryext)
 
     PredationrelTemp <- (1:length(degree(Temp, cmode = "outdegree")))[degree(Temp, cmode = "outdegree") == 0]
     for(j in sort(unique(c(c(DF$Spp[1:i]),accExt)))){
@@ -96,20 +96,20 @@ Mostconnected <- function(Network){
     }
     Predationrel <- PredationrelTemp
     Predationrel <- Predationrel[!(Predationrel %in% TopPredators)]
-    DF$Predation_release[i]<- length(Predationrel)
+    DF$Pred_release[i]<- length(Predationrel)
 
-    DF$isolated_nodes[i] <- sum(degree(Temp) == 0)
+    DF$Iso_nodes[i] <- sum(degree(Temp) == 0)
     print(i)
     FinalExt[[i]] <-(Secundaryext)
     accExt <- append(accExt, DF$Spp[1:i])
     accExt <- unique(append(accExt,Secundaryext))
 
-    if (DF$linksS[i] == 0) break
+    if (DF$L[i] == 0) break
   }
   DF <- DF[complete.cases(DF),]
-    DF$AccSecondaryExtinction<- cumsum(DF$Secondary_extinctions)
+    DF$AccSecExt<- cumsum(DF$SecExt)
   DF$NumExt <- 1:nrow(DF)
-  DF$TotalExt <- DF$AccSecondaryExtinction + DF$NumExt
+  DF$TotalExt <- DF$AccSecExt + DF$NumExt
   class(DF) <- c("data.frame", "Mostconnected")
   return(DF)
 }
@@ -136,7 +136,7 @@ Mostconnected <- function(Network){
 #' @importFrom ggplot2 aes_string
 #' @importFrom ggplot2 geom_line
 #' @importFrom ggplot2 ggplot
-#' @importFrom ggplot2 theme_classic
+#' @importFrom ggplot2 theme_bw
 #' @importFrom ggplot2 xlab
 #' @importFrom ggplot2 ylab
 #' @importFrom network as.matrix.network.edgelist
@@ -164,7 +164,7 @@ ExtinctionOrder <- function(Network, Order){
   Producers <- (1:length(degree(Network, cmode = "indegree")))[degree(Network, cmode = "indegree") == 0]
   TopPredators <- (1:length(degree(Network, cmode = "outdegree")))[degree(Network, cmode = "outdegree") == 0]
 
-  DF <- data.frame(Spp = rep(NA, network.size(Network)), nodesS = rep(NA, network.size(Network)), linksS = rep(NA, network.size(Network)), Conectance = rep(NA, network.size(Network)),  Secondary_extinctions = rep(NA,network.size(Network)), Predation_release = rep(NA,network.size(Network)))
+  DF <- data.frame(Spp = rep(NA, network.size(Network)), S = rep(NA, network.size(Network)), L = rep(NA, network.size(Network)), C = rep(NA, network.size(Network)),  SecExt = rep(NA,network.size(Network)), Pred_release = rep(NA,network.size(Network)))
 
   Secundaryext <- c()
   Predationrel <- c()
@@ -195,9 +195,9 @@ ExtinctionOrder <- function(Network, Order){
       delete.vertices(Temp, unique(c(c(DF$Spp[1:i]),accExt)))
     }
 
-    DF$nodesS[i] <- network.size(Temp)
-    DF$linksS[i] <- network.edgecount(Temp)
-    DF$Conectance[i] <- network.density(Temp)
+    DF$S[i] <- network.size(Temp)
+    DF$L[i] <- network.edgecount(Temp)
+    DF$C[i] <- network.density(Temp)
 
     SecundaryextTemp <- (1:length(degree(Temp, cmode = "indegree")))[degree(Temp, cmode = "indegree") == 0]
     for(j in sort(unique(c(c(DF$Spp[1:i]),accExt)))){
@@ -205,7 +205,7 @@ ExtinctionOrder <- function(Network, Order){
     }
     Secundaryext <- SecundaryextTemp
     Secundaryext <- Secundaryext[!(Secundaryext %in% Producers)]
-    DF$Secondary_extinctions[i]<- length(Secundaryext)
+    DF$SecExt[i]<- length(Secundaryext)
 
     PredationrelTemp <- (1:length(degree(Temp, cmode = "outdegree")))[degree(Temp, cmode = "outdegree") == 0]
     for(j in sort(unique(c(c(DF$Spp[1:i]),accExt)))){
@@ -213,20 +213,20 @@ ExtinctionOrder <- function(Network, Order){
     }
     Predationrel <- PredationrelTemp
     Predationrel <- Predationrel[!(Predationrel %in% TopPredators)]
-    DF$Predation_release[i]<- length(Predationrel)
+    DF$Pred_release[i]<- length(Predationrel)
 
     message(i)
     FinalExt[[i]] <-(Secundaryext)
     accExt <- append(accExt, DF$Spp[1:i])
     accExt <- unique(append(accExt,Secundaryext))
 
-    if (DF$linksS[i] == 0) break
+    if (DF$L[i] == 0) break
   }
   DF <- DF[complete.cases(DF),]
-  DF$AccSecondaryExtinction <- cumsum(DF$Secondary_extinctions)
+  DF$AccSecExt <- cumsum(DF$SecExt)
   DF$NumExt <- 1:nrow(DF)
-  DF$TotalExt <- DF$AccSecondaryExtinction + DF$NumExt
-  G <- ggplot(DF, aes_string(x = "NumExt", y = "AccSecondaryExtinction")) + geom_line() + ylab("Secondary extinctions") + xlab("number of extinctions") + theme_classic()
+  DF$TotalExt <- DF$AccSecExt + DF$NumExt
+  G <- ggplot(DF, aes_string(x = "NumExt", y = "AccSecExt")) + geom_line() + ylab("Acc. Secondary extinctions") + xlab("Primary extinctions")  + theme_bw()
   Results <- list(DF= DF, Graph = G)
   class(Results) <- c("ExtinctionOrder")
   return(Results)
@@ -253,8 +253,10 @@ ExtinctionOrder <- function(Network, Order){
 #' @importFrom ggplot2 geom_line
 #' @importFrom ggplot2 geom_ribbon
 #' @importFrom ggplot2 ggplot
-#' @importFrom ggplot2 theme_classic
+#' @importFrom ggplot2 theme_bw
 #' @importFrom ggplot2 scale_fill_manual
+#' @importFrom ggplot2 xlab
+#' @importFrom ggplot2 ylab
 #' @importFrom magrittr "%>%"
 #' @importFrom network network.size
 #' @importFrom scales muted
@@ -264,7 +266,7 @@ ExtinctionOrder <- function(Network, Order){
 #' @export
 
 RandomExtinctions <- function(Network, nsim = 10){
-  NumExt <- sd <- AccSecondaryExtinction <- NULL
+  NumExt <- sd <- AccSecExt <- NULL
   network <- Network
   sims <- list()
   for(i in 1:nsim){
@@ -275,8 +277,8 @@ RandomExtinctions <- function(Network, nsim = 10){
   cond <- sapply(sims, function(x) class(x) == "data.frame")
   sims <- sims[cond]
   sims <- do.call(rbind, sims)
-  sims <- sims %>% group_by(NumExt) %>% summarise(SdAccSecondaryExtinction = sd(AccSecondaryExtinction), AccSecondaryExtinction = mean(AccSecondaryExtinction))
-  g <- ggplot(sims, aes_string(x = "NumExt", y = "AccSecondaryExtinction")) + geom_ribbon(aes_string(ymin = "AccSecondaryExtinction - SdAccSecondaryExtinction", ymax = "AccSecondaryExtinction + SdAccSecondaryExtinction"), fill = muted("red")) + geom_line() + theme_classic()
+  sims <- sims %>% group_by(NumExt) %>% summarise(AccSecExt_sd = sd(AccSecExt), AccSecExt_mean = mean(AccSecExt))
+  g <- ggplot(sims, aes_string(x = "NumExt", y = "AccSecExt_mean")) + geom_ribbon(aes_string(ymin = "AccSecExt_mean - AccSecExt_sd", ymax = "AccSecExt_mean + AccSecExt_sd"), fill = muted("red")) + geom_line() + ylab("Acc. Secondary extinctions") + xlab("Primary extinctions") + theme_bw()
   g
   return(list(sims = sims, graph = g))
 }
@@ -303,8 +305,10 @@ RandomExtinctions <- function(Network, nsim = 10){
 #'
 #' CompareExtinctions(Nullmodel = NullHyp, Hypothesis = History)
 #' @importFrom broom tidy
+#' @importFrom ggplot2 aes
 #' @importFrom ggplot2 geom_line
 #' @importFrom ggplot2 geom_point
+#' @importFrom ggplot2 scale_color_manual
 #' @importFrom stats chisq.test
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
 #' @author M.Isidora Avila Thieme <msavila@uc.cl>
@@ -312,19 +316,19 @@ RandomExtinctions <- function(Network, nsim = 10){
 
 CompareExtinctions <- function(Nullmodel, Hypothesis){
   if(class(Hypothesis)[1] == "ExtinctionOrder"){
-    NumExt <- sd <- AccSecondaryExtinction <- NULL
-    g <- Nullmodel$graph
-    g <- g + geom_point(data = Hypothesis$DF) + geom_line(data = Hypothesis$DF, lty = 2)
+    NumExt <- sd <- AccSecExt <- AccSecExt_mean <-NULL
+    g <- Nullmodel$graph + geom_line(aes(color = "blue"))
+    g <- g + geom_point(data = Hypothesis$DF, aes(y = AccSecExt), color = "blue") + geom_line(data = Hypothesis$DF, aes(y = AccSecExt, color = "black")) + scale_color_manual(values =c("blue", "black"), label = c("Observed","Null hypothesis"))
     g
-    Test <- chisq.test(x = Hypothesis$DF$AccSecondaryExtinction, y = Nullmodel$sims$AccSecondaryExtinction[1:length(Hypothesis$DF$AccSecondaryExtinction)])
+    Test <- chisq.test(x = Hypothesis$DF$AccSecExt, y = Nullmodel$sims$AccSecExt_mean[1:length(Hypothesis$DF$AccSecExt)])
     return(list(Test = Test, graph = g))
   }
   if(class(Hypothesis)[2] == "Mostconnected"){
-  NumExt <- sd <- AccSecondaryExtinction <- NULL
-  g <- Nullmodel$graph
-  g <- g + geom_point(data = Hypothesis) + geom_line(data = Hypothesis, lty = 2)
+  NumExt <- sd <- AccSecExt <- AccSecExt_mean <-NULL
+  g <- Nullmodel$graph + geom_line(aes(color = "blue"))
+  g <- g + geom_point(data = Hypothesis, aes(y = AccSecExt), color = "blue") + geom_line(data = Hypothesis, aes(y = AccSecExt, color = "black")) + scale_color_manual(values =c("blue", "black"), label = c("Observed","Null hypothesis"))
   g
-  Test <- tidy(chisq.test(x = Hypothesis$AccSecondaryExtinction, y = Nullmodel$sims$AccSecondaryExtinction[1:length(Hypothesis$AccSecondaryExtinction)]))
+  Test <- tidy(chisq.test(x = Hypothesis$AccSecExt, y = Nullmodel$sims$AccSecExt_mean[1:length(Hypothesis$AccSecExt)]))
   return(list(Test = Test, graph = g))
   }
   else{

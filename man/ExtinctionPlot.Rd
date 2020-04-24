@@ -4,7 +4,7 @@
 \alias{ExtinctionPlot}
 \title{Plots the extinctions history of a network}
 \usage{
-ExtinctionPlot(History, Variable = "AccSecondaryExtinction")
+ExtinctionPlot(History, Variable = "AccSecExt")
 }
 \arguments{
 \item{History}{a NetworkTopology object obtained from the Mostconnected function
@@ -26,7 +26,7 @@ data("net")
 history <- Mostconnected(Network = net)
 ExtinctionPlot(History = history)
 # You can also specify the variable to be ploted in the y axis
-ExtinctionPlot(History = history, Variable = "LinksPerSpecies")
+ExtinctionPlot(History = history, Variable = "Link_density")
 }
 \seealso{
 [NetworkExtintion::ExtinctionOrder()]

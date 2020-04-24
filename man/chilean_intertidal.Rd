@@ -4,7 +4,9 @@
 \name{chilean_intertidal}
 \alias{chilean_intertidal}
 \title{The foodweb of the intertidal zone in central chile}
-\format{a network}
+\format{
+a network
+}
 \usage{
 chilean_intertidal
 }

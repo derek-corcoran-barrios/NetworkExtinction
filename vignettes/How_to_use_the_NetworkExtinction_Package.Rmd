@@ -135,7 +135,7 @@ The result of this function is the dataframe shown in table 1. The first column 
 ```{r, fig.cap="Figure 3. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most to the least connected species"}
 data("net")
 history <- Mostconnected(Network = net)
-ExtinctionPlot(History = history, Variable = "AccSecondaryExtinction")
+ExtinctionPlot(History = history, Variable = "AccSecExt")
 
 ```
 
@@ -222,7 +222,7 @@ ExtinctionPlot(History = history)
 ```
 
 ```{r, fig.cap= "Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions"}
-ExtinctionPlot(History = history, Variable = "LinksPerSpecies")
+ExtinctionPlot(History = history, Variable = "Link_density")
 
 ```
 
