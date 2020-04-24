@@ -8,3 +8,7 @@
 * Fixed `degree_distribution` to select one model per family
 * Eliminated *Truncated* distribution from `degree_distribution` since it didn't have any theoretical support
 * Eliminated the name *argument* `degree_distribution`
+
+# NetworkExtinction 0.1.3
+
+* Added parallel processing for `RandomExtinctions`

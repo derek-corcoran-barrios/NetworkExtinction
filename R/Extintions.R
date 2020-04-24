@@ -240,6 +240,9 @@ ExtinctionOrder <- function(Network, Order){
 #'
 #' @param Network a trophic network of class network
 #' @param nsim number of simulations
+#' @param parallel if TRUE, it will use parallel procesing, if FALSE (default) it will run
+#' sequentially
+#' @param ncores number of cores to use if using parallel procesing
 #' @return exports data frame with the characteristics of the network after every
 #' extintion, and a graph with the mean and 95% interval
 #' @examples
@@ -247,8 +250,19 @@ ExtinctionOrder <- function(Network, Order){
 #' data("More_Connected")
 #' RandomExtinctions(Network = More_Connected, nsim = 20)
 #'
+#' # Using parallel procesing
+#' ## Detect your number of cores divide by 2
+#' \dontrun{
+#' cores <- ceiling(parallel::detectCores()/2)
+#'
+#' RandomExtinctions(Network = More_Connected, nsim = 20, parallel = TRUE, ncores = cores)
+#' }
+#'
+#' @importFrom doParallel registerDoParallel
 #' @importFrom dplyr group_by
 #' @importFrom dplyr summarise
+#' @importFrom foreach `%dopar%`
+#' @importFrom foreach foreach
 #' @importFrom ggplot2 aes_string
 #' @importFrom ggplot2 geom_line
 #' @importFrom ggplot2 geom_ribbon
@@ -259,21 +273,36 @@ ExtinctionOrder <- function(Network, Order){
 #' @importFrom ggplot2 ylab
 #' @importFrom magrittr "%>%"
 #' @importFrom network network.size
+#' @importFrom parallel makeCluster
+#' @importFrom parallel stopCluster
 #' @importFrom scales muted
 #' @importFrom stats sd
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
 #' @author M.Isidora Avila Thieme <msavila@uc.cl>
 #' @export
 
-RandomExtinctions <- function(Network, nsim = 10){
+RandomExtinctions <- function(Network, nsim = 10, parallel = FALSE, ncores){
   NumExt <- sd <- AccSecExt <- NULL
   network <- Network
-  sims <- list()
-  for(i in 1:nsim){
-    sims[[i]] <- try(ExtinctionOrder(Network = network, Order = sample(1:network.size(network)))$DF, silent = T)
-    sims[[i]]$simulation <- i
-    message(paste("Simulation", i, "of", nsim, "ready"))
+
+  if(parallel){
+    cl <- makeCluster(ncores)
+    registerDoParallel(cl)
+    sims <- foreach(i=1:nsim, .packages = "NetworkExtinction")%dopar%{
+      Temp <- try(ExtinctionOrder(Network = network, Order = sample(1:network.size(network)))$DF, silent = T)
+      Temp$simulation <- i
+      Temp
+    }
+    stopCluster(cl)
+  }else{
+    sims <- list()
+    for(i in 1:nsim){
+      sims[[i]] <- try(ExtinctionOrder(Network = network, Order = sample(1:network.size(network)))$DF, silent = T)
+      sims[[i]]$simulation <- i
+      message(paste("Simulation", i, "of", nsim, "ready"))
+    }
   }
+
   cond <- sapply(sims, function(x) class(x) == "data.frame")
   sims <- sims[cond]
   sims <- do.call(rbind, sims)

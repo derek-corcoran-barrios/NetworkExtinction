@@ -4,12 +4,17 @@
 \alias{RandomExtinctions}
 \title{Random extinction}
 \usage{
-RandomExtinctions(Network, nsim = 10)
+RandomExtinctions(Network, nsim = 10, parallel = FALSE, ncores)
 }
 \arguments{
 \item{Network}{a trophic network of class network}
 
 \item{nsim}{number of simulations}
+
+\item{parallel}{if TRUE, it will use parallel procesing, if FALSE (default) it will run
+sequentially}
+
+\item{ncores}{number of cores to use if using parallel procesing}
 }
 \value{
 exports data frame with the characteristics of the network after every
@@ -24,6 +29,14 @@ by making n random extinction histories
 #first example
 data("More_Connected")
 RandomExtinctions(Network = More_Connected, nsim = 20)
+
+# Using parallel procesing
+## Detect your number of cores divide by 2
+\dontrun{
+cores <- ceiling(parallel::detectCores()/2)
+
+RandomExtinctions(Network = More_Connected, nsim = 20, parallel = TRUE, ncores = cores)
+}
 
 }
 \author{
