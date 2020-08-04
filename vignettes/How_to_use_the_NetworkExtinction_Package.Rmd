@@ -198,17 +198,10 @@ NullHyp <- RandomExtinctions(Network = net, nsim = 100)
 Comparison <- CompareExtinctions(Nullmodel = NullHyp, Hypothesis = History)
 ```
 
-The first result will be a graph (Figue 6) with a dashed line showing the observed extinction history and a solid line showing the expected value of secondary extinctions randomly generated. 
-
-The second result will be a Test object which will show the goodness of fit statistics of the comparison. In this case, since the p value is `r round(Comparison$Test$p.value, 2)` which is larger than 0.05, we consider that the generated extinction history is significantly different than the null hypothesis.
+The result will be a graph (Figue 6) with a dashed line showing the observed extinction history and a solid line showing the expected value of secondary extinctions randomly generated. 
 
 ```{r, echo=FALSE, fig.cap= "Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random"}
 Comparison$graph
-```
-
-
-```{r, warning= FALSE}
-Comparison$Test
 ```
 
 ## Plotting the extinction histories of a network

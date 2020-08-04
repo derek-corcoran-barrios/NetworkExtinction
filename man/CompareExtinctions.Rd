@@ -14,9 +14,7 @@ fuction}
 }
 \value{
 a plot comparing the expected value of secondary extinctions originated at random
-with the observed extinction history. Also, and a goodness of fit test
-showing if there are significant differences between expected value of
-secondary extinctions and the observed secondary extinction history.
+with the observed extinction history.
 }
 \description{
 It compares an object genrated either by the Mostconected or ExtinctionOrder functions

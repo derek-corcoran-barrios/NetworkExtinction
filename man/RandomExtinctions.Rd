@@ -4,7 +4,7 @@
 \alias{RandomExtinctions}
 \title{Random extinction}
 \usage{
-RandomExtinctions(Network, nsim = 10, parallel = FALSE, ncores)
+RandomExtinctions(Network, nsim = 10, parallel = FALSE, ncores, Record = F)
 }
 \arguments{
 \item{Network}{a trophic network of class network}
@@ -15,6 +15,9 @@ RandomExtinctions(Network, nsim = 10, parallel = FALSE, ncores)
 sequentially}
 
 \item{ncores}{number of cores to use if using parallel procesing}
+
+\item{Record}{logical, if TRUE, records every simulation and you can read the
+raw results in the object FullSims}
 }
 \value{
 exports data frame with the characteristics of the network after every
