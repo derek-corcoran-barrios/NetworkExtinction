@@ -12,3 +12,5 @@
 # NetworkExtinction 0.1.3
 
 * Added parallel processing for `RandomExtinctions`
+
+# NetworkExtinction 0.2.1
