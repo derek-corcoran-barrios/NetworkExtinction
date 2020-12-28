@@ -21,7 +21,7 @@
 #'@examples
 #'library(NetworkExtinction)
 #'data("chilean_intertidal")
-#'degree_distribution(chilean_intertidal)
+#'DegreeDistribution(chilean_intertidal)
 #'
 #'@importFrom sna degree
 #'@importFrom stats nls
@@ -55,7 +55,7 @@
 #' @export
 
 
-degree_distribution <- function(Network, scale = "arithmetic"){
+DergreeDistribution <- function(Network, scale = "arithmetic"){
   AIC <- Cumulative <- Exp <- fit <- model <- LogPower <- logLik <- BIC <- Power <- Normal.Resid <- LogExp <- family <- AICcNorm <- NULL
   totaldegree<- degree(Network)
   K <- 0:max(totaldegree)

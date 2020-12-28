@@ -59,7 +59,7 @@ The function to plot results is:
 
 The function to analize the degree distribution is:
 
-* *degree_distribution:* To test if the degrees in the network follow a power law, or exponential.
+* *DegreeDistribution:* To test if the degrees in the network follow a power law, or exponential.
 
 ## How to install the package
 
@@ -192,7 +192,6 @@ The *RandomExtinctons* function generates a null hypothesis for us to compare it
 data("net")
 History <- ExtinctionOrder(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10))
 
-set.seed(2)
 NullHyp <- RandomExtinctions(Network = net, nsim = 100)
 
 Comparison <- CompareExtinctions(Nullmodel = NullHyp, Hypothesis = History)
@@ -222,19 +221,19 @@ ExtinctionPlot(History = history, Variable = "Link_density")
 
 ## Degree distribution function
 
-The *degree_distribution* function calculates the cumulative distribution of the number of links that each species in the food network has [@estrada2007food]. Then, the observed distribution is fitted to the exponential, and power law models.  
+The *DegreeDistribution* function calculates the cumulative distribution of the number of links that each species in the food network has [@estrada2007food]. Then, the observed distribution is fitted to the exponential, and power law models.  
 
 The results of this function are shown in figure 9 and table 4. The graph shows the observed degree distribution in a log log scale fitting the three models mentioned above, for this example we use an example dataset of Chilean litoral rocky shores [@kefi2015network].
 The table shows the fitted model information ordered by descending AIC, that is, the model in the first row is the most probable distribution, followed by the second an finally the third distribution in this case (Table 3), the Exponential distribution would be the best model, followed by the Power law model.
 
 ```{r, eval=FALSE}
 data("chilean_intertidal")
-degree_distribution(chilean_intertidal)
+DegreeDistribution(chilean_intertidal)
 ```
 
 ```{r, echo=FALSE}
 data("chilean_intertidal")
-Dist <- degree_distribution(chilean_intertidal)
+Dist <- DegreeDistribution(chilean_intertidal)
 ```
 
 ```{r, echo = FALSE, fig.cap= "Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively"}

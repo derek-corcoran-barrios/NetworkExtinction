@@ -14,3 +14,5 @@
 * Added parallel processing for `RandomExtinctions`
 
 # NetworkExtinction 0.2.1
+
+* Change function name from `degree_distribution` to `DergreeDistribution`
