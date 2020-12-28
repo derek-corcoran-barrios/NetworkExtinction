@@ -6,6 +6,8 @@
 #'
 #' @param Method a character with the options Mostconnected, Oredered, or Random
 #' @param Network a trophic network of class network
+#' @param Order this should be NULL, unless using the Ordered method, in that case
+#' it should be a vector with the order of extinctions by ID
 #' @return exports data frame with the characteristics of the network after every
 #' extintion. The resulting data frame contains 11 columns that incorporate the
 #' topological index, the secondary extinctions, predation release, and total extinctions of the network
@@ -19,18 +21,34 @@
 #' in the previous step and recalculate which is the new most connected
 #' node and so on, until the number of links in the network is zero.
 #'
+#' When method is Ordered, it takes a network, and extinguishes nodes using a custom order,
+#' then it calculates the secondary extinctions and plots the accumulated
+#' secondary extinctions.
+#'
 #' @examples
+#' # Mostconnected example
 #' data("net")
 #' SimulateExtinctions(Network = net, Method = "Mostconnected")
+#' #first Ordered example
+#' data("net")
+#' SimulateExtinctions(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10), Method = "Ordered")
+#' #Second Ordered example
+#' data("net")
+#' SimulateExtinctions(Network = net, Order = c(2,8,9), Method = "Ordered")
+
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
 #' @author M.Isidora Avila Thieme <msavila@uc.cl>
 #' @export
 
 
-SimulateExtinctions <- function(Network, Method){
+SimulateExtinctions <- function(Network, Method, Order = NULL){
   if(Method == "Mostconnected"){
-    Mostconnected(Network = Network)
+    suppressMessages({DF <- Mostconnected(Network = Network)})
   }
+  if(Method == "Ordered"){
+    suppressMessages({DF <- ExtinctionOrder(Network = Network, Order = Order)})
+  }
+  return(DF)
 }
 
 #' Extinctions analysis from most connected to less connected nodes in the network
@@ -146,6 +164,7 @@ Mostconnected <- function(Network){
   DF$NumExt <- 1:nrow(DF)
   DF$TotalExt <- DF$AccSecExt + DF$NumExt
   class(DF) <- c("data.frame", "Mostconnected")
+  message("This function will soon be deprecated, please use SimulateExtinctions instead")
   return(DF)
 }
 
@@ -261,10 +280,9 @@ ExtinctionOrder <- function(Network, Order){
   DF$AccSecExt <- cumsum(DF$SecExt)
   DF$NumExt <- 1:nrow(DF)
   DF$TotalExt <- DF$AccSecExt + DF$NumExt
-  G <- ggplot(DF, aes_string(x = "NumExt", y = "AccSecExt")) + geom_line() + ylab("Acc. Secondary extinctions") + xlab("Primary extinctions")  + theme_bw()
-  Results <- list(DF= DF, Graph = G)
-  class(Results) <- c("ExtinctionOrder")
-  return(Results)
+  class(DF) <- c("data.frame", "ExtinctionOrder")
+  message("This function will soon be deprecated, please use SimulateExtinctions instead")
+  return(DF)
 }
 
 #' Random extinction

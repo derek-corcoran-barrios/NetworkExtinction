@@ -4,12 +4,15 @@
 \alias{SimulateExtinctions}
 \title{Extinctions analysis for trophic networks}
 \usage{
-SimulateExtinctions(Network, Method)
+SimulateExtinctions(Network, Method, Order = NULL)
 }
 \arguments{
 \item{Network}{a trophic network of class network}
 
 \item{Method}{a character with the options Mostconnected, Oredered, or Random}
+
+\item{Order}{this should be NULL, unless using the Ordered method, in that case
+it should be a vector with the order of extinctions by ID}
 }
 \value{
 exports data frame with the characteristics of the network after every
@@ -30,10 +33,21 @@ secundary extintions (how many species have indegree 0, without considered
 primary producers). After that, remove the nodes that were secondarily extinct
 in the previous step and recalculate which is the new most connected
 node and so on, until the number of links in the network is zero.
+
+When method is Ordered, it takes a network, and extinguishes nodes using a custom order,
+then it calculates the secondary extinctions and plots the accumulated
+secondary extinctions.
 }
 \examples{
+# Mostconnected example
 data("net")
 SimulateExtinctions(Network = net, Method = "Mostconnected")
+#first Ordered example
+data("net")
+SimulateExtinctions(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10), Method = "Ordered")
+#Second Ordered example
+data("net")
+SimulateExtinctions(Network = net, Order = c(2,8,9), Method = "Ordered")
 }
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>
