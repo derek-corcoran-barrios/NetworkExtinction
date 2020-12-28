@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • NetworkExtinction</title>
+<title>Degree distribution of the network — DergreeDistribution • NetworkExtinction</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,7 +46,12 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Degree distribution of the network — DergreeDistribution" />
+<meta property="og:description" content="This function calculates the degree distribution of the network. First it
+fits exponential, power law and truncated power law distribution models,
+and calculates the AIC values to select the best fit, and finally it plots
+the degree distribution in a log log scale showing the three fitted models
+mentioned above against the observed distribution." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -66,7 +71,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -123,96 +128,58 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Degree distribution of the network</h1>
+    
+    <div class="hidden name"><code>DergreeDistribution.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>This function calculates the degree distribution of the network. First it
+fits exponential, power law and truncated power law distribution models,
+and calculates the AIC values to select the best fit, and finally it plots
+the degree distribution in a log log scale showing the three fitted models
+mentioned above against the observed distribution.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>DergreeDistribution</span><span class='op'>(</span><span class='va'>Network</span>, scale <span class='op'>=</span> <span class='st'>"arithmetic"</span><span class='op'>)</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="CompareExtinctions.html">CompareExtinctions()</a></code> </p>
-        </td>
-        <td><p>Comparison of Null hypothesis with other extinction histories</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="DergreeDistribution.html">DergreeDistribution()</a></code> </p>
-        </td>
-        <td><p>Degree distribution of the network</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ExtinctionOrder.html">ExtinctionOrder()</a></code> </p>
-        </td>
-        <td><p>Extinctions analysis from custom order</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ExtinctionPlot.html">ExtinctionPlot()</a></code> </p>
-        </td>
-        <td><p>Plots the extinctions history of a network</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="Less_Connected.html">Less_Connected</a></code> </p>
-        </td>
-        <td><p>A sparsely connected foodweb</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="More_Connected.html">More_Connected</a></code> </p>
-        </td>
-        <td><p>A densely connected foodweb</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="Mostconnected.html">Mostconnected()</a></code> </p>
-        </td>
-        <td><p>Extinctions analysis from most connected to less conected nodes in the network</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="RandomExtinctions.html">RandomExtinctions()</a></code> </p>
-        </td>
-        <td><p>Random extinction</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="chilean_intertidal.html">chilean_intertidal</a></code> </p>
-        </td>
-        <td><p>The foodweb of the intertidal zone in central chile</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="net.html">net</a></code> </p>
-        </td>
-        <td><p>A toymodel trophic network</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>Network</th>
+      <td><p>a trophic network of class network</p></td>
+    </tr>
+    <tr>
+      <th>scale</th>
+      <td><p>a character stating if the graph is on a log-log scale
+("LogLog") or arithmetic scale ("arithmetic"), defaults to arithmetic</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>exports three principal results:
+1. A list with network degree distribution values and with the value of each fit model
+2. A list with each model results and AIC of the distribution models
+3. A Ghraph of the degree distribution with the models adjust
+In DDvalues, k represent the degree of the network and cumulative
+the probability that each specie could be have this degree (pk).
+Observation: In the graph, the zero values are not represented but this result are incorporate in the DF result</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Derek Corcoran &lt;derek.corcoran.barrios@gmail.com&gt;</p>
+<p>M.Isidora Avila Thieme &lt;msavila@uc.cl&gt;</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://derek-corcoran-barrios.github.io/NetworkExtintion/'>NetworkExtinction</a></span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"chilean_intertidal"</span><span class='op'>)</span>
+<span class='fu'>DegreeDistribution</span><span class='op'>(</span><span class='va'>chilean_intertidal</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in DegreeDistribution(chilean_intertidal): could not find function "DegreeDistribution"</span></div><div class='input'>
+</div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>

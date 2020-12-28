@@ -167,7 +167,8 @@ The *RandomExtinctions* function generates n random extinction orders, determine
 
 ```{r, eval = FALSE}
 data(net)
-RandomExtinctions(Network= net, nsim= 50)
+set.seed(707)
+RandomExtinctions(Network= net, nsim= 100)
 ```
 
 ```{r, echo = FALSE}
