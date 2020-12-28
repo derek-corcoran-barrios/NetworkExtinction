@@ -173,14 +173,14 @@ RandomExtinctions(Network= net, nsim= 100)
 
 ```{r, echo = FALSE}
 data(net)
-set.seed(123)
-Test <- RandomExtinctions(Network= net, nsim= 50)
+set.seed(707)
+Test <- RandomExtinctions(Network= net, nsim= 100)
 knitr::kable(Test$sims, caption = "Table 3: The resulting dataframe of the RandomExtinctions function")
 ```
 
 ```{r, echo = FALSE, fig.cap= "Figure 5. The resulting graph of the RandomExtinctions function"}
 data(net)
-set.seed(123)
+set.seed(707)
 Test$graph
 ```
 

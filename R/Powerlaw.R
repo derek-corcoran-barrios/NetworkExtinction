@@ -55,7 +55,7 @@
 #' @export
 
 
-DergreeDistribution <- function(Network, scale = "arithmetic"){
+DegreeDistribution <- function(Network, scale = "arithmetic"){
   AIC <- Cumulative <- Exp <- fit <- model <- LogPower <- logLik <- BIC <- Power <- Normal.Resid <- LogExp <- family <- AICcNorm <- NULL
   totaldegree<- degree(Network)
   K <- 0:max(totaldegree)

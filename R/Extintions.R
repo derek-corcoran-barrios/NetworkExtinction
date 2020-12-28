@@ -22,6 +22,9 @@
 #' @examples
 #' data("net")
 #' SimulateExtinctions(Network = net, Method = "Mostconnected")
+#' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
+#' @author M.Isidora Avila Thieme <msavila@uc.cl>
+#' @export
 
 
 SimulateExtinctions <- function(Network, Method){
