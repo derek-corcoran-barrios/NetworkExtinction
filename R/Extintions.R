@@ -164,7 +164,7 @@ Mostconnected <- function(Network){
   DF$NumExt <- 1:nrow(DF)
   DF$TotalExt <- DF$AccSecExt + DF$NumExt
   class(DF) <- c("data.frame", "Mostconnected")
-  message("This function will soon be deprecated, please use SimulateExtinctions instead")
+  .Deprecated("SimulateExtinctions")
   return(DF)
 }
 
@@ -281,7 +281,7 @@ ExtinctionOrder <- function(Network, Order){
   DF$NumExt <- 1:nrow(DF)
   DF$TotalExt <- DF$AccSecExt + DF$NumExt
   class(DF) <- c("data.frame", "ExtinctionOrder")
-  message("This function will soon be deprecated, please use SimulateExtinctions instead")
+  .Deprecated("SimulateExtinctions")
   return(DF)
 }
 

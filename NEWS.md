@@ -15,5 +15,6 @@
 
 # NetworkExtinction 0.2.1
 
-* Change function name from `degree_distribution` to `DergreeDistribution`
+* Change function name from `degree_distribution` to `DegreeDistribution`
 * The functions `Mostconnected` and `ExtinctionOrder` are now soft deprecated in favour of `SimulateExtinctions`
+* Transformed `ExtinctionOrder` output to unify with `Mostconnected` output so that `SimulateExtinctions` has a common output
