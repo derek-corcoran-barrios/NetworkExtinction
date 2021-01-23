@@ -123,7 +123,7 @@ DegreeDistribution <- function(Network, scale = "arithmetic"){
   Summs <- full_join(Summs.exp, Summs.power)
   Summs <- full_join(Summs, Summs.logexp)
   Summs <- full_join(Summs, Summs.logpower) %>% select(logLik, AIC, BIC, model, Normal.Resid, family, AICcNorm)
-  Summs <- arrange(Summs, Normal.Resid, AIC) %>% group_split(family) %>% purrr::map(~mutate(.x, deltaAICc = AICcNorm - min(AICcNorm))) %>% purrr::map(~dplyr::filter(.x, deltaAICc < 2)) %>% reduce(bind_rows) %>% dplyr::select(logLik, AIC, BIC, model, Normal.Resid, family)
+  Summs <- arrange(Summs, Normal.Resid, AIC) %>%  dplyr::select(logLik, AIC, BIC, model, Normal.Resid, family)
   params <- bind_rows(Params.logpower, Params.power, Params.exp, Params.logexp) %>% dplyr::filter(model %in% Summs$model)
   DF2 <- For.Graph %>% filter(K != 0 & Cumulative != 0) %>% gather(key = model, value = fit, Exp, Power, LogExp, LogPower) %>% dplyr::filter(model %in% Summs$model)
 
