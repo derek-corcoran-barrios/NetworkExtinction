@@ -37,7 +37,7 @@
 #' SimulateExtinctions(Network = net, Order = c(2,8,9), Method = "Ordered")
 
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author M.Isidora Avila Thieme <msavila@uc.cl>
+#' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
 #' @export
 
 
@@ -80,7 +80,7 @@ SimulateExtinctions <- function(Network, Method, Order = NULL){
 #' @importFrom dplyr arrange
 #' @importFrom dplyr desc
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author M.Isidora Avila Thieme <msavila@uc.cl>
+#' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
 #' @seealso [NetworkExtinction::ExtinctionOrder()]
 #' @export
 
@@ -197,7 +197,7 @@ Mostconnected <- function(Network){
 #' @importFrom dplyr arrange
 #' @importFrom dplyr desc
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author M.Isidora Avila Thieme <msavila@uc.cl>
+#' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
 #' @seealso [NetworkExtinction::ExtinctionOrder()]
 
 .Mostconnected <- function(Network){
@@ -313,7 +313,7 @@ Mostconnected <- function(Network){
 #' @importFrom sna degree
 #' @importFrom stats complete.cases
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author M.Isidora Avila Thieme <msavila@uc.cl>
+#' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
 #' @export
 
 ExtinctionOrder <- function(Network, Order){
@@ -429,7 +429,7 @@ ExtinctionOrder <- function(Network, Order){
 #' @importFrom sna degree
 #' @importFrom stats complete.cases
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author M.Isidora Avila Thieme <msavila@uc.cl>
+#' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
 
 .ExtinctionOrder <- function(Network, Order){
   Grado <- NULL
@@ -527,6 +527,7 @@ ExtinctionOrder <- function(Network, Order){
 #' @param ncores number of cores to use if using parallel procesing
 #' @param Record logical, if TRUE, records every simulation and you can read the
 #' raw results in the object FullSims
+#' @param plot logical if true, will add a graph to the results
 #' @return exports data frame with the characteristics of the network after every
 #' extintion, and a graph with the mean and 95% interval
 #' @examples
@@ -563,10 +564,10 @@ ExtinctionOrder <- function(Network, Order){
 #' @importFrom scales muted
 #' @importFrom stats sd
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author M.Isidora Avila Thieme <msavila@uc.cl>
+#' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
 #' @export
 
-RandomExtinctions <- function(Network, nsim = 10, parallel = FALSE, ncores, Record = F){
+RandomExtinctions <- function(Network, nsim = 10, parallel = FALSE, ncores, Record = F, plot = F){
   NumExt <- sd <- AccSecExt <- AccSecExt_95CI <- AccSecExt_mean <- Lower <- NULL
   network <- Network
 
@@ -574,21 +575,22 @@ RandomExtinctions <- function(Network, nsim = 10, parallel = FALSE, ncores, Reco
     cl <- makeCluster(ncores)
     registerDoParallel(cl)
     sims <- foreach(i=1:nsim, .packages = "NetworkExtinction")%dopar%{
-      Temp <- try(ExtinctionOrder(Network = network, Order = sample(1:network.size(network)))$DF, silent = T)
-      Temp$simulation <- i
-      Temp
+      sims <- try(.ExtinctionOrder(Network = network, Order = sample(1:network.size(network))), silent = T)
+      try({sims$simulation <- i}, silent = T)
+      sims
     }
     stopCluster(cl)
   }else{
     sims <- list()
     for(i in 1:nsim){
-      sims[[i]] <- try(ExtinctionOrder(Network = network, Order = sample(1:network.size(network)))$DF, silent = T)
-      sims[[i]]$simulation <- i
+      sims[[i]] <- try(.ExtinctionOrder(Network = network, Order = sample(1:network.size(network))), silent = T)
+      try({sims[[i]]$simulation <- i}, silent = T)
       message(paste("Simulation", i, "of", nsim, "ready"))
     }
   }
 
-  cond <- sapply(sims, function(x) class(x) == "data.frame")
+  cond <- sapply(sims, function(x) "data.frame" %in% class(x))
+  cond <- c(1:length(cond))[cond]
   sims <- sims[cond]
   sims <- do.call(rbind, sims)
   if(Record == TRUE){
@@ -596,12 +598,19 @@ RandomExtinctions <- function(Network, nsim = 10, parallel = FALSE, ncores, Reco
   }
 
   sims <- sims %>% group_by(NumExt) %>% summarise(AccSecExt_95CI = 1.96*sd(AccSecExt), AccSecExt_mean = mean(AccSecExt)) %>% mutate(Upper = AccSecExt_mean + AccSecExt_95CI, Lower = AccSecExt_mean - AccSecExt_95CI, Lower = ifelse(Lower < 0, 0, Lower))
-  g <- ggplot(sims, aes_string(x = "NumExt", y = "AccSecExt_mean")) + geom_ribbon(aes_string(ymin = "Lower", ymax = "Upper"), fill = muted("red")) + geom_line() + ylab("Acc. Secondary extinctions") + xlab("Primary extinctions") + theme_bw()
-  g
-  if(Record == T){
+  if(plot == T){
+    g <- ggplot(sims, aes_string(x = "NumExt", y = "AccSecExt_mean")) + geom_ribbon(aes_string(ymin = "Lower", ymax = "Upper"), fill = muted("red")) + geom_line() + ylab("Acc. Secondary extinctions") + xlab("Primary extinctions") + theme_bw()
+    g
+  }
+
+  if(Record == T & plot == T){
     return(list(sims = sims, graph = g, FullSims = FullSims))
-  }else if(Record == F){
+  }else if(Record == F & plot == T){
     return(list(sims = sims, graph = g))
+  }else if(Record == F & plot == F){
+    return(sims)
+  }else if(Record == T & plot == F){
+    return(list(sims = sims, FullSims = FullSims))
   }
 }
 
@@ -630,7 +639,7 @@ RandomExtinctions <- function(Network, nsim = 10, parallel = FALSE, ncores, Reco
 #' @importFrom ggplot2 geom_point
 #' @importFrom ggplot2 scale_color_manual
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author M.Isidora Avila Thieme <msavila@uc.cl>
+#' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
 #' @export
 
 CompareExtinctions <- function(Nullmodel, Hypothesis){

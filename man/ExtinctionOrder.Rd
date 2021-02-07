@@ -32,5 +32,5 @@ ExtinctionOrder(Network = net, Order = c(2,8,9))
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>
 
-M.Isidora Avila Thieme <msavila@uc.cl>
+M. Isidora Ávila-Thieme <msavila@uc.cl>
 }

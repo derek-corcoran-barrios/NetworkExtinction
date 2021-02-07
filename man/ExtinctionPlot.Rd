@@ -34,5 +34,5 @@ ExtinctionPlot(History = history, Variable = "Link_density")
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>
 
-M.Isidora Avila Thieme <msavila@uc.cl>
+M. Isidora Ávila-Thieme <msavila@uc.cl>
 }

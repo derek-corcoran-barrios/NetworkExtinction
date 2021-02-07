@@ -32,5 +32,5 @@ CompareExtinctions(Nullmodel = NullHyp, Hypothesis = History)
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>
 
-M.Isidora Avila Thieme <msavila@uc.cl>
+M. Isidora Ávila-Thieme <msavila@uc.cl>
 }

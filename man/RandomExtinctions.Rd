@@ -4,7 +4,14 @@
 \alias{RandomExtinctions}
 \title{Random extinction}
 \usage{
-RandomExtinctions(Network, nsim = 10, parallel = FALSE, ncores, Record = F)
+RandomExtinctions(
+  Network,
+  nsim = 10,
+  parallel = FALSE,
+  ncores,
+  Record = F,
+  plot = F
+)
 }
 \arguments{
 \item{Network}{a trophic network of class network}
@@ -18,6 +25,8 @@ sequentially}
 
 \item{Record}{logical, if TRUE, records every simulation and you can read the
 raw results in the object FullSims}
+
+\item{plot}{logical if true, will add a graph to the results}
 }
 \value{
 exports data frame with the characteristics of the network after every
@@ -45,5 +54,5 @@ RandomExtinctions(Network = More_Connected, nsim = 20, parallel = TRUE, ncores =
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>
 
-M.Isidora Avila Thieme <msavila@uc.cl>
+M. Isidora Ávila-Thieme <msavila@uc.cl>
 }
