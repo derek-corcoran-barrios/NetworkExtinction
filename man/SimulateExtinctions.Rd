@@ -7,7 +7,8 @@
 SimulateExtinctions(Network, Method, Order = NULL)
 }
 \arguments{
-\item{Network}{a trophic network of class network}
+\item{Network}{a network representation as a an adyacency matrix, edgelist,
+or a network object}
 
 \item{Method}{a character with the options Mostconnected, Oredered, or Random}
 

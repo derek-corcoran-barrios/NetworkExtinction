@@ -5,7 +5,8 @@
 #' and checking for secondary extinctions.
 #'
 #' @param Method a character with the options Mostconnected, Oredered, or Random
-#' @param Network a trophic network of class network
+#' @param Network a network representation as a an adyacency matrix, edgelist,
+#' or a network object
 #' @param Order this should be NULL, unless using the Ordered method, in that case
 #' it should be a vector with the order of extinctions by ID
 #' @return exports data frame with the characteristics of the network after every
@@ -42,6 +43,8 @@
 
 
 SimulateExtinctions <- function(Network, Method, Order = NULL){
+  Network <- .DataInit(x = Network)
+
   if(Method == "Mostconnected"){
     DF <- .Mostconnected(Network = Network)
   }
@@ -87,7 +90,7 @@ SimulateExtinctions <- function(Network, Method, Order = NULL){
 
 Mostconnected <- function(Network){
   Grado <- NULL
-  Network <- Network
+  Network <- .DataInit(x = Network)
   edgelist <- as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
   Conected <- data.frame(ID = 1:network.size(Network), Grado = degree(edgelist, c("total")))
   Conected <- arrange(Conected, desc(Grado))
@@ -318,6 +321,7 @@ Mostconnected <- function(Network){
 
 ExtinctionOrder <- function(Network, Order){
   Grado <- NULL
+  Network <- .DataInit(x = Network)
   edgelist <- as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
   Conected <- data.frame(ID = 1:network.size(Network), Grado = degree(edgelist, c("total")))
 
@@ -569,7 +573,7 @@ ExtinctionOrder <- function(Network, Order){
 
 RandomExtinctions <- function(Network, nsim = 10, parallel = FALSE, ncores, Record = F, plot = F){
   NumExt <- sd <- AccSecExt <- AccSecExt_95CI <- AccSecExt_mean <- Lower <- NULL
-  network <- Network
+  network <- .DataInit(x = Network)
 
   if(parallel){
     cl <- makeCluster(ncores)

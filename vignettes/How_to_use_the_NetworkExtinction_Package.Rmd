@@ -44,9 +44,7 @@ This package was built with a total of six functions. There are four functions t
 
 Functions to analyze the cascading effect of extinctions are the following:
 
-* *Mostconnected:* To simulate extinctions from the most connected species to less connected in the network.
-
-* *ExtinctionOrder:* To simulate extinctions in a customized order.  
+* *SimulateExtinctions:* To simulate extinctions from the most connected species to less connected in the network, or in a customized order.
 
 * *RandomExtinctions:* To develop a null hypothesis by generating random orders of simulated extinctions.
 
@@ -70,11 +68,17 @@ install.packages(NetworkExtinction)
 library(NetworkExtinction)
 ```
 
+or install the most recent 
+
+```{r, eval=FALSE}
+devtools::install_github("derek-corcoran-barrios/NetworkExtintion")
+```
+
 ## How to represent a food web in R
 
-The first step to make any analysis in the *NetworkExtinction* package is to build a representation of a food web, using the network package [@butts2008network].
+The first step to make any analysis in the *NetworkExtinction* package is to build a representation of a food web.
 
-In order to create a network object you can start with a matrix or an edgelist object (for more details see the network package vignette).
+The NetworkExtinction package accepts a matrix, an edgelist or a Network build in the network package [@butts2008network].
 
 As an example of how to build a food web we will explain how to create the network shown in figure 1.
 
