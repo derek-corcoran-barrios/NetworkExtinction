@@ -58,6 +58,7 @@
 
 DegreeDistribution <- function(Network, scale = "arithmetic"){
   AIC <- Cumulative <- Exp <- fit <- model <- LogPower <- logLik <- BIC <- Power <- Normal.Resid <- LogExp <- family <- AICcNorm <- NULL
+  Network <- .DataInit(Network)
   totaldegree<- degree(Network)
   K <- 0:max(totaldegree)
   For.Graph<- data.frame(K = K, Cumulative = NA)

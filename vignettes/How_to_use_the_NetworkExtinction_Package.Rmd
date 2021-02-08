@@ -138,7 +138,7 @@ The result of this function is the dataframe shown in table 1. The first column 
 
 ```{r, fig.cap="Figure 3. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most to the least connected species"}
 data("net")
-history <- Mostconnected(Network = net)
+history <- SimulateExtinctions(Network = net, Method = "Mostconnected")
 ExtinctionPlot(History = history, Variable = "AccSecExt")
 
 ```
@@ -179,13 +179,13 @@ RandomExtinctions(Network= net, nsim= 100)
 data(net)
 set.seed(707)
 Test <- RandomExtinctions(Network= net, nsim= 100)
-knitr::kable(Test$sims, caption = "Table 3: The resulting dataframe of the RandomExtinctions function")
+knitr::kable(Test, caption = "Table 3: The resulting dataframe of the RandomExtinctions function")
 ```
 
 ```{r, echo = FALSE, fig.cap= "Figure 5. The resulting graph of the RandomExtinctions function"}
-data(net)
-set.seed(707)
-Test$graph
+#data(net)
+#set.seed(707)
+#Test$graph
 ```
 
  
@@ -195,7 +195,7 @@ The *RandomExtinctons* function generates a null hypothesis for us to compare it
 
 ```{r,message=FALSE, warning=FALSE}
 data("net")
-History <- ExtinctionOrder(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10))
+History <- SimulateExtinctions(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10), Method = "Mostconnected")
 
 NullHyp <- RandomExtinctions(Network = net, nsim = 100)
 
@@ -205,7 +205,7 @@ Comparison <- CompareExtinctions(Nullmodel = NullHyp, Hypothesis = History)
 The result will be a graph (Figue 6) with a dashed line showing the observed extinction history and a solid line showing the expected value of secondary extinctions randomly generated. 
 
 ```{r, echo=FALSE, fig.cap= "Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random"}
-Comparison$graph
+Comparison
 ```
 
 ## Plotting the extinction histories of a network

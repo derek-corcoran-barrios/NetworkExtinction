@@ -652,25 +652,25 @@ RandomExtinctions <- function(Network, nsim = 10, parallel = FALSE, ncores, Reco
 CompareExtinctions <- function(Nullmodel, Hypothesis){
   if(class(Hypothesis)[2] == "SimulateExt"){
     NumExt <- sd <- AccSecExt <- AccSecExt_mean <-NULL
-    if(class(Nullmodel) == "list"){
+    if(class(Nullmodel)[1] == "list"){
       g <- Nullmodel$graph + geom_line(aes(color = "blue"))
-      g <- g + geom_point(data = Hypothesis$DF, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis$DF, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison",values =c("black", "blue"), label = c("Observed","Null hypothesis"))
+      g <- g + geom_point(data = Hypothesis, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison",values =c("black", "blue"), label = c("Observed","Null hypothesis"))
     } else {
       g <- ggplot(Nullmodel, aes(x = NumExt, y = AccSecExt_mean)) + geom_ribbon(aes_string(ymin = "Lower", ymax = "Upper"), fill = muted("red")) + geom_line() + ylab("Acc. Secondary extinctions") + xlab("Primary extinctions") + theme_bw()
-      g <- g + geom_point(data = Hypothesis$DF, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis$DF, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison",values =c("black", "blue"), label = c("Observed","Null hypothesis"))
+      g <- g + geom_point(data = Hypothesis, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison",values =c("black", "blue"), label = c("Observed","Null hypothesis"))
       g
     }
 
     g
 
-    return(list(graph = g))
+    return(g)
   }
   if(class(Hypothesis)[2] == "Mostconnected"){
   NumExt <- sd <- AccSecExt <- AccSecExt_mean <-NULL
   g <- Nullmodel$graph + geom_line(aes(color = "blue"))
   g <- g + geom_point(data = Hypothesis, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison", values =c("black", "blue"), label = c("Observed","Null hypothesis"))
   g
-  return(list(graph = g))
+  return(g)
   }
   else{
     message("Hipothesis not of class Mostconnected or ExtinctionOrder")
