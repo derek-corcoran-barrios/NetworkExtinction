@@ -641,16 +641,26 @@ RandomExtinctions <- function(Network, nsim = 10, parallel = FALSE, ncores, Reco
 #' @importFrom ggplot2 aes
 #' @importFrom ggplot2 geom_line
 #' @importFrom ggplot2 geom_point
+#' @importFrom ggplot2 geom_ribbon
 #' @importFrom ggplot2 scale_color_manual
+#' @importFrom ggplot2 theme_bw
+#' @importFrom scales muted
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
 #' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
 #' @export
 
 CompareExtinctions <- function(Nullmodel, Hypothesis){
-  if(class(Hypothesis)[1] == "ExtinctionOrder"){
+  if(class(Hypothesis)[2] == "SimulateExt"){
     NumExt <- sd <- AccSecExt <- AccSecExt_mean <-NULL
-    g <- Nullmodel$graph + geom_line(aes(color = "blue"))
-    g <- g + geom_point(data = Hypothesis$DF, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis$DF, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison",values =c("black", "blue"), label = c("Observed","Null hypothesis"))
+    if(class(Nullmodel) == "list"){
+      g <- Nullmodel$graph + geom_line(aes(color = "blue"))
+      g <- g + geom_point(data = Hypothesis$DF, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis$DF, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison",values =c("black", "blue"), label = c("Observed","Null hypothesis"))
+    } else {
+      g <- ggplot(Nullmodel, aes(x = NumExt, y = AccSecExt_mean)) + geom_ribbon(aes_string(ymin = "Lower", ymax = "Upper"), fill = muted("red")) + geom_line() + ylab("Acc. Secondary extinctions") + xlab("Primary extinctions") + theme_bw()
+      g <- g + geom_point(data = Hypothesis$DF, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis$DF, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison",values =c("black", "blue"), label = c("Observed","Null hypothesis"))
+      g
+    }
+
     g
 
     return(list(graph = g))
