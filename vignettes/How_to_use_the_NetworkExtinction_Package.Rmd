@@ -125,13 +125,13 @@ The *Mostconnected* function sorts the species from the most connected node to t
 ```{r, eval=FALSE}
 library(NetworkExtinction)
 data("net")
-Mostconnected(Network = net)
+SimulateExtinctions(Network = net, Method = "Mostconnected")
 ```
 
 ```{r, echo=FALSE, message=FALSE}
 library(NetworkExtinction)
 data("net")
-knitr::kable(Mostconnected(Network = net), caption = "Table 1: The resulting dataframe of the Mostconnected function")
+knitr::kable(SimulateExtinctions(Network = net, Method = "Mostconnected"), caption = "Table 1: The resulting dataframe of the SimulateExtinctions in Mostconnected method")
 ```
 
 The result of this function is the dataframe shown in table 1. The first column called *Spp* indicates the order in which the species were removed simulating an extinction. The column *Secondary_extinctions* represents the numbers of species that become extinct given that they do not have any food items left in the food web, while the *AccSecondaryExtinction* column represents the accumulated secondary extinctions. (To plot the results, see function *ExtinctionPlot*.)
@@ -183,9 +183,10 @@ knitr::kable(Test, caption = "Table 3: The resulting dataframe of the RandomExti
 ```
 
 ```{r, echo = FALSE, fig.cap= "Figure 5. The resulting graph of the RandomExtinctions function"}
-#data(net)
-#set.seed(707)
-#Test$graph
+data(net)
+set.seed(707)
+Test <- RandomExtinctions(Network= net, nsim= 100, plot = T)
+Test$graph
 ```
 
  
@@ -195,9 +196,9 @@ The *RandomExtinctons* function generates a null hypothesis for us to compare it
 
 ```{r,message=FALSE, warning=FALSE}
 data("net")
-History <- SimulateExtinctions(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10), Method = "Mostconnected")
+History <- SimulateExtinctions(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10), Method = "Ordered")
 
-NullHyp <- RandomExtinctions(Network = net, nsim = 100)
+NullHyp <- RandomExtinctions(Network = net, nsim = 100, plot = T)
 
 Comparison <- CompareExtinctions(Nullmodel = NullHyp, Hypothesis = History)
 ```

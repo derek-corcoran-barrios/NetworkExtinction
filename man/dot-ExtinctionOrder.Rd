@@ -20,15 +20,6 @@ It takes a network, and extinguishes nodes using a custom order,
 then it calculates the secondary extinctions and plots the accumulated
 secondary extinctions.
 }
-\examples{
-#first example
-data("net")
-ExtinctionOrder(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10))
-#Second example
-data("net")
-ExtinctionOrder(Network = net, Order = c(2,8,9))
-
-}
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>
 

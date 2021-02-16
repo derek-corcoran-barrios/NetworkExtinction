@@ -24,10 +24,6 @@ primary producers). After that, remove the nodes that were secondarily extinct
 in the previous step and recalculate which is the new most connected
 node and so on, until the number of links in the network is zero.
 }
-\examples{
-data("net")
-Mostconnected(Network = net)
-}
 \seealso{
 [NetworkExtinction::ExtinctionOrder()]
 }
