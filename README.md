@@ -34,7 +34,7 @@ And the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("derek-corcoran-barrios/NetworkExtintion")
+devtools::install_github("derek-corcoran-barrios/NetworkExtinction")
 ```
 
 ## Extinctions functions
@@ -56,7 +56,7 @@ Predatory release.
 ``` r
 library(NetworkExtinction)
 data("net")
-Mostconnected(Network = net)
+SimulateExtinctions(Network = net, Method = "Mostconnected")
 ```
 
     #> [1] 1
@@ -64,12 +64,12 @@ Mostconnected(Network = net)
     #> [1] 3
     #> [1] 4
 
-| Spp | nodesS | linksS | Conectance | LinksPerSpecies | Secondary\_extinctions | Predation\_release | isolated\_nodes | AccSecondaryExtinction | NumExt | TotalExt |
-| --: | -----: | -----: | ---------: | --------------: | ---------------------: | -----------------: | --------------: | ---------------------: | -----: | -------: |
-|   6 |      9 |      7 |  0.0864198 |       0.7777778 |                      1 |                  0 |               1 |                      1 |      1 |        2 |
-|   7 |      7 |      4 |  0.0816327 |       0.5714286 |                      0 |                  2 |               2 |                      1 |      2 |        3 |
-|   5 |      6 |      2 |  0.0555556 |       0.3333333 |                      1 |                  3 |               3 |                      2 |      3 |        5 |
-|   2 |      4 |      0 |  0.0000000 |       0.0000000 |                      1 |                  3 |               4 |                      3 |      4 |        7 |
+| Spp | S | L |         C | Link\_density | SecExt | Pred\_release | Iso\_nodes | AccSecExt | NumExt | TotalExt |
+| --: | -: | -: | --------: | ------------: | -----: | ------------: | ---------: | --------: | -----: | -------: |
+|   6 | 9 | 7 | 0.0864198 |     0.7777778 |      1 |             0 |          1 |         1 |      1 |        2 |
+|   7 | 7 | 4 | 0.0816327 |     0.5714286 |      0 |             2 |          2 |         1 |      2 |        3 |
+|   5 | 6 | 2 | 0.0555556 |     0.3333333 |      1 |             3 |          3 |         2 |      3 |        5 |
+|   2 | 4 | 0 | 0.0000000 |     0.0000000 |      1 |             3 |          4 |         3 |      4 |        7 |
 
 Table 1: The resulting dataframe of the Mostconnected function
 
@@ -77,21 +77,33 @@ The result of this function is the dataframe shown in table 1. The first
 column called *Spp* indicates the order in which the species were
 removed simulating an extinction. The column *Secondary\_extinctions*
 represents the numbers of species that become extinct given that they do
-not have any food items left in the food web, while the
-*AccSecondaryExtinction* column represents the accumulated secondary
-extinctions. (To plot the results, see function *ExtinctionPlot*.)
+not have any food items left in the food web, while the *AccSecExt*
+column represents the accumulated secondary extinctions. (To plot the
+results, see function *ExtinctionPlot*.)
 
 ``` r
 data("net")
-history <- Mostconnected(Network = net)
+history <- SimulateExtinctions(Network = net, Method = "Mostconnected")
 #> [1] 1
 #> [1] 2
 #> [1] 3
 #> [1] 4
-ExtinctionPlot(History = history, Variable = "AccSecondaryExtinction")
+ExtinctionPlot(History = history, Variable = "AccSecExt")
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" title="Figure 3. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most to the least connected species" alt="Figure 3. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most to the least connected species" width="100%" />
+<div class="figure">
+
+<img src="man/figures/README-unnamed-chunk-4-1.png" alt="Figure 3. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most to the least connected species" width="100%" />
+
+<p class="caption">
+
+Figure 3. The graph shows the number of accumulated secondary
+extinctions that occur when removing species from the most to the least
+connected species
+
+</p>
+
+</div>
 
 ### Extinctions using a customized order
 
@@ -101,19 +113,18 @@ indexes and the secondary extinctions.
 
 ``` r
 data("net")
-ExtinctionOrder(Network = net, Order = c(2,4,7))
+SimulateExtinctions(Network = net, Order = c(2,4,7), Method = "Ordered")
 ```
 
-| Spp | nodesS | linksS | Conectance | Secondary\_extinctions | Predation\_release | AccSecondaryExtinction | NumExt | TotalExt |
-| --: | -----: | -----: | ---------: | ---------------------: | -----------------: | ---------------------: | -----: | -------: |
-|   2 |      9 |      8 |  0.0987654 |                      1 |                  0 |                      1 |      1 |        2 |
-|   4 |      7 |      5 |  0.1020408 |                      1 |                  0 |                      2 |      2 |        4 |
-|   7 |      5 |      3 |  0.1200000 |                      0 |                  1 |                      2 |      3 |        5 |
+| Spp | S | L |         C | Link\_density | SecExt | Pred\_release | Iso\_nodes | AccSecExt | NumExt | TotalExt |
+| --: | -: | -: | --------: | ------------: | -----: | ------------: | ---------: | --------: | -----: | -------: |
+|   2 | 9 | 8 | 0.0987654 |     0.8888889 |      1 |             0 |          0 |         1 |      1 |        2 |
+|   4 | 7 | 5 | 0.1020408 |     0.7142857 |      1 |             0 |          1 |         2 |      2 |        4 |
+|   7 | 5 | 3 | 0.1200000 |     0.6000000 |      0 |             1 |          1 |         2 |      3 |        5 |
 
-Table 2: The resulting dataframe of the ExtinctionOrder
-function
+Table 2: The resulting dataframe of the ExtinctionOrder function
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" title="Figure 4. The graph shows the number of accumulated secondary extinctions that occur when removing species in a custom order. In this example species 2 is removed followed by 4 and lastly species 7 is removed" alt="Figure 4. The graph shows the number of accumulated secondary extinctions that occur when removing species in a custom order. In this example species 2 is removed followed by 4 and lastly species 7 is removed" width="100%" />
+    #> NULL
 
 The results of this function are a dataframe with the topological
 indexes of the network calculated from each extinction step (Table 2),
@@ -125,36 +136,26 @@ that occured with each removed node (Figure 4).
 The *RandomExtinctions* function generates n random extinction orders,
 determined by the argument *nsim*. The first result of this function is
 a dataframe (table 3). The column *NumExt* represents the number of
-species removed, *AccSecondaryExtinction* is the average number of
-secondary extinctions for each species removed, and
-*SdAccSecondaryExtinction* is its standard deviation. The second result
-is a graph (figure 5), where the x axis is the number of species removed
-and the y axis is the number of accumulated secondary extinctions. The
-solid line is the average number of secondary extinctions for every
-simulated primary extinction, and the red area represents the mean
-\(\pm\) the standard deviation of the simulations.
+species removed, *AccSecExt* is the average number of secondary
+extinctions for each species removed, and *SdAccSecExt* is its standard
+deviation. The second result is a graph (figure 5), where the x axis is
+the number of species removed and the y axis is the number of
+accumulated secondary extinctions. The solid line is the average number
+of secondary extinctions for every simulated primary extinction, and the
+red area represents the mean \(\pm\) the standard deviation of the
+simulations.
 
 ``` r
 data(net)
 RandomExtinctions(Network= net, nsim= 50)
 ```
 
-| NumExt | SdAccSecondaryExtinction | AccSecondaryExtinction |
-| -----: | -----------------------: | ---------------------: |
-|      1 |                0.4184520 |               0.220000 |
-|      2 |                0.7623808 |               0.520000 |
-|      3 |                0.9691149 |               0.860000 |
-|      4 |                1.0821370 |               1.180000 |
-|      5 |                1.1383841 |               1.530612 |
-|      6 |                1.1946852 |               1.933333 |
-|      7 |                1.1407225 |               2.176471 |
-|      8 |                1.0681880 |               1.846154 |
-|      9 |                1.3038405 |               1.800000 |
-
-Table 3: The resulting dataframe of the RandomExtinctions
+Table: Table 3: The resulting dataframe of the RandomExtinctions
 function
 
-<img src="man/figures/README-unnamed-chunk-10-1.png" title="Figure 5. The resulting graph of the RandomExtinctions function" alt="Figure 5. The resulting graph of the RandomExtinctions function" width="100%" />
+|| || || ||
+
+    #> NULL
 
 \#\#\#Comparison of Null hypothesis with other extinction histories
 
@@ -181,21 +182,11 @@ The first result will be a graph (Figue 6) with a dashed line showing
 the observed extinction history and a solid line showing the expected
 value of secondary extinctions randomly generated.
 
-The second result will be a Test object which will show the goodness of
-fit statistics of the comparison. In this case, since the p value is
-0.22 which is larger than 0.05, we consider that the generated
-extinction history is significantly different than the null
-hypothesis.
-
-<img src="man/figures/README-unnamed-chunk-12-1.png" title="Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random" alt="Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random" width="100%" />
+    #> NULL
 
 ``` r
 Comparison$Test
-#> 
-#>  Pearson's Chi-squared test
-#> 
-#> data:  Hypothesis$DF$AccSecondaryExtinction and Nullmodel$sims$AccSecondaryExtinction[1:length(Hypothesis$DF$AccSecondaryExtinction)]
-#> X-squared = 20, df = 16, p-value = 0.2202
+#> NULL
 ```
 
 ## Plotting the extinction histories of a network
@@ -216,20 +207,43 @@ history <- Mostconnected(Network = net)
 ExtinctionPlot(History = history)
 ```
 
-<img src="man/figures/README-unnamed-chunk-14-1.png" title="Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions" alt="Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions" width="100%" />
+<div class="figure">
+
+<img src="man/figures/README-unnamed-chunk-14-1.png" alt="Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions" width="100%" />
+
+<p class="caption">
+
+Figure 7. Example of the use of the ExtinctionPlot function showing the
+accumulated secondary extinctions against number of
+extinctions
+
+</p>
+
+</div>
 
 ``` r
-ExtinctionPlot(History = history, Variable = "LinksPerSpecies")
+ExtinctionPlot(History = history, Variable = "Link_density")
 ```
 
-<img src="man/figures/README-unnamed-chunk-15-1.png" title="Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions" alt="Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions" width="100%" />
+<div class="figure">
+
+<img src="man/figures/README-unnamed-chunk-15-1.png" alt="Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions" width="100%" />
+
+<p class="caption">
+
+Figure 8. Another example of the use of the ExtinctionPlot function
+showing the number of links per species against number of extinctions
+
+</p>
+
+</div>
 
 ## Degree distribution function
 
-The *degree\_distribution* function calculates the cumulative
-distribution of the number of links that each species in the food
-network has (Estrada 2007). Then, the observed distribution is fitted to
-the exponential and power law distribution models.
+The *DegreeDistribution* function calculates the cumulative distribution
+of the number of links that each species in the food network has
+(Estrada 2007). Then, the observed distribution is fitted to the
+exponential and power law distribution models.
 
 The results of this function are shown in figure 9 and table 4. The
 graph shows the observed degree distribution in a log log scale fitting
@@ -243,15 +257,31 @@ Power law and finally the Truncated power law model.
 
 ``` r
 data("chilean_intertidal")
-degree_distribution(chilean_intertidal)
+DegreeDistribution(chilean_intertidal)
 ```
 
-<img src="man/figures/README-unnamed-chunk-18-1.png" title="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" alt="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" width="100%" />
+<div class="figure">
 
-|   logLik |         AIC |         BIC | model | Normal.Resid | family      |
-| -------: | ----------: | ----------: | :---- | :----------- | :---------- |
-| 83.14753 | \-160.29506 | \-153.63654 | Exp   | No           | Exponential |
-| 13.38647 |  \-20.77293 |  \-14.20397 | Power | No           | PowerLaw    |
+<img src="man/figures/README-unnamed-chunk-18-1.png" alt="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" width="100%" />
+
+<p class="caption">
+
+Figure 9: Fitted vs observed values of the degree distribution. The
+black line and points show the observed values, the red, green and blue
+lines show the fitted values for the Exponential, power law and trucated
+distribution,
+respectively
+
+</p>
+
+</div>
+
+|     logLik |         AIC |         BIC | model    | Normal.Resid | family      |
+| ---------: | ----------: | ----------: | :------- | :----------- | :---------- |
+|   83.14753 | \-160.29506 | \-153.63654 | Exp      | No           | Exponential |
+|   13.38647 |  \-20.77293 |  \-14.20397 | Power    | No           | PowerLaw    |
+| \-27.48222 |    60.96444 |    67.53341 | LogExp   | No           | Exponential |
+| \-80.84172 |   167.68343 |   174.25240 | LogPower | No           | PowerLaw    |
 
 Table 4: Model selection analysis
 
