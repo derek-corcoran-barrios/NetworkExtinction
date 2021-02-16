@@ -23,7 +23,7 @@ after every extinction
 # If you don't specify the y variable it will plot the secondary extinctions
 # by default
 data("net")
-history <- Mostconnected(Network = net)
+history <- SimulateExtinctions(Network = net, Method = "Mostconnected")
 ExtinctionPlot(History = history)
 # You can also specify the variable to be ploted in the y axis
 ExtinctionPlot(History = history, Variable = "Link_density")
@@ -34,5 +34,5 @@ ExtinctionPlot(History = history, Variable = "Link_density")
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>
 
-M.Isidora Avila Thieme <msavila@uc.cl>
+M. Isidora Ávila-Thieme <msavila@uc.cl>
 }

@@ -15,6 +15,9 @@ status](https://www.r-pkg.org/badges/version/NetworkExtinction)](https://CRAN.R-
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/NetworkExtinction?color=blue)](https://cran.r-project.org/package=NetworkExtinction)
 [![](http://cranlogs.r-pkg.org/badges/last-month/NetworkExtinction?color=green)](https://cran.r-project.org/package=NetworkExtinction)
+[![Codecov test
+coverage](https://codecov.io/gh/derek-corcoran-barrios/NetworkExtintion/branch/master/graph/badge.svg)](https://codecov.io/gh/derek-corcoran-barrios/NetworkExtintion?branch=master)
+[![R-CMD-check](https://github.com/derek-corcoran-barrios/NetworkExtintion/workflows/R-CMD-check/badge.svg)](https://github.com/derek-corcoran-barrios/NetworkExtintion/actions)
 <!-- badges: end -->
 
 The goal of NetworkExtinction is to Simulate the extinction of species
@@ -121,10 +124,15 @@ SimulateExtinctions(Network = net, Order = c(2,4,7), Method = "Ordered")
 |   2 | 9 | 8 | 0.0987654 |     0.8888889 |      1 |             0 |          0 |         1 |      1 |        2 |
 |   4 | 7 | 5 | 0.1020408 |     0.7142857 |      1 |             0 |          1 |         2 |      2 |        4 |
 |   7 | 5 | 3 | 0.1200000 |     0.6000000 |      0 |             1 |          1 |         2 |      3 |        5 |
+<<<<<<< HEAD
 
 Table 2: The resulting dataframe of the ExtinctionOrder function
 
     #> NULL
+=======
+
+Table 2: The resulting dataframe of the ExtinctionOrder function
+>>>>>>> New_Version
 
 The results of this function are a dataframe with the topological
 indexes of the network calculated from each extinction step (Table 2),
@@ -150,12 +158,41 @@ data(net)
 RandomExtinctions(Network= net, nsim= 50)
 ```
 
+<<<<<<< HEAD
 Table: Table 3: The resulting dataframe of the RandomExtinctions
 function
 
 || || || ||
 
     #> NULL
+=======
+| NumExt | AccSecExt\_95CI | AccSecExt\_mean |    Upper | Lower |
+| -----: | --------------: | --------------: | -------: | ----: |
+|      1 |       0.8201658 |        0.220000 | 1.040166 |     0 |
+|      2 |       1.4942664 |        0.520000 | 2.014266 |     0 |
+|      3 |       1.8994652 |        0.860000 | 2.759465 |     0 |
+|      4 |       2.1209884 |        1.180000 | 3.300988 |     0 |
+|      5 |       2.2312328 |        1.530612 | 3.761845 |     0 |
+|      6 |       2.3415830 |        1.933333 | 4.274916 |     0 |
+|      7 |       2.2358161 |        2.176471 | 4.412287 |     0 |
+|      8 |       2.0936485 |        1.846154 | 3.939802 |     0 |
+|      9 |       2.5555273 |        1.800000 | 4.355527 |     0 |
+
+Table 3: The resulting dataframe of the RandomExtinctions
+function
+
+<div class="figure">
+
+<img src="man/figures/README-unnamed-chunk-9-1.png" alt="Figure 5. The resulting graph of the RandomExtinctions function" width="100%" />
+
+<p class="caption">
+
+Figure 5. The resulting graph of the RandomExtinctions function
+
+</p>
+
+</div>
+>>>>>>> New_Version
 
 \#\#\#Comparison of Null hypothesis with other extinction histories
 
@@ -170,24 +207,41 @@ extinction history and the null hypothesis, and then the
 
 ``` r
 data("net")
-History <- ExtinctionOrder(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10))
+History <- SimulateExtinctions(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10), Method = "Ordered")
 
 set.seed(2)
-NullHyp <- RandomExtinctions(Network = net, nsim = 100)
+NullHyp <- RandomExtinctions(Network = net, nsim = 100, plot = TRUE)
 
 Comparison <- CompareExtinctions(Nullmodel = NullHyp, Hypothesis = History)
 ```
 
 The first result will be a graph (Figue 6) with a dashed line showing
 the observed extinction history and a solid line showing the expected
-value of secondary extinctions randomly generated.
+value of secondary extinctions randomly
+generated.
 
+<<<<<<< HEAD
     #> NULL
 
 ``` r
 Comparison$Test
 #> NULL
 ```
+=======
+<div class="figure">
+
+<img src="man/figures/README-unnamed-chunk-11-1.png" alt="Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random" width="100%" />
+
+<p class="caption">
+
+Figure 6. The resulting graph of the CompareExtinctions function, where
+the dashed line shows the observed extinction history, and a solid line
+shows the expected value of secondary extinctions originated at random
+
+</p>
+
+</div>
+>>>>>>> New_Version
 
 ## Plotting the extinction histories of a network
 
@@ -199,7 +253,7 @@ ploted with the function by changing the Variable argument (Figure 8).
 
 ``` r
 data(net)
-history <- Mostconnected(Network = net)
+history <- SimulateExtinctions(Network = net, Method = "Mostconnected")
 #> [1] 1
 #> [1] 2
 #> [1] 3
@@ -209,7 +263,11 @@ ExtinctionPlot(History = history)
 
 <div class="figure">
 
+<<<<<<< HEAD
 <img src="man/figures/README-unnamed-chunk-14-1.png" alt="Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions" width="100%" />
+=======
+<img src="man/figures/README-unnamed-chunk-12-1.png" alt="Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions" width="100%" />
+>>>>>>> New_Version
 
 <p class="caption">
 
@@ -227,7 +285,11 @@ ExtinctionPlot(History = history, Variable = "Link_density")
 
 <div class="figure">
 
+<<<<<<< HEAD
 <img src="man/figures/README-unnamed-chunk-15-1.png" alt="Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions" width="100%" />
+=======
+<img src="man/figures/README-unnamed-chunk-13-1.png" alt="Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions" width="100%" />
+>>>>>>> New_Version
 
 <p class="caption">
 
@@ -262,7 +324,11 @@ DegreeDistribution(chilean_intertidal)
 
 <div class="figure">
 
+<<<<<<< HEAD
 <img src="man/figures/README-unnamed-chunk-18-1.png" alt="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" width="100%" />
+=======
+<img src="man/figures/README-unnamed-chunk-16-1.png" alt="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" width="100%" />
+>>>>>>> New_Version
 
 <p class="caption">
 

@@ -21,7 +21,7 @@
 #'@examples
 #'library(NetworkExtinction)
 #'data("chilean_intertidal")
-#'degree_distribution(chilean_intertidal)
+#'DegreeDistribution(chilean_intertidal)
 #'
 #'@importFrom sna degree
 #'@importFrom stats nls
@@ -29,6 +29,7 @@
 #'@importFrom broom glance
 #'@importFrom dplyr arrange
 #'@importFrom dplyr bind_rows
+#'@importFrom dplyr case_when
 #'@importFrom dplyr filter
 #'@importFrom dplyr full_join
 #'@importFrom dplyr group_split
@@ -55,8 +56,9 @@
 #' @export
 
 
-degree_distribution <- function(Network, scale = "arithmetic"){
+DegreeDistribution <- function(Network, scale = "arithmetic"){
   AIC <- Cumulative <- Exp <- fit <- model <- LogPower <- logLik <- BIC <- Power <- Normal.Resid <- LogExp <- family <- AICcNorm <- NULL
+  Network <- .DataInit(Network)
   totaldegree<- degree(Network)
   K <- 0:max(totaldegree)
   For.Graph<- data.frame(K = K, Cumulative = NA)
@@ -123,8 +125,16 @@ degree_distribution <- function(Network, scale = "arithmetic"){
   Summs <- full_join(Summs.exp, Summs.power)
   Summs <- full_join(Summs, Summs.logexp)
   Summs <- full_join(Summs, Summs.logpower) %>% select(logLik, AIC, BIC, model, Normal.Resid, family, AICcNorm)
-  Summs <- arrange(Summs, Normal.Resid, AIC) %>% group_split(family) %>% purrr::map(~mutate(.x, deltaAICc = AICcNorm - min(AICcNorm))) %>% purrr::map(~dplyr::filter(.x, deltaAICc < 2)) %>% reduce(bind_rows) %>% dplyr::select(logLik, AIC, BIC, model, Normal.Resid, family)
-  params <- bind_rows(Params.logpower, Params.power, Params.exp, Params.logexp) %>% dplyr::filter(model %in% Summs$model)
+  Summs <- arrange(Summs, Normal.Resid, AIC) %>%  dplyr::select(logLik, AIC, BIC, model, Normal.Resid, family)
+  params <- bind_rows(Params.logpower, Params.power, Params.logexp, Params.exp) %>%
+    dplyr::filter(model %in% Summs$model) %>%
+    mutate(term = case_when(term == "y" ~ "Beta",
+                            term == "a" ~ "c",
+                            term == "(Intercept)" ~ "c",
+                            term == "I(log(K))" ~ "Beta",
+                            term == "lambda" ~ "Lambda",
+                            term == "K" ~ "Lambda",
+                            TRUE ~ term))
   DF2 <- For.Graph %>% filter(K != 0 & Cumulative != 0) %>% gather(key = model, value = fit, Exp, Power, LogExp, LogPower) %>% dplyr::filter(model %in% Summs$model)
 
   g <- ggplot(DF2, aes_string(x = "K", y = "Cumulative")) + geom_line() + geom_point()+ theme_bw() + geom_line(aes_string(y ="fit", color = "model")) + ylim(c(0,1))

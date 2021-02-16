@@ -11,7 +11,7 @@
 #' # If you don't specify the y variable it will plot the secondary extinctions
 #' # by default
 #' data("net")
-#' history <- Mostconnected(Network = net)
+#' history <- SimulateExtinctions(Network = net, Method = "Mostconnected")
 #' ExtinctionPlot(History = history)
 #' # You can also specify the variable to be ploted in the y axis
 #' ExtinctionPlot(History = history, Variable = "Link_density")
@@ -20,7 +20,7 @@
 #' @importFrom ggplot2 ggplot
 #' @importFrom ggplot2 theme_bw
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author M.Isidora Avila Thieme <msavila@uc.cl>
+#' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
 #' @seealso [NetworkExtintion::ExtinctionOrder()]
 #' @export
 

@@ -44,9 +44,7 @@ This package was built with a total of six functions. There are four functions t
 
 Functions to analyze the cascading effect of extinctions are the following:
 
-* *Mostconnected:* To simulate extinctions from the most connected species to less connected in the network.
-
-* *ExtinctionOrder:* To simulate extinctions in a customized order.  
+* *SimulateExtinctions:* To simulate extinctions from the most connected species to less connected in the network, or in a customized order.
 
 * *RandomExtinctions:* To develop a null hypothesis by generating random orders of simulated extinctions.
 
@@ -70,11 +68,17 @@ install.packages(NetworkExtinction)
 library(NetworkExtinction)
 ```
 
+or install the most recent 
+
+```{r, eval=FALSE}
+devtools::install_github("derek-corcoran-barrios/NetworkExtintion")
+```
+
 ## How to represent a food web in R
 
-The first step to make any analysis in the *NetworkExtinction* package is to build a representation of a food web, using the network package [@butts2008network].
+The first step to make any analysis in the *NetworkExtinction* package is to build a representation of a food web.
 
-In order to create a network object you can start with a matrix or an edgelist object (for more details see the network package vignette).
+The NetworkExtinction package accepts a matrix, an edgelist or a Network build in the network package [@butts2008network].
 
 As an example of how to build a food web we will explain how to create the network shown in figure 1.
 
@@ -121,20 +125,20 @@ The *Mostconnected* function sorts the species from the most connected node to t
 ```{r, eval=FALSE}
 library(NetworkExtinction)
 data("net")
-Mostconnected(Network = net)
+SimulateExtinctions(Network = net, Method = "Mostconnected")
 ```
 
 ```{r, echo=FALSE, message=FALSE}
 library(NetworkExtinction)
 data("net")
-knitr::kable(Mostconnected(Network = net), caption = "Table 1: The resulting dataframe of the Mostconnected function")
+knitr::kable(SimulateExtinctions(Network = net, Method = "Mostconnected"), caption = "Table 1: The resulting dataframe of the SimulateExtinctions in Mostconnected method")
 ```
 
 The result of this function is the dataframe shown in table 1. The first column called *Spp* indicates the order in which the species were removed simulating an extinction. The column *Secondary_extinctions* represents the numbers of species that become extinct given that they do not have any food items left in the food web, while the *AccSecondaryExtinction* column represents the accumulated secondary extinctions. (To plot the results, see function *ExtinctionPlot*.)
 
 ```{r, fig.cap="Figure 3. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most to the least connected species"}
 data("net")
-history <- Mostconnected(Network = net)
+history <- SimulateExtinctions(Network = net, Method = "Mostconnected")
 ExtinctionPlot(History = history, Variable = "AccSecExt")
 
 ```
@@ -146,17 +150,17 @@ The *ExtinctionOrder* function takes a network and extinguishes nodes using a cu
 
 ```{r, eval=FALSE}
 data("net")
-ExtinctionOrder(Network = net, Order = c(2,4,7))
+SimulateExtinctions(Network = net, Order = c(2,4,7), Method = "Ordered")
 ```
 
 ```{r, echo=FALSE}
 data("net")
-knitr::kable(ExtinctionOrder(Network = net, Order = c(2,4,7))$DF, caption = "Table 2: The resulting dataframe of the ExtinctionOrder function")
+knitr::kable(SimulateExtinctions(Network = net, Order = c(2,4,7), Method = "Ordered"), caption = "Table 2: The resulting dataframe of the ExtinctionOrder function")
 ```
 
 ```{r, echo=FALSE, fig.cap= "Figure 4. The graph shows the number of accumulated secondary extinctions that occur when removing species in a custom order. In this example species 2 is removed followed by 4 and lastly species 7 is removed"}
 data("net")
-ExtinctionOrder(Network = net, Order = c(2,4,7))$Graph
+Order <- SimulateExtinctions(Network = net, Order = c(2,4,7), Method = "Ordered")
 ```
 
 The results of this function are a dataframe with the topological indexes of the network calculated from each extinction step (Table 2), and a plot that shows the number of accumulated secondary extinctions that occured with each removed node (Figure 4).
@@ -167,19 +171,21 @@ The *RandomExtinctions* function generates n random extinction orders, determine
 
 ```{r, eval = FALSE}
 data(net)
-RandomExtinctions(Network= net, nsim= 50)
+set.seed(707)
+RandomExtinctions(Network= net, nsim= 100)
 ```
 
 ```{r, echo = FALSE}
 data(net)
-set.seed(123)
-Test <- RandomExtinctions(Network= net, nsim= 50)
-knitr::kable(Test$sims, caption = "Table 3: The resulting dataframe of the RandomExtinctions function")
+set.seed(707)
+Test <- RandomExtinctions(Network= net, nsim= 100)
+knitr::kable(Test, caption = "Table 3: The resulting dataframe of the RandomExtinctions function")
 ```
 
 ```{r, echo = FALSE, fig.cap= "Figure 5. The resulting graph of the RandomExtinctions function"}
 data(net)
-set.seed(123)
+set.seed(707)
+Test <- RandomExtinctions(Network= net, nsim= 100, plot = T)
 Test$graph
 ```
 
@@ -190,10 +196,9 @@ The *RandomExtinctons* function generates a null hypothesis for us to compare it
 
 ```{r,message=FALSE, warning=FALSE}
 data("net")
-History <- ExtinctionOrder(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10))
+History <- SimulateExtinctions(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10), Method = "Ordered")
 
-set.seed(2)
-NullHyp <- RandomExtinctions(Network = net, nsim = 100)
+NullHyp <- RandomExtinctions(Network = net, nsim = 100, plot = T)
 
 Comparison <- CompareExtinctions(Nullmodel = NullHyp, Hypothesis = History)
 ```
@@ -201,7 +206,7 @@ Comparison <- CompareExtinctions(Nullmodel = NullHyp, Hypothesis = History)
 The result will be a graph (Figue 6) with a dashed line showing the observed extinction history and a solid line showing the expected value of secondary extinctions randomly generated. 
 
 ```{r, echo=FALSE, fig.cap= "Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random"}
-Comparison$graph
+Comparison
 ```
 
 ## Plotting the extinction histories of a network
@@ -210,7 +215,7 @@ The *ExtinctionPlot* function takes a NetworkTopology class object and plots the
 
 ```{r, fig.cap= "Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions"}
 data(net)
-history <- Mostconnected(Network = net)
+history <- SimulateExtinctions(Network = net, Method = "Mostconnected")
 ExtinctionPlot(History = history)
 ```
 

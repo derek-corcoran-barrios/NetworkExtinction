@@ -1,6 +1,10 @@
 /home/derek/Documents/NetworkExtintion/.Rbuildignore="4A6F486D"
 /home/derek/Documents/NetworkExtintion/.gitignore="55036C67"
 /home/derek/Documents/NetworkExtintion/R/Data.R="297D084F"
+<<<<<<< HEAD
+=======
+/home/derek/Documents/NetworkExtintion/R/DataInit.R="E85E6F24"
+>>>>>>> New_Version
 /home/derek/Documents/NetworkExtintion/R/Extintions.R="66A48182"
 /home/derek/Documents/NetworkExtintion/R/Powerlaw.R="385EB031"
 /home/derek/Documents/NetworkExtintion/README.Rmd="5B84CD3D"

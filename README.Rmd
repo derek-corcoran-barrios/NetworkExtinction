@@ -26,6 +26,8 @@ knitr::opts_chunk$set(
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/NetworkExtinction?color=blue)](https://cran.r-project.org/package=NetworkExtinction)
 [![](http://cranlogs.r-pkg.org/badges/last-month/NetworkExtinction?color=green)](https://cran.r-project.org/package=NetworkExtinction)
+[![Codecov test coverage](https://codecov.io/gh/derek-corcoran-barrios/NetworkExtintion/branch/master/graph/badge.svg)](https://codecov.io/gh/derek-corcoran-barrios/NetworkExtintion?branch=master)
+[![R-CMD-check](https://github.com/derek-corcoran-barrios/NetworkExtintion/workflows/R-CMD-check/badge.svg)](https://github.com/derek-corcoran-barrios/NetworkExtintion/actions)
 <!-- badges: end -->
 
 The goal of NetworkExtinction is to Simulate the extinction of species in the food web and to analyze its cascading effects, as described in Dunne et al. (2002) \doi{10.1073/pnas.192407699}
@@ -84,11 +86,14 @@ SimulateExtinctions(Network = net, Order = c(2,4,7), Method = "Ordered")
 ```{r, echo=FALSE}
 data("net")
 knitr::kable(SimulateExtinctions(Network = net, Order = c(2,4,7), Method = "Ordered"), caption = "Table 2: The resulting dataframe of the ExtinctionOrder function")
+<<<<<<< HEAD
 ```
 
 ```{r, echo=FALSE, fig.cap= "Figure 4. The graph shows the number of accumulated secondary extinctions that occur when removing species in a custom order. In this example species 2 is removed followed by 4 and lastly species 7 is removed"}
 data("net")
 ExtinctionOrder(Network = net, Order = c(2,4,7))$Graph
+=======
+>>>>>>> New_Version
 ```
 
 The results of this function are a dataframe with the topological indexes of the network calculated from each extinction step (Table 2), and a plot that shows the number of accumulated secondary extinctions that occured with each removed node (Figure 4).
@@ -105,7 +110,7 @@ RandomExtinctions(Network= net, nsim= 50)
 ```{r, echo = FALSE}
 data(net)
 set.seed(123)
-Test <- RandomExtinctions(Network= net, nsim= 50)
+Test <- RandomExtinctions(Network= net, nsim= 50, plot = TRUE)
 knitr::kable(Test$sims, caption = "Table 3: The resulting dataframe of the RandomExtinctions function")
 ```
 
@@ -122,24 +127,25 @@ The *RandomExtinctons* function generates a null hypothesis for us to compare it
 
 ```{r,message=FALSE, warning=FALSE}
 data("net")
-History <- ExtinctionOrder(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10))
+History <- SimulateExtinctions(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10), Method = "Ordered")
 
 set.seed(2)
-NullHyp <- RandomExtinctions(Network = net, nsim = 100)
+NullHyp <- RandomExtinctions(Network = net, nsim = 100, plot = TRUE)
 
 Comparison <- CompareExtinctions(Nullmodel = NullHyp, Hypothesis = History)
 ```
 
 The first result will be a graph (Figue 6) with a dashed line showing the observed extinction history and a solid line showing the expected value of secondary extinctions randomly generated. 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> New_Version
 ```{r, echo=FALSE, fig.cap= "Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random"}
-Comparison$graph
+Comparison
 ```
 
 
-```{r, warning= FALSE}
-Comparison$Test
-```
 
 ## Plotting the extinction histories of a network
 
@@ -147,13 +153,16 @@ The *ExtinctionPlot* function takes a NetworkTopology class object and plots the
 
 ```{r, fig.cap= "Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions"}
 data(net)
-history <- Mostconnected(Network = net)
+history <- SimulateExtinctions(Network = net, Method = "Mostconnected")
 ExtinctionPlot(History = history)
 ```
 
 ```{r, fig.cap= "Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions"}
 ExtinctionPlot(History = history, Variable = "Link_density")
+<<<<<<< HEAD
 
+=======
+>>>>>>> New_Version
 ```
 
 
