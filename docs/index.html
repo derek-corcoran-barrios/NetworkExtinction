@@ -39,11 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">NetworkExtinction</a>
-<<<<<<< HEAD
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
-=======
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
->>>>>>> New_Version
       </span>
     </div>
 
@@ -107,7 +103,7 @@
 <p>And the development version from <a href="https://github.com/">GitHub</a> with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"derek-corcoran-barrios/NetworkExtintion"</span><span class="op">)</span></code></pre></div>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"derek-corcoran-barrios/NetworkExtinction"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="extinctions-functions" class="section level2">
 <h2 class="hasAnchor">
@@ -117,41 +113,24 @@
 <a href="#extinctions-from-most-to-less-conected-species-in-the-network" class="anchor"></a>Extinctions from most to less conected species in the network</h3>
 <p>The <em>Mostconnected</em> function sorts the species from the most connected node to the least connected node, using total degree. Then, it removes the most connected node in the network, simulating its extinction, and recalculates the topological indexes of the network and counts how many species have indegree 0 (secondary extinction), not considering primary producers. Then, it removes the nodes that were secondarily extinct in the previous step and recalculates which node is the new most connected species. This step is repeated until the number of links in the network is zero (Sole and Montoya 2001; Dunne, Williams, and Martinez 2002; Dunne and Williams 2009). In this new version it also calculates the Predatory release.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<<<<<<< HEAD
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://derek-corcoran-barrios.github.io/NetworkExtinction/">NetworkExtinction</a></span><span class="op">)</span>
-=======
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://derek-corcoran-barrios.github.io/NetworkExtintion/">NetworkExtinction</a></span><span class="op">)</span>
->>>>>>> New_Version
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"net"</span><span class="op">)</span>
-<span class="fu"><a href="reference/Mostconnected.html">Mostconnected</a></span><span class="op">(</span>Network <span class="op">=</span> <span class="va">net</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="reference/SimulateExtinctions.html">SimulateExtinctions</a></span><span class="op">(</span>Network <span class="op">=</span> <span class="va">net</span>, Method <span class="op">=</span> <span class="st">"Mostconnected"</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co">#&gt; [1] 1</span></a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; [1] 2</span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; [1] 3</span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; [1] 4</span></a></code></pre></div>
 <table class="table">
-<colgroup>
-<col width="2%">
-<col width="4%">
-<col width="4%">
-<col width="7%">
-<col width="11%">
-<col width="16%">
-<col width="13%">
-<col width="11%">
-<col width="16%">
-<col width="4%">
-<col width="6%">
-</colgroup>
 <thead><tr class="header">
 <th align="right">Spp</th>
-<th align="right">nodesS</th>
-<th align="right">linksS</th>
-<th align="right">Conectance</th>
-<th align="right">LinksPerSpecies</th>
-<th align="right">Secondary_extinctions</th>
-<th align="right">Predation_release</th>
-<th align="right">isolated_nodes</th>
-<th align="right">AccSecondaryExtinction</th>
+<th align="right">S</th>
+<th align="right">L</th>
+<th align="right">C</th>
+<th align="right">Link_density</th>
+<th align="right">SecExt</th>
+<th align="right">Pred_release</th>
+<th align="right">Iso_nodes</th>
+<th align="right">AccSecExt</th>
 <th align="right">NumExt</th>
 <th align="right">TotalExt</th>
 </tr></thead>
@@ -211,16 +190,22 @@
 </tbody>
 </table>
 <p>Table 1: The resulting dataframe of the Mostconnected function</p>
-<p>The result of this function is the dataframe shown in table 1. The first column called <em>Spp</em> indicates the order in which the species were removed simulating an extinction. The column <em>Secondary_extinctions</em> represents the numbers of species that become extinct given that they do not have any food items left in the food web, while the <em>AccSecondaryExtinction</em> column represents the accumulated secondary extinctions. (To plot the results, see function <em>ExtinctionPlot</em>.)</p>
+<p>The result of this function is the dataframe shown in table 1. The first column called <em>Spp</em> indicates the order in which the species were removed simulating an extinction. The column <em>Secondary_extinctions</em> represents the numbers of species that become extinct given that they do not have any food items left in the food web, while the <em>AccSecExt</em> column represents the accumulated secondary extinctions. (To plot the results, see function <em>ExtinctionPlot</em>.)</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"net"</span><span class="op">)</span>
-<span class="va">history</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/Mostconnected.html">Mostconnected</a></span><span class="op">(</span>Network <span class="op">=</span> <span class="va">net</span><span class="op">)</span>
+<span class="va">history</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/SimulateExtinctions.html">SimulateExtinctions</a></span><span class="op">(</span>Network <span class="op">=</span> <span class="va">net</span>, Method <span class="op">=</span> <span class="st">"Mostconnected"</span><span class="op">)</span>
 <span class="co">#&gt; [1] 1</span>
 <span class="co">#&gt; [1] 2</span>
 <span class="co">#&gt; [1] 3</span>
 <span class="co">#&gt; [1] 4</span>
-<span class="fu"><a href="reference/ExtinctionPlot.html">ExtinctionPlot</a></span><span class="op">(</span>History <span class="op">=</span> <span class="va">history</span>, Variable <span class="op">=</span> <span class="st">"AccSecondaryExtinction"</span><span class="op">)</span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-4-1.png" title="Figure 3. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most to the least connected species" alt="Figure 3. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most to the least connected species" width="100%"></p>
+<span class="fu"><a href="reference/ExtinctionPlot.html">ExtinctionPlot</a></span><span class="op">(</span>History <span class="op">=</span> <span class="va">history</span>, Variable <span class="op">=</span> <span class="st">"AccSecExt"</span><span class="op">)</span></code></pre></div>
+<div class="figure">
+<p><img src="reference/figures/README-unnamed-chunk-4-1.png" alt="Figure 3. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most to the least connected species" width="100%"></p>
+<p class="caption">
+</p>
+<p>Figure 3. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most to the least connected species</p>
+
+</div>
 </div>
 <div id="extinctions-using-a-customized-order" class="section level3">
 <h3 class="hasAnchor">
@@ -228,27 +213,18 @@
 <p>The <em>ExtinctionOrder</em> function takes a network and extinguishes nodes using a customized order. Then, it calculates the topological network indexes and the secondary extinctions.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"net"</span><span class="op">)</span>
-<span class="fu"><a href="reference/ExtinctionOrder.html">ExtinctionOrder</a></span><span class="op">(</span>Network <span class="op">=</span> <span class="va">net</span>, Order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">4</span>,<span class="fl">7</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="reference/SimulateExtinctions.html">SimulateExtinctions</a></span><span class="op">(</span>Network <span class="op">=</span> <span class="va">net</span>, Order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">4</span>,<span class="fl">7</span><span class="op">)</span>, Method <span class="op">=</span> <span class="st">"Ordered"</span><span class="op">)</span></code></pre></div>
 <table class="table">
-<colgroup>
-<col width="2%">
-<col width="5%">
-<col width="5%">
-<col width="9%">
-<col width="21%">
-<col width="17%">
-<col width="21%">
-<col width="5%">
-<col width="7%">
-</colgroup>
 <thead><tr class="header">
 <th align="right">Spp</th>
-<th align="right">nodesS</th>
-<th align="right">linksS</th>
-<th align="right">Conectance</th>
-<th align="right">Secondary_extinctions</th>
-<th align="right">Predation_release</th>
-<th align="right">AccSecondaryExtinction</th>
+<th align="right">S</th>
+<th align="right">L</th>
+<th align="right">C</th>
+<th align="right">Link_density</th>
+<th align="right">SecExt</th>
+<th align="right">Pred_release</th>
+<th align="right">Iso_nodes</th>
+<th align="right">AccSecExt</th>
 <th align="right">NumExt</th>
 <th align="right">TotalExt</th>
 </tr></thead>
@@ -258,7 +234,9 @@
 <td align="right">9</td>
 <td align="right">8</td>
 <td align="right">0.0987654</td>
+<td align="right">0.8888889</td>
 <td align="right">1</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">1</td>
@@ -269,8 +247,10 @@
 <td align="right">7</td>
 <td align="right">5</td>
 <td align="right">0.1020408</td>
+<td align="right">0.7142857</td>
 <td align="right">1</td>
 <td align="right">0</td>
+<td align="right">1</td>
 <td align="right">2</td>
 <td align="right">2</td>
 <td align="right">4</td>
@@ -280,7 +260,9 @@
 <td align="right">5</td>
 <td align="right">3</td>
 <td align="right">0.1200000</td>
+<td align="right">0.6000000</td>
 <td align="right">0</td>
+<td align="right">1</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">3</td>
@@ -289,124 +271,86 @@
 </tbody>
 </table>
 <p>Table 2: The resulting dataframe of the ExtinctionOrder function</p>
-<p><img src="reference/figures/README-unnamed-chunk-7-1.png" title="Figure 4. The graph shows the number of accumulated secondary extinctions that occur when removing species in a custom order. In this example species 2 is removed followed by 4 and lastly species 7 is removed" alt="Figure 4. The graph shows the number of accumulated secondary extinctions that occur when removing species in a custom order. In this example species 2 is removed followed by 4 and lastly species 7 is removed" width="100%"></p>
 <p>The results of this function are a dataframe with the topological indexes of the network calculated from each extinction step (Table 2), and a plot that shows the number of accumulated secondary extinctions that occured with each removed node (Figure 4).</p>
 </div>
 <div id="random-extinction" class="section level3">
 <h3 class="hasAnchor">
 <a href="#random-extinction" class="anchor"></a>Random extinction</h3>
-<p>The <em>RandomExtinctions</em> function generates n random extinction orders, determined by the argument <em>nsim</em>. The first result of this function is a dataframe (table 3). The column <em>NumExt</em> represents the number of species removed, <em>AccSecondaryExtinction</em> is the average number of secondary extinctions for each species removed, and <em>SdAccSecondaryExtinction</em> is its standard deviation. The second result is a graph (figure 5), where the x axis is the number of species removed and the y axis is the number of accumulated secondary extinctions. The solid line is the average number of secondary extinctions for every simulated primary extinction, and the red area represents the mean <span class="math inline">±</span> the standard deviation of the simulations.</p>
+<p>The <em>RandomExtinctions</em> function generates n random extinction orders, determined by the argument <em>nsim</em>. The first result of this function is a dataframe (table 3). The column <em>NumExt</em> represents the number of species removed, <em>AccSecExt</em> is the average number of secondary extinctions for each species removed, and <em>SdAccSecExt</em> is its standard deviation. The second result is a graph (figure 5), where the x axis is the number of species removed and the y axis is the number of accumulated secondary extinctions. The solid line is the average number of secondary extinctions for every simulated primary extinction, and the red area represents the mean <span class="math inline">±</span> the standard deviation of the simulations.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span>
 <span class="fu"><a href="reference/RandomExtinctions.html">RandomExtinctions</a></span><span class="op">(</span>Network<span class="op">=</span> <span class="va">net</span>, nsim<span class="op">=</span> <span class="fl">50</span><span class="op">)</span></code></pre></div>
-<table class="table">
-<thead><tr class="header">
-<th align="right">NumExt</th>
-<th align="right">SdAccSecondaryExtinction</th>
-<th align="right">AccSecondaryExtinction</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="right">1</td>
-<td align="right">0.4184520</td>
-<td align="right">0.220000</td>
-</tr>
-<tr class="even">
-<td align="right">2</td>
-<td align="right">0.7623808</td>
-<td align="right">0.520000</td>
-</tr>
-<tr class="odd">
-<td align="right">3</td>
-<td align="right">0.9691149</td>
-<td align="right">0.860000</td>
-</tr>
-<tr class="even">
-<td align="right">4</td>
-<td align="right">1.0821370</td>
-<td align="right">1.180000</td>
-</tr>
-<tr class="odd">
-<td align="right">5</td>
-<td align="right">1.1383841</td>
-<td align="right">1.530612</td>
-</tr>
-<tr class="even">
-<td align="right">6</td>
-<td align="right">1.1946852</td>
-<td align="right">1.933333</td>
-</tr>
-<tr class="odd">
-<td align="right">7</td>
-<td align="right">1.1407225</td>
-<td align="right">2.176471</td>
-</tr>
-<tr class="even">
-<td align="right">8</td>
-<td align="right">1.0681880</td>
-<td align="right">1.846154</td>
-</tr>
-<tr class="odd">
-<td align="right">9</td>
-<td align="right">1.3038405</td>
-<td align="right">1.800000</td>
-</tr>
-</tbody>
-</table>
-<p>Table 3: The resulting dataframe of the RandomExtinctions function</p>
-<p><img src="reference/figures/README-unnamed-chunk-10-1.png" title="Figure 5. The resulting graph of the RandomExtinctions function" alt="Figure 5. The resulting graph of the RandomExtinctions function" width="100%"></p>
+<div class="figure">
+<p><img src="reference/figures/README-unnamed-chunk-9-1.png" alt="Figure 5. The resulting graph of the RandomExtinctions function" width="100%"></p>
+<p class="caption">
+</p>
+<p>Figure 5. The resulting graph of the RandomExtinctions function</p>
+
+</div>
 <p>###Comparison of Null hypothesis with other extinction histories</p>
 <p>The <em>RandomExtinctons</em> function generates a null hypothesis for us to compare it with either an extinction history generated by the <em>ExtinctionOrder</em> function or the <em>Mostconnected</em> function. In order to compare the expected extinctions developed by our null hypothesis with the observed extinction history, we developed the <em>CompareExtinctions</em> function. The way to use this last function is to first create the extinction history and the null hypothesis, and then the <em>CompareExtinctins</em> function to compare both extinction histories.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"net"</span><span class="op">)</span>
-<span class="va">History</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ExtinctionOrder.html">ExtinctionOrder</a></span><span class="op">(</span>Network <span class="op">=</span> <span class="va">net</span>, Order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span>,<span class="fl">7</span>,<span class="fl">8</span>,<span class="fl">9</span>,<span class="fl">10</span><span class="op">)</span><span class="op">)</span>
+<span class="va">History</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/SimulateExtinctions.html">SimulateExtinctions</a></span><span class="op">(</span>Network <span class="op">=</span> <span class="va">net</span>, Order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span>,<span class="fl">7</span>,<span class="fl">8</span>,<span class="fl">9</span>,<span class="fl">10</span><span class="op">)</span>, Method <span class="op">=</span> <span class="st">"Ordered"</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
-<span class="va">NullHyp</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/RandomExtinctions.html">RandomExtinctions</a></span><span class="op">(</span>Network <span class="op">=</span> <span class="va">net</span>, nsim <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
+<span class="va">NullHyp</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/RandomExtinctions.html">RandomExtinctions</a></span><span class="op">(</span>Network <span class="op">=</span> <span class="va">net</span>, nsim <span class="op">=</span> <span class="fl">100</span>, plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="va">Comparison</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/CompareExtinctions.html">CompareExtinctions</a></span><span class="op">(</span>Nullmodel <span class="op">=</span> <span class="va">NullHyp</span>, Hypothesis <span class="op">=</span> <span class="va">History</span><span class="op">)</span></code></pre></div>
 <p>The first result will be a graph (Figue 6) with a dashed line showing the observed extinction history and a solid line showing the expected value of secondary extinctions randomly generated.</p>
-<p>The second result will be a Test object which will show the goodness of fit statistics of the comparison. In this case, since the p value is 0.22 which is larger than 0.05, we consider that the generated extinction history is significantly different than the null hypothesis.</p>
-<p><img src="reference/figures/README-unnamed-chunk-12-1.png" title="Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random" alt="Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random" width="100%"></p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Comparison</span><span class="op">$</span><span class="va">Test</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  Pearson's Chi-squared test</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; data:  Hypothesis$DF$AccSecondaryExtinction and Nullmodel$sims$AccSecondaryExtinction[1:length(Hypothesis$DF$AccSecondaryExtinction)]</span>
-<span class="co">#&gt; X-squared = 20, df = 16, p-value = 0.2202</span></code></pre></div>
+<div class="figure">
+<p><img src="reference/figures/README-unnamed-chunk-11-1.png" alt="Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random" width="100%"></p>
+<p class="caption">
+</p>
+<p>Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random</p>
+
+</div>
 </div>
 </div>
 <div id="plotting-the-extinction-histories-of-a-network" class="section level2">
 <h2 class="hasAnchor">
 <a href="#plotting-the-extinction-histories-of-a-network" class="anchor"></a>Plotting the extinction histories of a network</h2>
 <p>The <em>ExtinctionPlot</em> function takes a NetworkTopology class object and plots the index of interest after every extinction. By default, the function plots the number of accumulated secondary extinctions after every primary extinction (Figure 7), but any of the indexes can be ploted with the function by changing the Variable argument (Figure 8).</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span>
-<span class="va">history</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/Mostconnected.html">Mostconnected</a></span><span class="op">(</span>Network <span class="op">=</span> <span class="va">net</span><span class="op">)</span>
+<span class="va">history</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/SimulateExtinctions.html">SimulateExtinctions</a></span><span class="op">(</span>Network <span class="op">=</span> <span class="va">net</span>, Method <span class="op">=</span> <span class="st">"Mostconnected"</span><span class="op">)</span>
 <span class="co">#&gt; [1] 1</span>
 <span class="co">#&gt; [1] 2</span>
 <span class="co">#&gt; [1] 3</span>
 <span class="co">#&gt; [1] 4</span>
 <span class="fu"><a href="reference/ExtinctionPlot.html">ExtinctionPlot</a></span><span class="op">(</span>History <span class="op">=</span> <span class="va">history</span><span class="op">)</span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-14-1.png" title="Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions" alt="Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions" width="100%"></p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/ExtinctionPlot.html">ExtinctionPlot</a></span><span class="op">(</span>History <span class="op">=</span> <span class="va">history</span>, Variable <span class="op">=</span> <span class="st">"LinksPerSpecies"</span><span class="op">)</span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-15-1.png" title="Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions" alt="Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions" width="100%"></p>
+<div class="figure">
+<p><img src="reference/figures/README-unnamed-chunk-12-1.png" alt="Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions" width="100%"></p>
+<p class="caption">
+</p>
+<p>Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions</p>
+
+</div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="reference/ExtinctionPlot.html">ExtinctionPlot</a></span><span class="op">(</span>History <span class="op">=</span> <span class="va">history</span>, Variable <span class="op">=</span> <span class="st">"Link_density"</span><span class="op">)</span></code></pre></div>
+<div class="figure">
+<p><img src="reference/figures/README-unnamed-chunk-13-1.png" alt="Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions" width="100%"></p>
+<p class="caption">
+</p>
+<p>Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions</p>
+
+</div>
 </div>
 <div id="degree-distribution-function" class="section level2">
 <h2 class="hasAnchor">
 <a href="#degree-distribution-function" class="anchor"></a>Degree distribution function</h2>
-<p>The <em>degree_distribution</em> function calculates the cumulative distribution of the number of links that each species in the food network has (Estrada 2007). Then, the observed distribution is fitted to the exponential and power law distribution models.</p>
+<p>The <em>DegreeDistribution</em> function calculates the cumulative distribution of the number of links that each species in the food network has (Estrada 2007). Then, the observed distribution is fitted to the exponential and power law distribution models.</p>
 <p>The results of this function are shown in figure 9 and table 4. The graph shows the observed degree distribution in a log log scale fitting the three models mentioned above, for this example we use an example dataset of Chilean litoral rocky shores (Kéfi et al. 2015). The table shows the fitted model information ordered by descending AIC, that is, the model in the first row is the most probable distribution, followed by the second an finally the third distribution in this case (Table 3), the Exponential distribution would be the best model, followed by the Power law and finally the Truncated power law model.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"chilean_intertidal"</span><span class="op">)</span>
-<<<<<<< HEAD
-<span class="fu"><a href="reference/degree_distribution.html">degree_distribution</a></span><span class="op">(</span><span class="va">chilean_intertidal</span><span class="op">)</span></code></pre></div>
-=======
-<span class="fu">degree_distribution</span><span class="op">(</span><span class="va">chilean_intertidal</span><span class="op">)</span></code></pre></div>
->>>>>>> New_Version
-<p><img src="reference/figures/README-unnamed-chunk-18-1.png" title="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" alt="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" width="100%"></p>
+<span class="fu"><a href="reference/DegreeDistribution.html">DegreeDistribution</a></span><span class="op">(</span><span class="va">chilean_intertidal</span><span class="op">)</span></code></pre></div>
+<div class="figure">
+<p><img src="reference/figures/README-unnamed-chunk-16-1.png" alt="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" width="100%"></p>
+<p class="caption">
+</p>
+<p>Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively</p>
+
+</div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">logLik</th>
@@ -430,6 +374,22 @@
 <td align="right">-20.77293</td>
 <td align="right">-14.20397</td>
 <td align="left">Power</td>
+<td align="left">No</td>
+<td align="left">PowerLaw</td>
+</tr>
+<tr class="odd">
+<td align="right">-27.48222</td>
+<td align="right">60.96444</td>
+<td align="right">67.53341</td>
+<td align="left">LogExp</td>
+<td align="left">No</td>
+<td align="left">Exponential</td>
+</tr>
+<tr class="even">
+<td align="right">-80.84172</td>
+<td align="right">167.68343</td>
+<td align="right">174.25240</td>
+<td align="left">LogPower</td>
 <td align="left">No</td>
 <td align="left">PowerLaw</td>
 </tr>
@@ -502,6 +462,8 @@
 <li><a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></li>
 <li><a href="https://cran.r-project.org/package=NetworkExtinction"><img src="http://cranlogs.r-pkg.org/badges/grand-total/NetworkExtinction?color=blue"></a></li>
 <li><a href="https://cran.r-project.org/package=NetworkExtinction"><img src="http://cranlogs.r-pkg.org/badges/last-month/NetworkExtinction?color=green"></a></li>
+<li><a href="https://codecov.io/gh/derek-corcoran-barrios/NetworkExtintion?branch=master"><img src="https://codecov.io/gh/derek-corcoran-barrios/NetworkExtintion/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://github.com/derek-corcoran-barrios/NetworkExtintion/actions"><img src="https://github.com/derek-corcoran-barrios/NetworkExtintion/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
 </div>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>The foodweb of the intertidal zone in central chile — chilean_intertidal • NetworkExtinction</title>
+<title>Extinctions analysis from most connected to less connected nodes in the network — .Mostconnected • NetworkExtinction</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,9 +46,14 @@
 
 
 
-<meta property="og:title" content="The foodweb of the intertidal zone in central chile — chilean_intertidal" />
-<meta property="og:description" content="A trophic network with 107 species present in the  intertidal zone of central Chile.
-The food web was reconstructed from the Kefi et al. 2015" />
+<meta property="og:title" content="Extinctions analysis from most connected to less connected nodes in the network — .Mostconnected" />
+<meta property="og:description" content="It takes a network and it calculates wich node is the most connected
+of the network, using total degree. Then remove the most connected node,
+and calculates the the topological indexes of the network and the number of
+secundary extintions (how many species have indegree 0, without considered
+primary producers). After that, remove the nodes that were secondarily extinct
+in the previous step and recalculate which is the new most connected
+node and so on, until the number of links in the network is zero." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -127,25 +132,45 @@ The food web was reconstructed from the Kefi et al. 2015" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>The foodweb of the intertidal zone in central chile</h1>
+    <h1>Extinctions analysis from most connected to less connected nodes in the network</h1>
     
-    <div class="hidden name"><code>chilean_intertidal.Rd</code></div>
+    <div class="hidden name"><code>dot-Mostconnected.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A trophic network with 107 species present in the  intertidal zone of central Chile.
-The food web was reconstructed from the Kefi et al. 2015</p>
+    <p>It takes a network and it calculates wich node is the most connected
+of the network, using total degree. Then remove the most connected node,
+and calculates the the topological indexes of the network and the number of
+secundary extintions (how many species have indegree 0, without considered
+primary producers). After that, remove the nodes that were secondarily extinct
+in the previous step and recalculate which is the new most connected
+node and so on, until the number of links in the network is zero.</p>
     </div>
 
-    <pre class="usage"><span class='va'>chilean_intertidal</span></pre>
+    <pre class="usage"><span class='fu'>.Mostconnected</span><span class='op'>(</span><span class='va'>Network</span><span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>Network</th>
+      <td><p>a trophic network of class network</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a network</p>
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+    <p>exports data frame with the characteristics of the network after every
+extintion. The resulting data frame contains 11 columns that incorporate the
+topological index, the secondary extinctions, predation release, and total extinctions of the network
+in each primary extinction.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Kefi, Sonia, Eric L. Berlow, Evie A. Wieters, Lucas N. Joppa, Spencer A. Wood, Ulrich Brose, and Sergio A. Navarrete. "Network structure beyond food webs: mapping non trophic and trophic interactions on Chilean rocky shores." Ecology 96, no. 1 (2015.</p>
+    <div class='dont-index'><p>[NetworkExtinction::ExtinctionOrder()]</p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Derek Corcoran &lt;derek.corcoran.barrios@gmail.com&gt;</p>
+<p>M. Isidora Ávila-Thieme &lt;msavila@uc.cl&gt;</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
