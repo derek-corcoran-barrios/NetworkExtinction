@@ -86,15 +86,8 @@ SimulateExtinctions(Network = net, Order = c(2,4,7), Method = "Ordered")
 ```{r, echo=FALSE}
 data("net")
 knitr::kable(SimulateExtinctions(Network = net, Order = c(2,4,7), Method = "Ordered"), caption = "Table 2: The resulting dataframe of the ExtinctionOrder function")
-<<<<<<< HEAD
 ```
 
-```{r, echo=FALSE, fig.cap= "Figure 4. The graph shows the number of accumulated secondary extinctions that occur when removing species in a custom order. In this example species 2 is removed followed by 4 and lastly species 7 is removed"}
-data("net")
-ExtinctionOrder(Network = net, Order = c(2,4,7))$Graph
-=======
->>>>>>> New_Version
-```
 
 The results of this function are a dataframe with the topological indexes of the network calculated from each extinction step (Table 2), and a plot that shows the number of accumulated secondary extinctions that occured with each removed node (Figure 4).
 
@@ -111,7 +104,6 @@ RandomExtinctions(Network= net, nsim= 50)
 data(net)
 set.seed(123)
 Test <- RandomExtinctions(Network= net, nsim= 50, plot = TRUE)
-knitr::kable(Test$sims, caption = "Table 3: The resulting dataframe of the RandomExtinctions function")
 ```
 
 ```{r, echo = FALSE, fig.cap= "Figure 5. The resulting graph of the RandomExtinctions function"}
@@ -137,10 +129,6 @@ Comparison <- CompareExtinctions(Nullmodel = NullHyp, Hypothesis = History)
 
 The first result will be a graph (Figue 6) with a dashed line showing the observed extinction history and a solid line showing the expected value of secondary extinctions randomly generated. 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> New_Version
 ```{r, echo=FALSE, fig.cap= "Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random"}
 Comparison
 ```
@@ -159,10 +147,6 @@ ExtinctionPlot(History = history)
 
 ```{r, fig.cap= "Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions"}
 ExtinctionPlot(History = history, Variable = "Link_density")
-<<<<<<< HEAD
-
-=======
->>>>>>> New_Version
 ```
 
 
