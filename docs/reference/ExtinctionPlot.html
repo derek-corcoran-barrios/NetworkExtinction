@@ -81,7 +81,7 @@ after every extinction" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NetworkExtinction</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
       </span>
     </div>
 
@@ -89,7 +89,7 @@ after every extinction" />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -137,7 +137,7 @@ after every extinction" />
 after every extinction</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ExtinctionPlot</span>(<span class='no'>History</span>, <span class='kw'>Variable</span> <span class='kw'>=</span> <span class='st'>"AccSecExt"</span>)</pre>
+    <pre class="usage"><span class='fu'>ExtinctionPlot</span><span class='op'>(</span><span class='va'>History</span>, Variable <span class='op'>=</span> <span class='st'>"AccSecExt"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -159,16 +159,23 @@ or the ExtinctionOrder function</p></td>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>[NetworkExtintion::ExtinctionOrder()]</p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Derek Corcoran &lt;derek.corcoran.barrios@gmail.com&gt;</p>
+<p>M.Isidora Avila Thieme &lt;msavila@uc.cl&gt;</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># If you don't specify the y variable it will plot the secondary extinctions</span>
 <span class='co'># by default</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"net"</span>)
-<span class='no'>history</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='Mostconnected.html'>Mostconnected</a></span>(<span class='kw'>Network</span> <span class='kw'>=</span> <span class='no'>net</span>)</div><div class='output co'>#&gt; [1] 1
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"net"</span><span class='op'>)</span>
+<span class='va'>history</span> <span class='op'>&lt;-</span> <span class='fu'><a href='Mostconnected.html'>Mostconnected</a></span><span class='op'>(</span>Network <span class='op'>=</span> <span class='va'>net</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1
 #&gt; [1] 2
 #&gt; [1] 3
-#&gt; [1] 4</div><div class='input'><span class='fu'>ExtinctionPlot</span>(<span class='kw'>History</span> <span class='kw'>=</span> <span class='no'>history</span>)</div><div class='img'><img src='ExtinctionPlot-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># You can also specify the variable to be ploted in the y axis</span>
-<span class='fu'>ExtinctionPlot</span>(<span class='kw'>History</span> <span class='kw'>=</span> <span class='no'>history</span>, <span class='kw'>Variable</span> <span class='kw'>=</span> <span class='st'>"Link_density"</span>)</div><div class='img'><img src='ExtinctionPlot-2.png' alt='' width='700' height='433' /></div></pre>
+#&gt; [1] 4</div><div class='input'><span class='fu'>ExtinctionPlot</span><span class='op'>(</span>History <span class='op'>=</span> <span class='va'>history</span><span class='op'>)</span>
+</div><div class='img'><img src='ExtinctionPlot-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># You can also specify the variable to be ploted in the y axis</span>
+<span class='fu'>ExtinctionPlot</span><span class='op'>(</span>History <span class='op'>=</span> <span class='va'>history</span>, Variable <span class='op'>=</span> <span class='st'>"Link_density"</span><span class='op'>)</span>
+</div><div class='img'><img src='ExtinctionPlot-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -184,7 +191,7 @@ or the ExtinctionOrder function</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

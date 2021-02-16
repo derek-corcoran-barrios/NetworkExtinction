@@ -82,7 +82,7 @@ secondary extinctions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NetworkExtinction</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
       </span>
     </div>
 
@@ -90,7 +90,7 @@ secondary extinctions." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -139,7 +139,7 @@ then it calculates the secondary extinctions and plots the accumulated
 secondary extinctions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ExtinctionOrder</span>(<span class='no'>Network</span>, <span class='no'>Order</span>)</pre>
+    <pre class="usage"><span class='fu'>ExtinctionOrder</span><span class='op'>(</span><span class='va'>Network</span>, <span class='va'>Order</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -158,11 +158,16 @@ secondary extinctions.</p>
 
     <p>exports data frame with the characteristics of the network after every
 extintion, and a graph with the mean and 95<!-- % interval --></p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Derek Corcoran &lt;derek.corcoran.barrios@gmail.com&gt;</p>
+<p>M.Isidora Avila Thieme &lt;msavila@uc.cl&gt;</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>#first example</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"net"</span>)
-<span class='fu'>ExtinctionOrder</span>(<span class='kw'>Network</span> <span class='kw'>=</span> <span class='no'>net</span>, <span class='kw'>Order</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>5</span>,<span class='fl'>6</span>,<span class='fl'>7</span>,<span class='fl'>8</span>,<span class='fl'>9</span>,<span class='fl'>10</span>))</div><div class='output co'>#&gt; <span class='message'>1</span></div><div class='output co'>#&gt; <span class='message'>2</span></div><div class='output co'>#&gt; <span class='message'>3</span></div><div class='output co'>#&gt; <span class='message'>4</span></div><div class='output co'>#&gt; <span class='message'>5</span></div><div class='output co'>#&gt; $DF
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"net"</span><span class='op'>)</span>
+<span class='fu'>ExtinctionOrder</span><span class='op'>(</span>Network <span class='op'>=</span> <span class='va'>net</span>, Order <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>4</span>,<span class='fl'>5</span>,<span class='fl'>6</span>,<span class='fl'>7</span>,<span class='fl'>8</span>,<span class='fl'>9</span>,<span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>1</span></div><div class='output co'>#&gt; <span class='message'>2</span></div><div class='output co'>#&gt; <span class='message'>3</span></div><div class='output co'>#&gt; <span class='message'>4</span></div><div class='output co'>#&gt; <span class='message'>5</span></div><div class='output co'>#&gt; $DF
 #&gt;   Spp S L         C SecExt Pred_release AccSecExt NumExt TotalExt
 #&gt; 1   1 9 9 0.1111111      1            0         1      1        2
 #&gt; 2   2 7 6 0.1224490      1            0         2      2        4
@@ -173,8 +178,9 @@ extintion, and a graph with the mean and 95<!-- % interval --></p>
 #&gt; $Graph</div><div class='img'><img src='ExtinctionOrder-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
 #&gt; attr(,"class")
 #&gt; [1] "ExtinctionOrder"</div><div class='input'><span class='co'>#Second example</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"net"</span>)
-<span class='fu'>ExtinctionOrder</span>(<span class='kw'>Network</span> <span class='kw'>=</span> <span class='no'>net</span>, <span class='kw'>Order</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>8</span>,<span class='fl'>9</span>))</div><div class='output co'>#&gt; <span class='message'>1</span></div><div class='output co'>#&gt; <span class='message'>2</span></div><div class='output co'>#&gt; <span class='message'>3</span></div><div class='output co'>#&gt; $DF
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"net"</span><span class='op'>)</span>
+<span class='fu'>ExtinctionOrder</span><span class='op'>(</span>Network <span class='op'>=</span> <span class='va'>net</span>, Order <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>8</span>,<span class='fl'>9</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>1</span></div><div class='output co'>#&gt; <span class='message'>2</span></div><div class='output co'>#&gt; <span class='message'>3</span></div><div class='output co'>#&gt; $DF
 #&gt;   Spp S L          C SecExt Pred_release AccSecExt NumExt TotalExt
 #&gt; 1   2 9 8 0.09876543      1            0         1      1        2
 #&gt; 2   8 7 4 0.08163265      1            1         2      2        4
@@ -199,7 +205,7 @@ extintion, and a graph with the mean and 95<!-- % interval --></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

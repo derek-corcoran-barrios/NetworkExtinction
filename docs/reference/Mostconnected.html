@@ -86,7 +86,7 @@ node and so on, until the number of links in the network is zero." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">NetworkExtinction</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@ node and so on, until the number of links in the network is zero." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -147,7 +147,7 @@ in the previous step and recalculate which is the new most connected
 node and so on, until the number of links in the network is zero.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>Mostconnected</span>(<span class='no'>Network</span>)</pre>
+    <pre class="usage"><span class='fu'>Mostconnected</span><span class='op'>(</span><span class='va'>Network</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -167,10 +167,15 @@ in each primary extinction.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>[NetworkExtinction::ExtinctionOrder()]</p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Derek Corcoran &lt;derek.corcoran.barrios@gmail.com&gt;</p>
+<p>M.Isidora Avila Thieme &lt;msavila@uc.cl&gt;</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"net"</span>)
-<span class='fu'>Mostconnected</span>(<span class='kw'>Network</span> <span class='kw'>=</span> <span class='no'>net</span>)</div><div class='output co'>#&gt; [1] 1
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"net"</span><span class='op'>)</span>
+<span class='fu'>Mostconnected</span><span class='op'>(</span>Network <span class='op'>=</span> <span class='va'>net</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1
 #&gt; [1] 2
 #&gt; [1] 3
 #&gt; [1] 4</div><div class='output co'>#&gt;   Spp S L          C Link_density SecExt Pred_release Iso_nodes AccSecExt
@@ -198,7 +203,7 @@ in each primary extinction.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
