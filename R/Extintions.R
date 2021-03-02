@@ -36,13 +36,18 @@
 #' @examples
 #' # Mostconnected example
 #' data("net")
-#' SimulateExtinctions(Network = net, Method = "Mostconnected", clust.method = "cluster_infomap")
+#' SimulateExtinctions(Network = net, Method = "Mostconnected",
+#' clust.method = "cluster_infomap")
+#'
 #' #first Ordered example
 #' data("net")
-#' SimulateExtinctions(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10), Method = "Ordered" , clust.method = "cluster_infomap")
-#' #Second Ordered example
+#' SimulateExtinctions(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10),
+#' Method = "Ordered" , clust.method = "cluster_infomap")
+#'
+#'  #Second Ordered example
 #' data("net")
-#' SimulateExtinctions(Network = net, Order = c(2,8,9), Method = "Ordered", clust.method = "cluster_infomap")
+#' SimulateExtinctions(Network = net, Order = c(2,8,9),
+#' Method = "Ordered", clust.method = "cluster_infomap")
 
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
 #' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
@@ -217,7 +222,7 @@ Mostconnected <- function(Network){
 #' @seealso [NetworkExtinction::ExtinctionOrder()]
 
 .Mostconnected <- function(Network, clust.method = "cluster_infomap"){
-  Grado <- NULL
+  Link_density <- Modularity <- Grado <- NULL
   Network <- Network
   edgelist <- as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
   Conected <- data.frame(ID = 1:network.size(Network), Grado = degree(edgelist, c("total")))
@@ -447,6 +452,8 @@ ExtinctionOrder <- function(Network, Order){
 #'
 #' @param Network a network of class network
 #' @param Order Vector with the order of extinctions by ID
+#' @param clust.method a character with the options cluster_edge_betweenness, cluster_spinglass,
+#' cluster_label_prop or cluster_infomap
 #' @return exports data frame with the characteristics of the network after every
 #' extintion, and a graph with the mean and 95% interval
 #'
@@ -474,7 +481,7 @@ ExtinctionOrder <- function(Network, Order){
 #' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
 
 .ExtinctionOrder <- function(Network, Order, clust.method = "cluster_infomap"){
-  Grado <- NULL
+  Link_density <- Modularity <- Grado <- NULL
   edgelist <- as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
   Conected <- data.frame(ID = 1:network.size(Network), Grado = degree(edgelist, c("total")))
 

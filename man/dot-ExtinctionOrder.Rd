@@ -10,6 +10,9 @@
 \item{Network}{a network of class network}
 
 \item{Order}{Vector with the order of extinctions by ID}
+
+\item{clust.method}{a character with the options cluster_edge_betweenness, cluster_spinglass,
+cluster_label_prop or cluster_infomap}
 }
 \value{
 exports data frame with the characteristics of the network after every

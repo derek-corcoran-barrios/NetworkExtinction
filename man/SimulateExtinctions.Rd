@@ -55,13 +55,18 @@ When clust.method = cluster_infomap computes the network modularity using cluste
 \examples{
 # Mostconnected example
 data("net")
-SimulateExtinctions(Network = net, Method = "Mostconnected", clust.method = "cluster_infomap")
+SimulateExtinctions(Network = net, Method = "Mostconnected",
+clust.method = "cluster_infomap")
+
 #first Ordered example
 data("net")
-SimulateExtinctions(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10), Method = "Ordered" , clust.method = "cluster_infomap")
-#Second Ordered example
+SimulateExtinctions(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10),
+Method = "Ordered" , clust.method = "cluster_infomap")
+
+ #Second Ordered example
 data("net")
-SimulateExtinctions(Network = net, Order = c(2,8,9), Method = "Ordered", clust.method = "cluster_infomap")
+SimulateExtinctions(Network = net, Order = c(2,8,9),
+Method = "Ordered", clust.method = "cluster_infomap")
 }
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>
