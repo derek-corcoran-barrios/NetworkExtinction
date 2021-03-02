@@ -4,10 +4,12 @@
 \alias{.Mostconnected}
 \title{Extinctions analysis from most connected to less connected nodes in the network}
 \usage{
-.Mostconnected(Network)
+.Mostconnected(Network, clust.method = "cluster_infomap")
 }
 \arguments{
 \item{Network}{a trophic network of class network}
+
+\item{clust.method}{a character with the options cluster_edge_betweenness, cluster_spinglass, cluster_label_prop or cluster_infomap}
 }
 \value{
 exports data frame with the characteristics of the network after every

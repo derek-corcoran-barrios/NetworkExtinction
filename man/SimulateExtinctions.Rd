@@ -4,7 +4,12 @@
 \alias{SimulateExtinctions}
 \title{Extinctions analysis for trophic networks}
 \usage{
-SimulateExtinctions(Network, Method, Order = NULL)
+SimulateExtinctions(
+  Network,
+  Method,
+  Order = NULL,
+  clust.method = "cluster_infomap"
+)
 }
 \arguments{
 \item{Network}{a network representation as a an adyacency matrix, edgelist,
@@ -14,6 +19,9 @@ or a network object}
 
 \item{Order}{this should be NULL, unless using the Ordered method, in that case
 it should be a vector with the order of extinctions by ID}
+
+\item{clust.method}{a character with the options cluster_edge_betweenness, cluster_spinglass,
+cluster_label_prop or cluster_infomap, defaults to cluster_infomap}
 }
 \value{
 exports data frame with the characteristics of the network after every
@@ -38,17 +46,22 @@ node and so on, until the number of links in the network is zero.
 When method is Ordered, it takes a network, and extinguishes nodes using a custom order,
 then it calculates the secondary extinctions and plots the accumulated
 secondary extinctions.
+
+When clust.method = cluster_edge_betweenness computes the network modularity using cluster_edge_betweenness methods from igraph to detect communities
+When clust.method = cluster_spinglass computes the network modularity using cluster_spinglass methods from igraph to detect communities, here the number of spins are equal to the nerwork size
+When clust.method = cluster_label_prop computes the network modularity using cluster_label_prop methods from igraph to detect communities
+When clust.method = cluster_infomap computes the network modularity using cluster_infomap methods from igraph to detect communities, here the number of nb.trials are equal to the nerwork size
 }
 \examples{
 # Mostconnected example
 data("net")
-SimulateExtinctions(Network = net, Method = "Mostconnected")
+SimulateExtinctions(Network = net, Method = "Mostconnected", clust.method = "cluster_infomap")
 #first Ordered example
 data("net")
-SimulateExtinctions(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10), Method = "Ordered")
+SimulateExtinctions(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10), Method = "Ordered" , clust.method = "cluster_infomap")
 #Second Ordered example
 data("net")
-SimulateExtinctions(Network = net, Order = c(2,8,9), Method = "Ordered")
+SimulateExtinctions(Network = net, Order = c(2,8,9), Method = "Ordered", clust.method = "cluster_infomap")
 }
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>

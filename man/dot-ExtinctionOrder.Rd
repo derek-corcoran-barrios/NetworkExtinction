@@ -4,7 +4,7 @@
 \alias{.ExtinctionOrder}
 \title{Extinctions analysis from custom order}
 \usage{
-.ExtinctionOrder(Network, Order)
+.ExtinctionOrder(Network, Order, clust.method = "cluster_infomap")
 }
 \arguments{
 \item{Network}{a network of class network}

@@ -9,6 +9,8 @@
 #' or a network object
 #' @param Order this should be NULL, unless using the Ordered method, in that case
 #' it should be a vector with the order of extinctions by ID
+#' @param clust.method a character with the options cluster_edge_betweenness, cluster_spinglass,
+#' cluster_label_prop or cluster_infomap, defaults to cluster_infomap
 #' @return exports data frame with the characteristics of the network after every
 #' extintion. The resulting data frame contains 11 columns that incorporate the
 #' topological index, the secondary extinctions, predation release, and total extinctions of the network
@@ -26,30 +28,38 @@
 #' then it calculates the secondary extinctions and plots the accumulated
 #' secondary extinctions.
 #'
+#' When clust.method = cluster_edge_betweenness computes the network modularity using cluster_edge_betweenness methods from igraph to detect communities
+#' When clust.method = cluster_spinglass computes the network modularity using cluster_spinglass methods from igraph to detect communities, here the number of spins are equal to the nerwork size
+#' When clust.method = cluster_label_prop computes the network modularity using cluster_label_prop methods from igraph to detect communities
+#' When clust.method = cluster_infomap computes the network modularity using cluster_infomap methods from igraph to detect communities, here the number of nb.trials are equal to the nerwork size
+#'
 #' @examples
 #' # Mostconnected example
 #' data("net")
-#' SimulateExtinctions(Network = net, Method = "Mostconnected")
+#' SimulateExtinctions(Network = net, Method = "Mostconnected", clust.method = "cluster_infomap")
 #' #first Ordered example
 #' data("net")
-#' SimulateExtinctions(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10), Method = "Ordered")
+#' SimulateExtinctions(Network = net, Order = c(1,2,3,4,5,6,7,8,9,10), Method = "Ordered" , clust.method = "cluster_infomap")
 #' #Second Ordered example
 #' data("net")
-#' SimulateExtinctions(Network = net, Order = c(2,8,9), Method = "Ordered")
+#' SimulateExtinctions(Network = net, Order = c(2,8,9), Method = "Ordered", clust.method = "cluster_infomap")
 
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
 #' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
 #' @export
 
 
-SimulateExtinctions <- function(Network, Method, Order = NULL){
+SimulateExtinctions <- function(Network, Method, Order = NULL, clust.method = "cluster_infomap"){
   Network <- .DataInit(x = Network)
 
+  '%ni%'<- Negate('%in%')
+  if(Method %ni% c("Mostconnected", "Ordered")) stop('Choose the right method. See ?SimulateExtinction.')
+
   if(Method == "Mostconnected"){
-    DF <- .Mostconnected(Network = Network)
+    DF <- .Mostconnected(Network = Network, clust.method = clust.method)
   }
   if(Method == "Ordered"){
-    DF <- .ExtinctionOrder(Network = Network, Order = Order)
+    DF <- .ExtinctionOrder(Network = Network, Order = Order, clust.method = clust.method)
   }
   return(DF)
 }
@@ -180,6 +190,7 @@ Mostconnected <- function(Network){
 #'
 #
 #' @param Network a trophic network of class network
+#' @param clust.method a character with the options cluster_edge_betweenness, cluster_spinglass, cluster_label_prop or cluster_infomap
 #' @return exports data frame with the characteristics of the network after every
 #' extintion. The resulting data frame contains 11 columns that incorporate the
 #' topological index, the secondary extinctions, predation release, and total extinctions of the network
@@ -193,11 +204,18 @@ Mostconnected <- function(Network){
 #' @importFrom stats complete.cases
 #' @importFrom dplyr arrange
 #' @importFrom dplyr desc
+#' @importFrom network as.matrix.network.adjacency
+#' @importFrom igraph graph_from_adjacency_matrix
+#' @importFrom igraph cluster_edge_betweenness
+#' @importFrom igraph cluster_spinglass
+#' @importFrom igraph cluster_label_prop
+#' @importFrom igraph cluster_infomap
+#' @importFrom igraph modularity
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
 #' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
 #' @seealso [NetworkExtinction::ExtinctionOrder()]
 
-.Mostconnected <- function(Network){
+.Mostconnected <- function(Network, clust.method = "cluster_infomap"){
   Grado <- NULL
   Network <- Network
   edgelist <- as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
@@ -247,6 +265,36 @@ Mostconnected <- function(Network){
     DF$L[i] <- network.edgecount(Temp)
     DF$C[i] <- network.density(Temp)
     DF$Link_density [i] <- DF$L[i]/DF$S[i]
+
+    Networkclass = class(Temp)
+
+    if (Networkclass[1] == "matrix"){
+      netgraph = graph_from_adjacency_matrix(Temp, mode = "directed", weighted = NULL)
+    }
+
+    if (Networkclass[1] == "network"){
+      net = as.matrix.network.adjacency(Temp)
+      netgraph = graph_from_adjacency_matrix(net, mode = "directed", weighted = NULL)
+    }
+
+    if (clust.method == "cluster_edge_betweenness"){
+      Membership = suppressWarnings(cluster_edge_betweenness(netgraph, weights=NULL, directed = FALSE, edge.betweenness = TRUE,
+                                            merges = TRUE, bridges = TRUE, modularity = TRUE, membership = TRUE))
+    } else if (clust.method == "cluster_spinglass"){
+      spins = network.size(Temp)
+      Membership = suppressWarnings(cluster_spinglass(netgraph, spins=spins)) #spins could be the Richness
+    }else if (clust.method == "cluster_label_prop"){
+      Membership = suppressWarnings(cluster_label_prop(netgraph, weights = NULL, initial = NULL,
+                                      fixed = NULL))
+    }else if (clust.method == "cluster_infomap"){
+      nb.trials = network.size(Temp)
+      Membership = suppressWarnings(cluster_infomap(netgraph, e.weights = NULL, v.weights = NULL,
+                                   nb.trials = nb.trials, modularity = TRUE))
+
+    } else stop('Select a valid method for clustering. ?SimulateExtinction')
+
+    DF$Modularity[i] <- suppressMessages(modularity(Membership))
+
     SecundaryextTemp <- (1:length(degree(Temp, cmode = "indegree")))[degree(Temp, cmode = "indegree") == 0]
     for(j in sort(unique(c(c(DF$Spp[1:i]),accExt)))){
       SecundaryextTemp <- ifelse(SecundaryextTemp < j, SecundaryextTemp, SecundaryextTemp + 1)
@@ -412,10 +460,17 @@ ExtinctionOrder <- function(Network, Order){
 #' @importFrom network network.size
 #' @importFrom sna degree
 #' @importFrom stats complete.cases
+#' @importFrom network as.matrix.network.adjacency
+#' @importFrom igraph graph_from_adjacency_matrix
+#' @importFrom igraph cluster_edge_betweenness
+#' @importFrom igraph cluster_spinglass
+#' @importFrom igraph cluster_label_prop
+#' @importFrom igraph cluster_infomap
+#' @importFrom igraph modularity
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
 #' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
 
-.ExtinctionOrder <- function(Network, Order){
+.ExtinctionOrder <- function(Network, Order, clust.method = "cluster_infomap"){
   Grado <- NULL
   edgelist <- as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
   Conected <- data.frame(ID = 1:network.size(Network), Grado = degree(edgelist, c("total")))
@@ -465,6 +520,40 @@ ExtinctionOrder <- function(Network, Order){
     DF$L[i] <- network.edgecount(Temp)
     DF$C[i] <- network.density(Temp)
     DF$Link_density [i] <- DF$L[i]/DF$S[i]
+
+    Networkclass = class(Temp)
+
+    if (Networkclass[1] == "matrix"){
+      netgraph = graph_from_adjacency_matrix(Temp, mode = "directed", weighted = NULL)
+    }
+
+    if (Networkclass[1] == "network"){
+      net = as.matrix.network.adjacency(Temp)
+      netgraph = suppressMessages(graph_from_adjacency_matrix(net, mode = "directed", weighted = NULL))
+    }
+
+    if (clust.method == "cluster_edge_betweenness"){
+      Membership = suppressWarnings(cluster_edge_betweenness(netgraph, weights=NULL, directed = TRUE, edge.betweenness = TRUE,
+                                            merges = TRUE, bridges = TRUE, modularity = TRUE, membership = TRUE))
+    } else if (clust.method == "cluster_spinglass"){
+      spins = 107#network.size(Temp)
+      Membership = suppressWarnings(cluster_spinglass(netgraph, spins=spins)) #spins could be the Richness
+    }else if (clust.method == "cluster_label_prop"){
+      Membership = suppressWarnings(cluster_label_prop(netgraph, weights = NULL, initial = NULL,
+                                      fixed = NULL))
+    }else if (clust.method == "cluster_infomap"){
+      nb.trials = 107#network.size(Temp)
+      Membership = suppressWarnings(cluster_infomap(netgraph, e.weights = NULL, v.weights = NULL,
+                                   nb.trials = nb.trials, modularity = TRUE))
+
+    } else if (clust.method == "none"){
+      Membership = NA
+    }else stop('Select a valid method for clustering. ?SimulateExtinction')
+    if(is.na(Membership)){
+      DF$Modularity[i] <- NA
+    }else{
+      DF$Modularity[i] <- suppressWarnings(modularity(Membership))
+    }
 
     SecundaryextTemp <- (1:length(degree(Temp, cmode = "indegree")))[degree(Temp, cmode = "indegree") == 0]
     for(j in sort(unique(c(c(DF$Spp[1:i]),accExt)))){
@@ -559,7 +648,7 @@ RandomExtinctions <- function(Network, nsim = 10, parallel = FALSE, ncores, Reco
     cl <- makeCluster(ncores)
     registerDoParallel(cl)
     sims <- foreach(i=1:nsim, .packages = "NetworkExtinction")%dopar%{
-      sims <- try(.ExtinctionOrder(Network = network, Order = sample(1:network.size(network))), silent = T)
+      sims <- try(.ExtinctionOrder(Network = network, Order = sample(1:network.size(network)), clust.method = "none"), silent = T)
       try({sims$simulation <- i}, silent = T)
       sims
     }
