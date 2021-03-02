@@ -659,7 +659,7 @@ RandomExtinctions <- function(Network, nsim = 10, parallel = FALSE, ncores, Reco
     cl <- makeCluster(ncores)
     registerDoParallel(cl)
     sims <- foreach(i=1:nsim, .packages = "NetworkExtinction")%dopar%{
-      sims <- try(.ExtinctionOrder(Network = network, Order = sample(1:network.size(network)), clust.method = "none"), silent = T)
+      sims <- try(.ExtinctionOrder(Network = network, Order = sample(1:network.size(network))), silent = T)
       try({sims$simulation <- i}, silent = T)
       sims
     }
