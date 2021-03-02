@@ -85,7 +85,7 @@
       <h1 data-toc-skip>How to use the NetworkExtinction Package</h1>
                         <h4 class="author">M.Isidora Avila-Thieme and Derek Corcoran</h4>
             
-            <h4 class="date">2021-02-16</h4>
+            <h4 class="date">2021-03-02</h4>
       
       
       <div class="hidden name"><code>How_to_use_the_NetworkExtinction_Package.Rmd</code></div>
@@ -207,6 +207,20 @@
 #&gt; [1] 4</code></pre>
 <table class="table">
 <caption>Table 1: The resulting dataframe of the SimulateExtinctions in Mostconnected method</caption>
+<colgroup>
+<col width="4%">
+<col width="3%">
+<col width="3%">
+<col width="10%">
+<col width="13%">
+<col width="7%">
+<col width="13%">
+<col width="10%">
+<col width="11%">
+<col width="10%">
+<col width="7%">
+<col width="9%">
+</colgroup>
 <thead><tr class="header">
 <th align="right">Spp</th>
 <th align="right">S</th>
@@ -216,6 +230,7 @@
 <th align="right">SecExt</th>
 <th align="right">Pred_release</th>
 <th align="right">Iso_nodes</th>
+<th align="right">Modularity</th>
 <th align="right">AccSecExt</th>
 <th align="right">NumExt</th>
 <th align="right">TotalExt</th>
@@ -230,6 +245,7 @@
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="right">1</td>
+<td align="right">0</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">2</td>
@@ -243,6 +259,7 @@
 <td align="right">0</td>
 <td align="right">2</td>
 <td align="right">2</td>
+<td align="right">0</td>
 <td align="right">1</td>
 <td align="right">2</td>
 <td align="right">3</td>
@@ -256,6 +273,7 @@
 <td align="right">1</td>
 <td align="right">3</td>
 <td align="right">3</td>
+<td align="right">0</td>
 <td align="right">2</td>
 <td align="right">3</td>
 <td align="right">5</td>
@@ -269,6 +287,7 @@
 <td align="right">1</td>
 <td align="right">3</td>
 <td align="right">4</td>
+<td align="right">0</td>
 <td align="right">3</td>
 <td align="right">4</td>
 <td align="right">7</td>
@@ -299,6 +318,20 @@ Figure 3. The graph shows the number of accumulated secondary extinctions that o
 <span class="fu"><a href="../reference/SimulateExtinctions.html">SimulateExtinctions</a></span><span class="op">(</span>Network <span class="op">=</span> <span class="va">net</span>, Order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">4</span>,<span class="fl">7</span><span class="op">)</span>, Method <span class="op">=</span> <span class="st">"Ordered"</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <caption>Table 2: The resulting dataframe of the ExtinctionOrder function</caption>
+<colgroup>
+<col width="4%">
+<col width="3%">
+<col width="3%">
+<col width="10%">
+<col width="13%">
+<col width="7%">
+<col width="13%">
+<col width="10%">
+<col width="11%">
+<col width="10%">
+<col width="7%">
+<col width="9%">
+</colgroup>
 <thead><tr class="header">
 <th align="right">Spp</th>
 <th align="right">S</th>
@@ -308,6 +341,7 @@ Figure 3. The graph shows the number of accumulated secondary extinctions that o
 <th align="right">SecExt</th>
 <th align="right">Pred_release</th>
 <th align="right">Iso_nodes</th>
+<th align="right">Modularity</th>
 <th align="right">AccSecExt</th>
 <th align="right">NumExt</th>
 <th align="right">TotalExt</th>
@@ -320,6 +354,7 @@ Figure 3. The graph shows the number of accumulated secondary extinctions that o
 <td align="right">0.0987654</td>
 <td align="right">0.8888889</td>
 <td align="right">1</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">1</td>
@@ -335,6 +370,7 @@ Figure 3. The graph shows the number of accumulated secondary extinctions that o
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="right">1</td>
+<td align="right">0</td>
 <td align="right">2</td>
 <td align="right">2</td>
 <td align="right">4</td>
@@ -348,6 +384,7 @@ Figure 3. The graph shows the number of accumulated secondary extinctions that o
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">1</td>
+<td align="right">0</td>
 <td align="right">2</td>
 <td align="right">3</td>
 <td align="right">5</td>
@@ -376,66 +413,66 @@ Figure 3. The graph shows the number of accumulated secondary extinctions that o
 <tbody>
 <tr class="odd">
 <td align="right">1</td>
-<td align="right">0.8938541</td>
-<td align="right">0.290000</td>
-<td align="right">1.183854</td>
-<td align="right">0</td>
+<td align="right">0.8745442</td>
+<td align="right">0.270000</td>
+<td align="right">1.144544</td>
+<td align="right">0.0000000</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
-<td align="right">1.3710097</td>
+<td align="right">1.4264936</td>
 <td align="right">0.660000</td>
-<td align="right">2.031010</td>
-<td align="right">0</td>
+<td align="right">2.086494</td>
+<td align="right">0.0000000</td>
 </tr>
 <tr class="odd">
 <td align="right">3</td>
-<td align="right">1.9840065</td>
-<td align="right">1.160000</td>
-<td align="right">3.144007</td>
-<td align="right">0</td>
+<td align="right">2.1284670</td>
+<td align="right">1.250000</td>
+<td align="right">3.378467</td>
+<td align="right">0.0000000</td>
 </tr>
 <tr class="even">
 <td align="right">4</td>
-<td align="right">2.5361324</td>
-<td align="right">1.717172</td>
-<td align="right">4.253304</td>
-<td align="right">0</td>
+<td align="right">2.2566883</td>
+<td align="right">1.740000</td>
+<td align="right">3.996688</td>
+<td align="right">0.0000000</td>
 </tr>
 <tr class="odd">
 <td align="right">5</td>
-<td align="right">2.7171789</td>
-<td align="right">2.053192</td>
-<td align="right">4.770370</td>
-<td align="right">0</td>
+<td align="right">2.4742953</td>
+<td align="right">2.010309</td>
+<td align="right">4.484605</td>
+<td align="right">0.0000000</td>
 </tr>
 <tr class="even">
 <td align="right">6</td>
-<td align="right">2.5334301</td>
-<td align="right">2.112500</td>
-<td align="right">4.645930</td>
-<td align="right">0</td>
+<td align="right">1.9178207</td>
+<td align="right">2.082353</td>
+<td align="right">4.000174</td>
+<td align="right">0.1645323</td>
 </tr>
 <tr class="odd">
 <td align="right">7</td>
-<td align="right">2.1757971</td>
-<td align="right">1.909091</td>
-<td align="right">4.084888</td>
-<td align="right">0</td>
+<td align="right">2.0351390</td>
+<td align="right">2.295082</td>
+<td align="right">4.330221</td>
+<td align="right">0.2599430</td>
 </tr>
 <tr class="even">
 <td align="right">8</td>
-<td align="right">2.2080792</td>
-<td align="right">1.941177</td>
-<td align="right">4.149256</td>
-<td align="right">0</td>
+<td align="right">2.2049757</td>
+<td align="right">2.352941</td>
+<td align="right">4.557917</td>
+<td align="right">0.1479654</td>
 </tr>
 <tr class="odd">
 <td align="right">9</td>
-<td align="right">2.3426481</td>
-<td align="right">2.000000</td>
-<td align="right">4.342648</td>
-<td align="right">0</td>
+<td align="right">1.8310295</td>
+<td align="right">2.454546</td>
+<td align="right">4.285575</td>
+<td align="right">0.6235159</td>
 </tr>
 </tbody>
 </table>
