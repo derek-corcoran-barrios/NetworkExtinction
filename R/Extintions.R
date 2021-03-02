@@ -204,6 +204,7 @@ Mostconnected <- function(Network){
 #' @importFrom stats complete.cases
 #' @importFrom dplyr arrange
 #' @importFrom dplyr desc
+#' @importFrom dplyr relocate
 #' @importFrom network as.matrix.network.adjacency
 #' @importFrom igraph graph_from_adjacency_matrix
 #' @importFrom igraph cluster_edge_betweenness
@@ -323,6 +324,7 @@ Mostconnected <- function(Network){
   DF$AccSecExt<- cumsum(DF$SecExt)
   DF$NumExt <- 1:nrow(DF)
   DF$TotalExt <- DF$AccSecExt + DF$NumExt
+  DF <- relocate(DF, Modularity, .after = Link_density)
   class(DF) <- c("data.frame", "SimulateExt")
   return(DF)
 }
@@ -448,6 +450,7 @@ ExtinctionOrder <- function(Network, Order){
 #' @return exports data frame with the characteristics of the network after every
 #' extintion, and a graph with the mean and 95% interval
 #'
+#' @importFrom dplyr relocate
 #' @importFrom ggplot2 aes_string
 #' @importFrom ggplot2 geom_line
 #' @importFrom ggplot2 ggplot
@@ -583,6 +586,7 @@ ExtinctionOrder <- function(Network, Order){
   DF$AccSecExt <- cumsum(DF$SecExt)
   DF$NumExt <- 1:nrow(DF)
   DF$TotalExt <- DF$AccSecExt + DF$NumExt
+  DF <- relocate(DF, Modularity, .after = Link_density)
   class(DF) <- c("data.frame", "ExtinctionOrder")
   return(DF)
 }
