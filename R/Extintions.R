@@ -64,7 +64,7 @@ SimulateExtinctions <- function(Network, Method,
 
   if(Method == "Mostconnected"){
     DF <- .Mostconnected(Network = Network, clust.method = clust.method,
-                        IS = IS, verbose = verbose)
+                         IS = IS, verbose = verbose)
   }
   if(Method == "Ordered"){
     DF <- ExtinctionOrder(Network = Network, Order = Order, clust.method = clust.method,
@@ -180,7 +180,7 @@ Mostconnected <- function(Network, IS = 0, verbose = TRUE){
     if (DF$L[i] == 0) break
   }
   DF <- DF[complete.cases(DF),]
-    DF$AccSecExt<- cumsum(DF$SecExt)
+  DF$AccSecExt<- cumsum(DF$SecExt)
   DF$NumExt <- 1:nrow(DF)
   DF$TotalExt <- DF$AccSecExt + DF$NumExt
   class(DF) <- c("data.frame", "Mostconnected")
@@ -293,17 +293,17 @@ Mostconnected <- function(Network, IS = 0, verbose = TRUE){
 
     if (clust.method == "cluster_edge_betweenness"){
       Membership = suppressWarnings(cluster_edge_betweenness(netgraph, weights=NULL, directed = FALSE, edge.betweenness = TRUE,
-                                            merges = TRUE, bridges = TRUE, modularity = TRUE, membership = TRUE))
+                                                             merges = TRUE, bridges = TRUE, modularity = TRUE, membership = TRUE))
     } else if (clust.method == "cluster_spinglass"){
       spins = network.size(Temp)
       Membership = suppressWarnings(cluster_spinglass(netgraph, spins=spins)) #spins could be the Richness
     }else if (clust.method == "cluster_label_prop"){
       Membership = suppressWarnings(cluster_label_prop(netgraph, weights = NULL, initial = NULL,
-                                      fixed = NULL))
+                                                       fixed = NULL))
     }else if (clust.method == "cluster_infomap"){
       nb.trials = network.size(Temp)
       Membership = suppressWarnings(cluster_infomap(netgraph, e.weights = NULL, v.weights = NULL,
-                                   nb.trials = nb.trials, modularity = TRUE))
+                                                    nb.trials = nb.trials, modularity = TRUE))
 
     } else stop('Select a valid method for clustering. ?SimulateExtinction')
 
@@ -382,7 +382,7 @@ Mostconnected <- function(Network, IS = 0, verbose = TRUE){
 #' @export
 
 ExtinctionOrder <- function(Network, Order, IS = 0, verbose = TRUE,
-                            clust.method = "cluster_infomap",){
+                            clust.method = "cluster_infomap"){
   ## Setting up Objects for function run
   Link_density <- Modularity <- Grado <- NULL
   Network <- .DataInit(x = Network)
@@ -424,7 +424,7 @@ ExtinctionOrder <- function(Network, Order, IS = 0, verbose = TRUE,
   ## Sequential extinction simulation
   if(verbose){ProgBar <- txtProgressBar(max = length(Order), style = 3)}
   for (i in 1:length(Order)){
-    print(i)
+    # print(i)
 
     ### creating temporary network representations and deleting vertices if they have been set to go extinct
     if (length(accExt)==0){
@@ -447,7 +447,7 @@ ExtinctionOrder <- function(Network, Order, IS = 0, verbose = TRUE,
       delete.vertices(Temp, unique(c(c(DF$Spp[1:i]),accExt)))
 
     }
-    print(Temp)
+    # print(Temp)
 
     ### network metrics to output object
     DF$S[i] <- network.size(Temp)
@@ -717,11 +717,11 @@ CompareExtinctions <- function(Nullmodel, Hypothesis){
     return(g)
   }
   if(class(Hypothesis)[2] %in% c("Mostconnected", "ExtinctionOrder")){
-  NumExt <- sd <- AccSecExt <- AccSecExt_mean <-NULL
-  g <- Nullmodel$graph + geom_line(aes(color = "blue"))
-  g <- g + geom_point(data = Hypothesis, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison", values =c("black", "blue"), label = c("Observed","Null hypothesis"))
-  g
-  return(g)
+    NumExt <- sd <- AccSecExt <- AccSecExt_mean <-NULL
+    g <- Nullmodel$graph + geom_line(aes(color = "blue"))
+    g <- g + geom_point(data = Hypothesis, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison", values =c("black", "blue"), label = c("Observed","Null hypothesis"))
+    g
+    return(g)
   }
   else{
     message("Hipothesis not of class Mostconnected or ExtinctionOrder")
