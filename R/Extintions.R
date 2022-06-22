@@ -228,7 +228,7 @@ Mostconnected <- function(Network, IS = 0, verbose = TRUE){
 #' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
 #' @seealso [NetworkExtinction::ExtinctionOrder()]
 
-.Mostconnected <- function(Network, clust.method = clust.method,
+.Mostconnected <- function(Network, clust.method = "cluster_infomap",
                            IS = IS, verbose = verbose){
   Link_density <- Modularity <- Grado <- NULL
   Network <- Network
@@ -382,7 +382,7 @@ Mostconnected <- function(Network, IS = 0, verbose = TRUE){
 #' @export
 
 ExtinctionOrder <- function(Network, Order, IS = 0, verbose = TRUE,
-                            clust.method = clust.method){
+                            clust.method = "cluster_infomap",){
   ## Setting up Objects for function run
   Link_density <- Modularity <- Grado <- NULL
   Network <- .DataInit(x = Network)
