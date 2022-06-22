@@ -389,7 +389,7 @@ ExtinctionOrder <- function(Network, Order, IS = 0, verbose = TRUE,
   edgelist <- as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
   Conected <- data.frame(ID = 1:network.size(Network), Grado = degree(edgelist, c("total")))
   Conected1 <-  Order
-  if(length(IS == 1)){
+  if(length(IS )== 1){
     IS <- rep(IS, network.size(Network))
     names(IS) <- get.vertex.attribute(Network, "vertex.names")
   }
@@ -413,7 +413,7 @@ ExtinctionOrder <- function(Network, Order, IS = 0, verbose = TRUE,
   TopPredators <- (1:length(degree(Network, cmode = "outdegree")))[degree(Network, cmode = "outdegree") == 0]
 
   ### output object
-  DF <- data.frame(Spp = rep(NA, network.size(Network)), S = rep(NA, network.size(Network)), L = rep(NA, network.size(Network)), C = rep(NA, network.size(Network)), Link_density = rep(NA, network.size(Network)),SecExt = rep(NA,network.size(Network)), Pred_release = rep(NA,network.size(Network)), Iso_nodes =rep (NA,network.size(Network)))
+  DF <- data.frame(Spp = rep(NA, length(Order)), S = rep(NA, length(Order)), L = rep(NA, length(Order)), C = rep(NA, length(Order)), Link_density = rep(NA, length(Order)),SecExt = rep(NA,length(Order)), Pred_release = rep(NA,length(Order)), Iso_nodes =rep (NA,length(Order)))
   Secundaryext <- c()
   Predationrel <- c()
   accExt <- c()
@@ -424,6 +424,7 @@ ExtinctionOrder <- function(Network, Order, IS = 0, verbose = TRUE,
   ## Sequential extinction simulation
   if(verbose){ProgBar <- txtProgressBar(max = length(Order), style = 3)}
   for (i in 1:length(Order)){
+    print(i)
 
     ### creating temporary network representations and deleting vertices if they have been set to go extinct
     if (length(accExt)==0){
@@ -435,21 +436,32 @@ ExtinctionOrder <- function(Network, Order, IS = 0, verbose = TRUE,
       Temp <- Network
       Temp <- delete.vertices(Temp, c(accExt))
       edgelist <- as.matrix.network.edgelist(Temp,matrix.type="edgelist")
-      Conected2 <- data.frame(ID =1:network.size(Temp), Grado = degree(edgelist, c("total")))
-      for(j in sort(accExt)){
-        Conected2$ID <- ifelse(Conected2$ID < j, Conected2$ID, Conected2$ID + 1)
-      }
+      # Conected2 <- data.frame(ID =1:network.size(Temp), Grado = degree(edgelist, c("total")))
+      # for(j in sort(accExt)){
+      #   Conected2$ID <- ifelse(Conected2$ID < j, Conected2$ID, Conected2$ID + 1)
+      # }
 
       DF$Spp[i] <- Conected1[i]
       Temp <- Network
 
       delete.vertices(Temp, unique(c(c(DF$Spp[1:i]),accExt)))
+
     }
+    print(Temp)
+
     ### network metrics to output object
     DF$S[i] <- network.size(Temp)
     DF$L[i] <- network.edgecount(Temp)
     DF$C[i] <- network.density(Temp)
-    DF$Link_density [i] <- DF$L[i]/DF$S[i]
+    DF$Link_density[i] <- DF$L[i]/DF$S[i]
+
+    if(i > 1 ){
+      if(DF$L[i-1] == 0){
+        if(verbose){setTxtProgressBar(ProgBar, length(Order))}
+        break
+      }
+    }
+
 
     ### calculating modularity
     Networkclass = class(Temp)
@@ -496,7 +508,7 @@ ExtinctionOrder <- function(Network, Order, IS = 0, verbose = TRUE,
     }
     Secundaryext <- SecundaryextTemp
     Secundaryext <- Secundaryext[!(Secundaryext %in% Producers)]
-    DF$SecExt[i]<- length(Secundaryext)
+    DF$SecExt[i] <- length(Secundaryext)
 
     #### Predators
     PredationrelTemp <- (1:length(degree(Temp, cmode = "outdegree")))[degree(Temp, cmode = "outdegree") == 0]
@@ -510,24 +522,25 @@ ExtinctionOrder <- function(Network, Order, IS = 0, verbose = TRUE,
 
     #### Relative Interaction Strength loss
     if(sum(IS) == 0){
-      Secundaryext <- which(degree(Temp) == 0)
+      Secundaryext <- get.vertex.attribute(Temp, "vertex.names")[which(degree(Temp) == 0)]
+      Secundaryext <- match(Secundaryext, get.vertex.attribute(Network, "vertex.names"))
     }else{
-      RelISloss <- igraph::strength(suppressMessages(graph_from_adjacency_matrix(
+      AbsIS <- igraph::strength(suppressMessages(graph_from_adjacency_matrix(
         as.matrix.network.adjacency(Temp, attrname = "weight"),
         weighted = TRUE)
-      )) / strengthbasenet[names(strengthbasenet) %in% get.vertex.attribute(Temp, "vertex.names")]
-      Secundaryext <- as.numeric(which(RelISloss < IS[match(names(RelISloss), names(IS))]))
+      ))
+      RelISloss <-  AbsIS / strengthbasenet[names(strengthbasenet) %in% get.vertex.attribute(Temp, "vertex.names")]
+      Secundaryext <- which(AbsIS == 0 | RelISloss < IS[match(names(RelISloss), names(IS))])
+      Secundaryext <- match(names(Secundaryext), get.vertex.attribute(Network, "vertex.names"))
     }
-
-    DF$SecExt[i]<- length(Secundaryext)
+    DF$SecExt[i] <- length(Secundaryext)
 
     ### Return of objects
-    FinalExt[[i]] <-(Secundaryext)
+    FinalExt[[i]] <- (Secundaryext)
     accExt <- append(accExt, DF$Spp[1:i])
     accExt <- unique(append(accExt,Secundaryext))
     if(verbose){setTxtProgressBar(ProgBar, i)}
 
-    if (DF$L[i] == 0) break
   }
   DF <- DF[complete.cases(DF),]
   DF$AccSecExt <- cumsum(DF$SecExt)
