@@ -624,7 +624,7 @@ RandomExtinctions <- function(Network, nsim = 10, parallel = FALSE, ncores,
     cl <- makeCluster(ncores)
     registerDoParallel(cl)
     sims <- foreach(i=1:nsim, .packages = "NetworkExtinction")%dopar%{
-      sims <- try(ExtinctionOrder(Network = network, Order = sample(1:network.size(network), size = SimExt), IS = IS, verbose = FALSE), silent = TRUE)
+      sims <- try(ExtinctionOrder(Network = network, Order = sample(1:network.size(network), size = SimNum), IS = IS, verbose = FALSE), silent = TRUE)
       try({sims$simulation <- i}, silent = TRUE)
       sims
     }
@@ -632,7 +632,7 @@ RandomExtinctions <- function(Network, nsim = 10, parallel = FALSE, ncores,
   }else{
     sims <- list()
     for(i in 1:nsim){
-      sims[[i]] <- try(ExtinctionOrder(Network = network, Order = sample(1:network.size(network), size = SimExt), IS = IS, verbose = FALSE), silent = TRUE)
+      sims[[i]] <- try(ExtinctionOrder(Network = network, Order = sample(1:network.size(network), size = SimNum), IS = IS, verbose = FALSE), silent = TRUE)
       try({sims[[i]]$simulation <- i}, silent = TRUE)
       if(verbose){setTxtProgressBar(ProgBar, i)}
     }
