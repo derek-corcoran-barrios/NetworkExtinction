@@ -59,6 +59,8 @@ SimulateExtinctions <- function(Network, Method,
                                 IS = 0, verbose = TRUE){
   Network <- .DataInit(x = Network)
 
+  if(!is.null(Order)){Method <- "Ordered"}
+
   '%ni%'<- Negate('%in%')
   if(Method %ni% c("Mostconnected", "Ordered")) stop('Choose the right method. See ?SimulateExtinction.')
 
@@ -722,7 +724,7 @@ RandomExtinctions <- function(Network, nsim = 10, parallel = FALSE, ncores,
 #'
 #' NullHyp <- RandomExtinctions(Network = net, nsim = 100, plot = TRUE)
 #'
-#' CompareExtinctions(Nullmodel = NullHyp, Hypothesis = History)
+#' CompareExtinctions(Nullmodel = NullHyp[[1]], Hypothesis = History)
 #' @importFrom broom tidy
 #' @importFrom ggplot2 aes
 #' @importFrom ggplot2 geom_line
@@ -736,14 +738,14 @@ RandomExtinctions <- function(Network, nsim = 10, parallel = FALSE, ncores,
 #' @export
 
 CompareExtinctions <- function(Nullmodel, Hypothesis){
-  if(class(Hypothesis)[2] == "SimulateExt"){
+  if(class(Hypothesis$sims)[2] == "SimulateExt"){
     NumExt <- sd <- AccSecExt <- AccSecExt_mean <-NULL
-    if(class(Nullmodel)[1] == "list"){
+    if(class(Nullmodel$sims)[1] == "list"){
       g <- Nullmodel$graph + geom_line(aes(color = "blue"))
       g <- g + geom_point(data = Hypothesis, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison",values =c("black", "blue"), label = c("Observed","Null hypothesis"))
     } else {
-      g <- ggplot(Nullmodel, aes(x = NumExt, y = AccSecExt_mean)) + geom_ribbon(aes_string(ymin = "Lower", ymax = "Upper"), fill = muted("red")) + geom_line() + ylab("Acc. Secondary extinctions") + xlab("Primary extinctions") + theme_bw()
-      g <- g + geom_point(data = Hypothesis, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison",values =c("black", "blue"), label = c("Observed","Null hypothesis"))
+      g <- ggplot(Nullmodel$sims, aes(x = NumExt, y = AccSecExt_mean)) + geom_ribbon(aes_string(ymin = "Lower", ymax = "Upper"), fill = muted("red")) + geom_line() + ylab("Acc. Secondary extinctions") + xlab("Primary extinctions") + theme_bw()
+      g <- g + geom_point(data = Hypothesis$sims, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis$sims, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison",values =c("black", "blue"), label = c("Observed","Null hypothesis"))
       g
     }
 
@@ -751,7 +753,7 @@ CompareExtinctions <- function(Nullmodel, Hypothesis){
 
     return(g)
   }
-  if(class(Hypothesis)[2] %in% c("Mostconnected", "ExtinctionOrder")){
+  if(class(Hypothesis$sims)[2] %in% c("Mostconnected", "ExtinctionOrder")){
     NumExt <- sd <- AccSecExt <- AccSecExt_mean <-NULL
     g <- Nullmodel$graph + geom_line(aes(color = "blue"))
     g <- g + geom_point(data = Hypothesis, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison", values =c("black", "blue"), label = c("Observed","Null hypothesis"))
