@@ -63,8 +63,10 @@ SimulateExtinctions <- function(Network, Method,
   if(Method %ni% c("Mostconnected", "Ordered")) stop('Choose the right method. See ?SimulateExtinction.')
 
   if(Method == "Mostconnected"){
-    DF <- .Mostconnected(Network = Network, clust.method = clust.method,
-                         IS = IS, verbose = verbose)
+    Conected <- data.frame(ID = 1:network.size(Network), Grado = degree(edgelist, c("total")))
+    Conected <- arrange(Conected, desc(Grado))
+    DF <- ExtinctionOrder(Network = Network, Order = Conected$ID, clust.method = clust.method,
+                          IS = IS, verbose = verbose)
   }
   if(Method == "Ordered"){
     DF <- ExtinctionOrder(Network = Network, Order = Order, clust.method = clust.method,
@@ -74,273 +76,304 @@ SimulateExtinctions <- function(Network, Method,
   return(DF)
 }
 
-#' Extinctions analysis from most connected to less connected nodes in the network
+#' #' Extinctions analysis from most connected to less connected nodes in the network
+#' #'
+#' #' It takes a network and it calculates wich node is the most connected
+#' #' of the network, using total degree. Then remove the most connected node,
+#' #' and calculates the the topological indexes of the network and the number of
+#' #' secundary extintions (how many species have indegree 0, without considered
+#' #' primary producers). After that, remove the nodes that were secondarily extinct
+#' #' in the previous step and recalculate which is the new most connected
+#' #' node and so on, until the number of links in the network is zero.
+#' #'
+#' #
+#' #' @param Network a trophic network of class network
+#' #' @return exports data frame with the characteristics of the network after every
+#' #' extintion. The resulting data frame contains 11 columns that incorporate the
+#' #' topological index, the secondary extinctions, predation release, and total extinctions of the network
+#' #' in each primary extinction.
+#' #' @importFrom network as.matrix.network.edgelist
+#' #' @importFrom network delete.vertices
+#' #' @importFrom network network.density
+#' #' @importFrom network network.edgecount
+#' #' @importFrom network network.size
+#' #' @importFrom sna degree
+#' #' @importFrom stats complete.cases
+#' #' @importFrom dplyr arrange
+#' #' @importFrom dplyr desc
+#' #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
+#' #' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
+#' #' @seealso [NetworkExtinction::ExtinctionOrder()]
+#' #' @export
 #'
-#' It takes a network and it calculates wich node is the most connected
-#' of the network, using total degree. Then remove the most connected node,
-#' and calculates the the topological indexes of the network and the number of
-#' secundary extintions (how many species have indegree 0, without considered
-#' primary producers). After that, remove the nodes that were secondarily extinct
-#' in the previous step and recalculate which is the new most connected
-#' node and so on, until the number of links in the network is zero.
 #'
-#
-#' @param Network a trophic network of class network
-#' @return exports data frame with the characteristics of the network after every
-#' extintion. The resulting data frame contains 11 columns that incorporate the
-#' topological index, the secondary extinctions, predation release, and total extinctions of the network
-#' in each primary extinction.
-#' @importFrom network as.matrix.network.edgelist
-#' @importFrom network delete.vertices
-#' @importFrom network network.density
-#' @importFrom network network.edgecount
-#' @importFrom network network.size
-#' @importFrom sna degree
-#' @importFrom stats complete.cases
-#' @importFrom dplyr arrange
-#' @importFrom dplyr desc
-#' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
-#' @seealso [NetworkExtinction::ExtinctionOrder()]
-#' @export
-
-
-Mostconnected <- function(Network, IS = 0, verbose = TRUE){
-  Grado <- NULL
-  Network <- .DataInit(x = Network)
-  edgelist <- as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
-  Conected <- data.frame(ID = 1:network.size(Network), Grado = degree(edgelist, c("total")))
-  Conected <- arrange(Conected, desc(Grado))
-  Conected1<- c(Conected$ID)
-  indegreebasenet <- degree(Network, cmode = "indegree")
-  indegreebasenetzeros <- sum(degree(Network, cmode = "indegree") == 0)
-  indegreetopnetzeros <- sum(degree(Network, cmode = "outdegree") == 0)
-  Producers <- (1:length(degree(Network, cmode = "indegree")))[degree(Network, cmode = "indegree") == 0]
-  TopPredators <- (1:length(degree(Network, cmode = "outdegree")))[degree(Network, cmode = "outdegree") == 0]
-  DF <- data.frame(Spp = rep(NA, network.size(Network)), S = rep(NA, network.size(Network)), L = rep(NA, network.size(Network)), C = rep(NA, network.size(Network)), Link_density = rep(NA, network.size(Network)),SecExt = rep(NA,network.size(Network)), Pred_release = rep(NA,network.size(Network)), Iso_nodes =rep (NA,network.size(Network)))
-
-  Secundaryext <- c()
-  Predationrel <- c()
-  accExt <- c()
-  totalExt <- c()
-  FinalExt <- list()
-  Conected3 <- c()
-
-  ####LOOP####
-  for (i in 1:network.size(Network)){
-    #esta lista tiene el mismo orden que conected 1, hay que
-    #volver a hacer la red y calcular el grado
-    if (length(accExt)==0){
-      Temp <- Network
-      DF$Spp[i] <- Conected1[i]
-      delete.vertices(Temp, c(DF$Spp[1:i]))
-    }
-    if (length(accExt)>0){
-      Temp <- Network
-      Temp <- delete.vertices(Temp, c(accExt))
-      edgelist <- as.matrix.network.edgelist(Temp,matrix.type="edgelist")
-      Conected2 <- data.frame(ID = 1:network.size(Temp), Grado = degree(edgelist, c("total")))
-      Conected2 <- arrange(Conected2, desc(Grado))
-      for(j in sort(accExt)){
-        Conected2$ID <- ifelse(Conected2$ID < j, Conected2$ID, Conected2$ID + 1)
-      }
-
-      DF$Spp[i] <- Conected2$ID[1]
-      Temp <- Network
-
-      delete.vertices(Temp, unique(c(c(DF$Spp[1:i]),accExt)))
-    }
-
-    DF$S[i] <- network.size(Temp)
-    DF$L[i] <- network.edgecount(Temp)
-    DF$C[i] <- network.density(Temp)
-    DF$Link_density [i] <- DF$L[i]/DF$S[i]
-    SecundaryextTemp <- (1:length(degree(Temp, cmode = "indegree")))[degree(Temp, cmode = "indegree") == 0]
-    for(j in sort(unique(c(c(DF$Spp[1:i]),accExt)))){
-      SecundaryextTemp <- ifelse(SecundaryextTemp < j, SecundaryextTemp, SecundaryextTemp + 1)
-    }
-    Secundaryext <- SecundaryextTemp
-    Secundaryext <- Secundaryext[!(Secundaryext %in% Producers)]
-    DF$SecExt[i]<- length(Secundaryext)
-
-    PredationrelTemp <- (1:length(degree(Temp, cmode = "outdegree")))[degree(Temp, cmode = "outdegree") == 0]
-    for(j in sort(unique(c(c(DF$Spp[1:i]),accExt)))){
-      PredationrelTemp <- ifelse(PredationrelTemp < j, PredationrelTemp, PredationrelTemp + 1)
-    }
-    Predationrel <- PredationrelTemp
-    Predationrel <- Predationrel[!(Predationrel %in% TopPredators)]
-    DF$Pred_release[i]<- length(Predationrel)
-
-    DF$Iso_nodes[i] <- sum(degree(Temp) == 0)
-    print(i)
-    FinalExt[[i]] <-(Secundaryext)
-    accExt <- append(accExt, DF$Spp[1:i])
-    accExt <- unique(append(accExt,Secundaryext))
-
-    if (DF$L[i] == 0) break
-  }
-  DF <- DF[complete.cases(DF),]
-  DF$AccSecExt<- cumsum(DF$SecExt)
-  DF$NumExt <- 1:nrow(DF)
-  DF$TotalExt <- DF$AccSecExt + DF$NumExt
-  class(DF) <- c("data.frame", "Mostconnected")
-  .Deprecated("SimulateExtinctions")
-  return(DF)
-}
-
-#' Extinctions analysis from most connected to less connected nodes in the network
+#' Mostconnected <- function(Network, IS = 0, verbose = TRUE){
+#'   Grado <- NULL
+#'   Network <- .DataInit(x = Network)
+#'   edgelist <- as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
+#'   Conected <- data.frame(ID = 1:network.size(Network), Grado = degree(edgelist, c("total")))
+#'   Conected <- arrange(Conected, desc(Grado))
+#'   Conected1<- c(Conected$ID)
+#'   indegreebasenet <- degree(Network, cmode = "indegree")
+#'   indegreebasenetzeros <- sum(degree(Network, cmode = "indegree") == 0)
+#'   indegreetopnetzeros <- sum(degree(Network, cmode = "outdegree") == 0)
+#'   Producers <- (1:length(degree(Network, cmode = "indegree")))[degree(Network, cmode = "indegree") == 0]
+#'   TopPredators <- (1:length(degree(Network, cmode = "outdegree")))[degree(Network, cmode = "outdegree") == 0]
+#'   DF <- data.frame(Spp = rep(NA, network.size(Network)), S = rep(NA, network.size(Network)), L = rep(NA, network.size(Network)), C = rep(NA, network.size(Network)), Link_density = rep(NA, network.size(Network)),SecExt = rep(NA,network.size(Network)), Pred_release = rep(NA,network.size(Network)), Iso_nodes =rep (NA,network.size(Network)))
 #'
-#' It takes a network and it calculates wich node is the most connected
-#' of the network, using total degree. Then remove the most connected node,
-#' and calculates the the topological indexes of the network and the number of
-#' secundary extintions (how many species have indegree 0, without considered
-#' primary producers). After that, remove the nodes that were secondarily extinct
-#' in the previous step and recalculate which is the new most connected
-#' node and so on, until the number of links in the network is zero.
+#'   Secundaryext <- c()
+#'   Predationrel <- c()
+#'   accExt <- c()
+#'   totalExt <- c()
+#'   FinalExt <- list()
+#'   Conected3 <- c()
 #'
-#
-#' @param Network a trophic network of class network
-#' @param clust.method a character with the options cluster_edge_betweenness, cluster_spinglass, cluster_label_prop or cluster_infomap
-#' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require before being considered secondarily extinct (i.e. IS = 0.7 leads to removal of all nodes which lose 30% of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
-#' @param verbose Logical. Whether to report on function progress or not.
-#' @return exports data frame with the characteristics of the network after every
-#' extinction. The resulting data frame contains 11 columns that incorporate the
-#' topological index, the secondary extinctions, predation release, and total extinctions of the network
-#' in each primary extinction.
-#' @importFrom network as.matrix.network.edgelist
-#' @importFrom network delete.vertices
-#' @importFrom network network.density
-#' @importFrom network network.edgecount
-#' @importFrom network network.size
-#' @importFrom sna degree
-#' @importFrom stats complete.cases
-#' @importFrom dplyr arrange
-#' @importFrom dplyr desc
-#' @importFrom dplyr relocate
-#' @importFrom network as.matrix.network.adjacency
-#' @importFrom igraph graph_from_adjacency_matrix
-#' @importFrom igraph cluster_edge_betweenness
-#' @importFrom igraph cluster_spinglass
-#' @importFrom igraph cluster_label_prop
-#' @importFrom igraph cluster_infomap
-#' @importFrom igraph modularity
-#' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
-#' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
-#' @seealso [NetworkExtinction::ExtinctionOrder()]
+#'   ####LOOP####
+#'   for (i in 1:network.size(Network)){
+#'     #esta lista tiene el mismo orden que conected 1, hay que
+#'     #volver a hacer la red y calcular el grado
+#'     if (length(accExt)==0){
+#'       Temp <- Network
+#'       DF$Spp[i] <- Conected1[i]
+#'       delete.vertices(Temp, c(DF$Spp[1:i]))
+#'     }
+#'     if (length(accExt)>0){
+#'       Temp <- Network
+#'       Temp <- delete.vertices(Temp, c(accExt))
+#'       edgelist <- as.matrix.network.edgelist(Temp,matrix.type="edgelist")
+#'       Conected2 <- data.frame(ID = 1:network.size(Temp), Grado = degree(edgelist, c("total")))
+#'       Conected2 <- arrange(Conected2, desc(Grado))
+#'       for(j in sort(accExt)){
+#'         Conected2$ID <- ifelse(Conected2$ID < j, Conected2$ID, Conected2$ID + 1)
+#'       }
+#'
+#'       DF$Spp[i] <- Conected2$ID[1]
+#'       Temp <- Network
+#'
+#'       delete.vertices(Temp, unique(c(c(DF$Spp[1:i]),accExt)))
+#'     }
+#'
+#'     DF$S[i] <- network.size(Temp)
+#'     DF$L[i] <- network.edgecount(Temp)
+#'     DF$C[i] <- network.density(Temp)
+#'     DF$Link_density [i] <- DF$L[i]/DF$S[i]
+#'     SecundaryextTemp <- (1:length(degree(Temp, cmode = "indegree")))[degree(Temp, cmode = "indegree") == 0]
+#'     for(j in sort(unique(c(c(DF$Spp[1:i]),accExt)))){
+#'       SecundaryextTemp <- ifelse(SecundaryextTemp < j, SecundaryextTemp, SecundaryextTemp + 1)
+#'     }
+#'     Secundaryext <- SecundaryextTemp
+#'     Secundaryext <- Secundaryext[!(Secundaryext %in% Producers)]
+#'     DF$SecExt[i]<- length(Secundaryext)
+#'
+#'     PredationrelTemp <- (1:length(degree(Temp, cmode = "outdegree")))[degree(Temp, cmode = "outdegree") == 0]
+#'     for(j in sort(unique(c(c(DF$Spp[1:i]),accExt)))){
+#'       PredationrelTemp <- ifelse(PredationrelTemp < j, PredationrelTemp, PredationrelTemp + 1)
+#'     }
+#'     Predationrel <- PredationrelTemp
+#'     Predationrel <- Predationrel[!(Predationrel %in% TopPredators)]
+#'     DF$Pred_release[i]<- length(Predationrel)
+#'
+#'     DF$Iso_nodes[i] <- sum(degree(Temp) == 0)
+#'     print(i)
+#'     FinalExt[[i]] <-(Secundaryext)
+#'     accExt <- append(accExt, DF$Spp[1:i])
+#'     accExt <- unique(append(accExt,Secundaryext))
+#'
+#'     if (DF$L[i] == 0) break
+#'   }
+#'   DF <- DF[complete.cases(DF),]
+#'   DF$AccSecExt<- cumsum(DF$SecExt)
+#'   DF$NumExt <- 1:nrow(DF)
+#'   DF$TotalExt <- DF$AccSecExt + DF$NumExt
+#'   class(DF) <- c("data.frame", "Mostconnected")
+#'   .Deprecated("SimulateExtinctions")
+#'   return(DF)
+#' }
 
-.Mostconnected <- function(Network, clust.method = "cluster_infomap",
-                           IS = IS, verbose = verbose){
-  Link_density <- Modularity <- Grado <- NULL
-  Network <- Network
-  edgelist <- as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
-  Conected <- data.frame(ID = 1:network.size(Network), Grado = degree(edgelist, c("total")))
-  Conected <- arrange(Conected, desc(Grado))
-  Conected1<- c(Conected$ID)
-  indegreebasenet <- degree(Network, cmode = "indegree")
-  indegreebasenetzeros <- sum(degree(Network, cmode = "indegree") == 0)
-  indegreetopnetzeros <- sum(degree(Network, cmode = "outdegree") == 0)
-  Producers <- (1:length(degree(Network, cmode = "indegree")))[degree(Network, cmode = "indegree") == 0]
-  TopPredators <- (1:length(degree(Network, cmode = "outdegree")))[degree(Network, cmode = "outdegree") == 0]
-  DF <- data.frame(Spp = rep(NA, network.size(Network)), S = rep(NA, network.size(Network)), L = rep(NA, network.size(Network)), C = rep(NA, network.size(Network)), Link_density = rep(NA, network.size(Network)),SecExt = rep(NA,network.size(Network)), Pred_release = rep(NA,network.size(Network)), Iso_nodes =rep (NA,network.size(Network)))
-
-  Secundaryext <- c()
-  Predationrel <- c()
-  accExt <- c()
-  totalExt <- c()
-  FinalExt <- list()
-  Conected3 <- c()
-
-  ####LOOP####
-  for (i in 1:network.size(Network)){
-    #esta lista tiene el mismo orden que conected 1, hay que
-    #volver a hacer la red y calcular el grado
-    if (length(accExt)==0){
-      Temp <- Network
-      DF$Spp[i] <- Conected1[i]
-      delete.vertices(Temp, c(DF$Spp[1:i]))
-    }
-    if (length(accExt)>0){
-      Temp <- Network
-      Temp <- delete.vertices(Temp, c(accExt))
-      edgelist <- as.matrix.network.edgelist(Temp,matrix.type="edgelist")
-      Conected2 <- data.frame(ID = 1:network.size(Temp), Grado = degree(edgelist, c("total")))
-      Conected2 <- arrange(Conected2, desc(Grado))
-      for(j in sort(accExt)){
-        Conected2$ID <- ifelse(Conected2$ID < j, Conected2$ID, Conected2$ID + 1)
-      }
-
-      DF$Spp[i] <- Conected2$ID[1]
-      Temp <- Network
-
-      delete.vertices(Temp, unique(c(c(DF$Spp[1:i]),accExt)))
-    }
-
-    DF$S[i] <- network.size(Temp)
-    DF$L[i] <- network.edgecount(Temp)
-    DF$C[i] <- network.density(Temp)
-    DF$Link_density [i] <- DF$L[i]/DF$S[i]
-
-    Networkclass = class(Temp)
-
-    if (Networkclass[1] == "matrix"){
-      netgraph = graph_from_adjacency_matrix(Temp, mode = "directed", weighted = NULL)
-    }
-
-    if (Networkclass[1] == "network"){
-      net = as.matrix.network.adjacency(Temp)
-      netgraph = graph_from_adjacency_matrix(net, mode = "directed", weighted = NULL)
-    }
-
-    if (clust.method == "cluster_edge_betweenness"){
-      Membership = suppressWarnings(cluster_edge_betweenness(netgraph, weights=NULL, directed = FALSE, edge.betweenness = TRUE,
-                                                             merges = TRUE, bridges = TRUE, modularity = TRUE, membership = TRUE))
-    } else if (clust.method == "cluster_spinglass"){
-      spins = network.size(Temp)
-      Membership = suppressWarnings(cluster_spinglass(netgraph, spins=spins)) #spins could be the Richness
-    }else if (clust.method == "cluster_label_prop"){
-      Membership = suppressWarnings(cluster_label_prop(netgraph, weights = NULL, initial = NULL,
-                                                       fixed = NULL))
-    }else if (clust.method == "cluster_infomap"){
-      nb.trials = network.size(Temp)
-      Membership = suppressWarnings(cluster_infomap(netgraph, e.weights = NULL, v.weights = NULL,
-                                                    nb.trials = nb.trials, modularity = TRUE))
-
-    } else stop('Select a valid method for clustering. ?SimulateExtinction')
-
-    DF$Modularity[i] <- suppressMessages(modularity(Membership))
-
-    SecundaryextTemp <- (1:length(degree(Temp, cmode = "indegree")))[degree(Temp, cmode = "indegree") == 0]
-    for(j in sort(unique(c(c(DF$Spp[1:i]),accExt)))){
-      SecundaryextTemp <- ifelse(SecundaryextTemp < j, SecundaryextTemp, SecundaryextTemp + 1)
-    }
-    Secundaryext <- SecundaryextTemp
-    Secundaryext <- Secundaryext[!(Secundaryext %in% Producers)]
-    DF$SecExt[i]<- length(Secundaryext)
-
-    PredationrelTemp <- (1:length(degree(Temp, cmode = "outdegree")))[degree(Temp, cmode = "outdegree") == 0]
-    for(j in sort(unique(c(c(DF$Spp[1:i]),accExt)))){
-      PredationrelTemp <- ifelse(PredationrelTemp < j, PredationrelTemp, PredationrelTemp + 1)
-    }
-    Predationrel <- PredationrelTemp
-    Predationrel <- Predationrel[!(Predationrel %in% TopPredators)]
-    DF$Pred_release[i]<- length(Predationrel)
-
-    DF$Iso_nodes[i] <- sum(degree(Temp) == 0)
-    print(i)
-    FinalExt[[i]] <-(Secundaryext)
-    accExt <- append(accExt, DF$Spp[1:i])
-    accExt <- unique(append(accExt,Secundaryext))
-
-    if (DF$L[i] == 0) break
-  }
-  DF <- DF[complete.cases(DF),]
-  DF$AccSecExt<- cumsum(DF$SecExt)
-  DF$NumExt <- 1:nrow(DF)
-  DF$TotalExt <- DF$AccSecExt + DF$NumExt
-  DF <- relocate(DF, Modularity, .after = Link_density)
-  class(DF) <- c("data.frame", "SimulateExt")
-  return(DF)
-}
+#' #' Extinctions analysis from most connected to less connected nodes in the network
+#' #'
+#' #' It takes a network and it calculates wich node is the most connected
+#' #' of the network, using total degree. Then remove the most connected node,
+#' #' and calculates the the topological indexes of the network and the number of
+#' #' secundary extintions (how many species have indegree 0, without considered
+#' #' primary producers). After that, remove the nodes that were secondarily extinct
+#' #' in the previous step and recalculate which is the new most connected
+#' #' node and so on, until the number of links in the network is zero.
+#' #'
+#' #
+#' #' @param Network a trophic network of class network
+#' #' @param clust.method a character with the options cluster_edge_betweenness, cluster_spinglass, cluster_label_prop or cluster_infomap
+#' #' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require before being considered secondarily extinct (i.e. IS = 0.7 leads to removal of all nodes which lose 30% of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
+#' #' @param verbose Logical. Whether to report on function progress or not.
+#' #' @return exports data frame with the characteristics of the network after every
+#' #' extinction. The resulting data frame contains 11 columns that incorporate the
+#' #' topological index, the secondary extinctions, predation release, and total extinctions of the network
+#' #' in each primary extinction.
+#' #' @importFrom network as.matrix.network.edgelist
+#' #' @importFrom network delete.vertices
+#' #' @importFrom network network.density
+#' #' @importFrom network network.edgecount
+#' #' @importFrom network network.size
+#' #' @importFrom sna degree
+#' #' @importFrom stats complete.cases
+#' #' @importFrom dplyr arrange
+#' #' @importFrom dplyr desc
+#' #' @importFrom dplyr relocate
+#' #' @importFrom network as.matrix.network.adjacency
+#' #' @importFrom igraph graph_from_adjacency_matrix
+#' #' @importFrom igraph cluster_edge_betweenness
+#' #' @importFrom igraph cluster_spinglass
+#' #' @importFrom igraph cluster_label_prop
+#' #' @importFrom igraph cluster_infomap
+#' #' @importFrom igraph modularity
+#' #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
+#' #' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
+#' #' @seealso [NetworkExtinction::ExtinctionOrder()]
+#'
+#' .Mostconnected <- function(Network, clust.method = "cluster_infomap",
+#'                            IS = IS, verbose = verbose){
+#'   ## setting up objects for function run
+#'   Link_density <- Modularity <- Grado <- NULL
+#'   Network <- Network
+#'   edgelist <- as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
+#'   Conected <- data.frame(ID = 1:network.size(Network), Grado = degree(edgelist, c("total")))
+#'   Conected <- arrange(Conected, desc(Grado))
+#'   Conected1<- c(Conected$ID)
+#'   if(length(IS )== 1){
+#'     IS <- rep(IS, network.size(Network))
+#'     names(IS) <- get.vertex.attribute(Network, "vertex.names")
+#'   }
+#'
+#'   ## Base net calculations
+#'   ### identify base interaction strengths per node
+#'   if(sum(IS) != 0){
+#'     if(sum(get.edge.attribute(Network, "weight"), na.rm = TRUE) == 0){
+#'       stop("Either your network does not contain any edges with weights or your network does not have the edge attribute `weight` required for calculation of extinctions based on relative interaction strength loss.")
+#'     }
+#'     net <- as.matrix.network.adjacency(Network, attrname = "weight")
+#'     netgraph <- suppressMessages(graph_from_adjacency_matrix(net, weighted = TRUE))
+#'     strengthbasenet <- igraph::strength(netgraph)
+#'   }
+#'
+#'   ### identification of producers and top predators
+#'   indegreebasenet <- degree(Network, cmode = "indegree")
+#'   indegreebasenetzeros <- sum(degree(Network, cmode = "indegree") == 0)
+#'   indegreetopnetzeros <- sum(degree(Network, cmode = "outdegree") == 0)
+#'   Producers <- (1:length(degree(Network, cmode = "indegree")))[degree(Network, cmode = "indegree") == 0]
+#'   TopPredators <- (1:length(degree(Network, cmode = "outdegree")))[degree(Network, cmode = "outdegree") == 0]
+#'
+#'   ## output object
+#'   DF <- data.frame(Spp = rep(NA, network.size(Network)), S = rep(NA, network.size(Network)), L = rep(NA, network.size(Network)), C = rep(NA, network.size(Network)), Link_density = rep(NA, network.size(Network)),SecExt = rep(NA,network.size(Network)), Pred_release = rep(NA,network.size(Network)), Iso_nodes =rep (NA,network.size(Network)))
+#'   Secundaryext <- c()
+#'   Predationrel <- c()
+#'   accExt <- c()
+#'   totalExt <- c()
+#'   FinalExt <- list()
+#'   Conected3 <- c()
+#'
+#'   ## Sequential extinction simulation
+#'   if(verbose){ProgBar <- txtProgressBar(max = network.size(Network), style = 3)}
+#'
+#'   ### creating temporary network representations and deleting vertices if they have been set to go extinct
+#'   for (i in 1:network.size(Network)){
+#'     if (length(accExt)==0){
+#'       Temp <- Network
+#'       DF$Spp[i] <- Conected1[i]
+#'       delete.vertices(Temp, c(DF$Spp[1:i]))
+#'     }
+#'     if (length(accExt)>0){
+#'       Temp <- Network
+#'       Temp <- delete.vertices(Temp, c(accExt))
+#'       edgelist <- as.matrix.network.edgelist(Temp,matrix.type="edgelist")
+#'       Conected2 <- data.frame(ID = 1:network.size(Temp), Grado = degree(edgelist, c("total")))
+#'       Conected2 <- arrange(Conected2, desc(Grado))
+#'       for(j in sort(accExt)){
+#'         Conected2$ID <- ifelse(Conected2$ID < j, Conected2$ID, Conected2$ID + 1)
+#'       }
+#'
+#'       DF$Spp[i] <- Conected2$ID[1]
+#'       Temp <- Network
+#'
+#'       delete.vertices(Temp, unique(c(c(DF$Spp[1:i]),accExt)))
+#'     }
+#'
+#'     ### network metrics to output object
+#'     DF$S[i] <- network.size(Temp)
+#'     DF$L[i] <- network.edgecount(Temp)
+#'     DF$C[i] <- network.density(Temp)
+#'     DF$Link_density [i] <- DF$L[i]/DF$S[i]
+#'
+#'     if(i > 1 ){
+#'       if(DF$L[i-1] == 0){
+#'         if(verbose){setTxtProgressBar(ProgBar, length(Order))}
+#'         break
+#'       }
+#'     }
+#'
+#'
+#'     ### calculating modularity
+#'     Networkclass = class(Temp)
+#'     if (Networkclass[1] == "matrix"){
+#'       netgraph = graph_from_adjacency_matrix(Temp, mode = "directed", weighted = TRUE)
+#'     }
+#'
+#'     if (Networkclass[1] == "network"){
+#'       net = as.matrix.network.adjacency(Temp)
+#'       netgraph = graph_from_adjacency_matrix(net, mode = "directed", weighted = TRUE)
+#'     }
+#'
+#'     if (clust.method == "cluster_edge_betweenness"){
+#'       Membership = suppressWarnings(cluster_edge_betweenness(netgraph, weights = TRUE, directed = FALSE, edge.betweenness = TRUE,
+#'                                                              merges = TRUE, bridges = TRUE, modularity = TRUE, membership = TRUE))
+#'     } else if (clust.method == "cluster_spinglass"){
+#'       spins = network.size(Temp)
+#'       Membership = suppressWarnings(cluster_spinglass(netgraph, spins=spins)) #spins could be the Richness
+#'     }else if (clust.method == "cluster_label_prop"){
+#'       Membership = suppressWarnings(cluster_label_prop(netgraph, weights = TRUE, initial = NULL,
+#'                                                        fixed = NULL))
+#'     }else if (clust.method == "cluster_infomap"){
+#'       nb.trials = network.size(Temp)
+#'       Membership = suppressWarnings(cluster_infomap(as.undirected(netgraph),
+#'                                                     e.weights = E(netgraph)$weight,
+#'                                                     v.weights = NULL,
+#'                                                     nb.trials = nb.trials,
+#'                                                     modularity = TRUE))
+#'
+#'     } else stop('Select a valid method for clustering. ?SimulateExtinction')
+#'     DF$Modularity[i] <- Membership$modularity
+#'
+#'     SecundaryextTemp <- (1:length(degree(Temp, cmode = "indegree")))[degree(Temp, cmode = "indegree") == 0]
+#'     for(j in sort(unique(c(c(DF$Spp[1:i]),accExt)))){
+#'       SecundaryextTemp <- ifelse(SecundaryextTemp < j, SecundaryextTemp, SecundaryextTemp + 1)
+#'     }
+#'     Secundaryext <- SecundaryextTemp
+#'     Secundaryext <- Secundaryext[!(Secundaryext %in% Producers)]
+#'     DF$SecExt[i]<- length(Secundaryext)
+#'
+#'     PredationrelTemp <- (1:length(degree(Temp, cmode = "outdegree")))[degree(Temp, cmode = "outdegree") == 0]
+#'     for(j in sort(unique(c(c(DF$Spp[1:i]),accExt)))){
+#'       PredationrelTemp <- ifelse(PredationrelTemp < j, PredationrelTemp, PredationrelTemp + 1)
+#'     }
+#'     Predationrel <- PredationrelTemp
+#'     Predationrel <- Predationrel[!(Predationrel %in% TopPredators)]
+#'     DF$Pred_release[i]<- length(Predationrel)
+#'
+#'     DF$Iso_nodes[i] <- sum(degree(Temp) == 0)
+#'     print(i)
+#'     FinalExt[[i]] <-(Secundaryext)
+#'     accExt <- append(accExt, DF$Spp[1:i])
+#'     accExt <- unique(append(accExt,Secundaryext))
+#'
+#'     if (DF$L[i] == 0) break
+#'   }
+#'   DF <- DF[complete.cases(DF),]
+#'   DF$AccSecExt<- cumsum(DF$SecExt)
+#'   DF$NumExt <- 1:nrow(DF)
+#'   DF$TotalExt <- DF$AccSecExt + DF$NumExt
+#'   DF <- relocate(DF, Modularity, .after = Link_density)
+#'   class(DF) <- c("data.frame", "SimulateExt")
+#'   return(DF)
+#' }
 
 #' Extinctions analysis from custom order
 #'
@@ -458,6 +491,7 @@ ExtinctionOrder <- function(Network, Order, IS = 0, verbose = TRUE,
     if(i > 1 ){
       if(DF$L[i-1] == 0){
         if(verbose){setTxtProgressBar(ProgBar, length(Order))}
+        warning(paste("All species in network went extinct through secondary extinction before all primary extinctions were simulated. This happened at extinction step", i-1, "out of", length(Order)))
         break
       }
     }
