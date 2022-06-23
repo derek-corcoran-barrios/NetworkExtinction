@@ -63,6 +63,7 @@ SimulateExtinctions <- function(Network, Method,
   if(Method %ni% c("Mostconnected", "Ordered")) stop('Choose the right method. See ?SimulateExtinction.')
 
   if(Method == "Mostconnected"){
+    edgelist <- as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
     Conected <- data.frame(ID = 1:network.size(Network), Grado = degree(edgelist, c("total")))
     Conected <- arrange(Conected, desc(Grado))
     DF <- ExtinctionOrder(Network = Network, Order = Conected$ID, clust.method = clust.method,
