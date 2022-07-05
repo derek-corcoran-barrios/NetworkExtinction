@@ -350,6 +350,9 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
     ## identify secondary extinctions ++++++++++ ++++++++++
     ### Relative Interaction Strength loss ++++++++++
     if(sum(IS) == 0){
+      # Predationrel <- network::get.vertex.attribute(Temp, "vertex.names")[which(degree(Temp, cmode = "outdegree") == 0)]
+      # Secundaryextrel <- network::get.vertex.attribute(Temp, "vertex.names")[which(degree(Temp, cmode = "indegree") == 0)]
+
       SecundaryextNames <- network::get.vertex.attribute(Temp, "vertex.names")[which(degree(Temp) == 0)]
       Secundaryext <- match(SecundaryextNames, network::get.vertex.attribute(Network, "vertex.names"))
     }else{
@@ -363,10 +366,14 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
     }
 
     ### for trophic networks ++++++++++
-
     if(NetworkType == "Trophic"){
-      DF$SecExt[i] <- length(SecundaryextNames[!(names(SecundaryextNames) %in% as.character(Producers))])
-      DF$Pred_release[i] <- length(SecundaryextNames[!(names(SecundaryextNames) %in% as.character(TopPredators))])
+      MidPredExt <- network::get.vertex.attribute(Temp, "vertex.names")[degree(Temp, cmode = "indegree") == 0]
+      MidPredExt <- match(MidPredExt[!(MidPredExt %in% Producers)], network::get.vertex.attribute(Network, "vertex.names"))
+      SecundaryextTrue <- c(SecundaryextNames[!(SecundaryextNames %in% as.character(Producers))],
+                            MidPredExt)
+      Secundaryext <- match(SecundaryextTrue, network::get.vertex.attribute(Network, "vertex.names"))
+      DF$SecExt[i] <- length(SecundaryextTrue)
+      DF$Pred_release[i] <- length(SecundaryextNames[!(SecundaryextNames %in% as.character(TopPredators))])
     }
     ### for mutualistic networks ++++++++++
     if(NetworkType == "Mutualistic"){
