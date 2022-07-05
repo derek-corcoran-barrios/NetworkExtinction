@@ -210,7 +210,8 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
                    Link_density = rep(NA, length(Order)),
                    SecExt = rep(NA,length(Order)),
                    Pred_release = rep(NA,length(Order)),
-                   Iso_nodes = rep (NA,length(Order)))
+                   Iso_nodes = rep (NA,length(Order)),
+                   Modularity = rep (NA,length(Order)))
   Secundaryext <- c()
   Predationrel <- c()
   accExt <- c()
