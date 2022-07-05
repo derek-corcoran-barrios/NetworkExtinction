@@ -246,7 +246,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
     if(i > 1){
       if(DF$L[i-1] == 0){
         if(verbose){setTxtProgressBar(ProgBar, length(Order))}
-        warning(paste("All species in network went extinct through secondary extinction before all primary extinctions were simulated. This happened at extinction step", i-1, "out of", length(Order)))
+        warning(paste("Your network become completely unconnected before all primary extinctions were simulated. This happened at extinction step", i-1, "out of", length(Order)))
         break
       }
     }
