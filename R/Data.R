@@ -6,6 +6,14 @@
 #'
 "net"
 
+#' A toymodel distance matrix
+#'
+#' A distance matrix used for demonstration of rewiring capabilities
+#'
+#' @format a distance matrix
+#'
+"dist"
+
 #' The foodweb of the intertidal zone in central chile
 #'
 #' A trophic network with 107 species present in the  intertidal zone of central Chile.
@@ -26,8 +34,8 @@
 
 #' A sparsely connected foodweb
 #'
-#' A trophic network with 30 species and 47 trophic interactions.
-#' This foodweb has a connectance of 0.03
+#' A network with 30 species and 47 interactions.
+#' This network has a connectance of 0.03
 
 
 #' @format a network
