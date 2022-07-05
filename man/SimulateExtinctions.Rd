@@ -8,10 +8,12 @@ SimulateExtinctions(
   Network,
   Method,
   Order = NULL,
+  NetworkType = "Trophic",
   clust.method = "cluster_infomap",
   IS = 0,
   Rewiring = FALSE,
-  RewiringDist = NULL,
+  RewiringDist,
+  RewiringProb = 0.5,
   verbose = TRUE
 )
 }
@@ -23,6 +25,8 @@ or a network object}
 
 \item{Order}{a numeric vector indexing order of primary extinctions. For Method = Mostconnected Order must be NULL. If Order is not NULL, Method is internally forced to be Ordered.}
 
+\item{NetworkType}{a character with the options Trophic and Mutualistic - is used to calculate secondary extinctions.}
+
 \item{clust.method}{a character with the options cluster_edge_betweenness, cluster_spinglass,
 cluster_label_prop or cluster_infomap, defaults to cluster_infomap}
 
@@ -32,11 +36,9 @@ cluster_label_prop or cluster_infomap, defaults to cluster_infomap}
 
 \item{RewiringDist}{a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities.}
 
-\item{verbose}{Logical. Whether to report on function progress or not.}
-
-\item{NetworkType}{a character with the options Trophic and Mutualistic - is used to calculate secondary extinctions.}
-
 \item{RewiringProb}{a numeric which identifies the threshold at which to assume rewiring potential is met.}
+
+\item{verbose}{Logical. Whether to report on function progress or not.}
 }
 \value{
 exports list containing a data frame with the characteristics of the network after every extinction and a network object containing the final network. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.
