@@ -5,7 +5,8 @@ Version: 0.2.1
 Authors@R: c(person("Derek", "Corcoran", email = "derek.corcoran.barrios@gmail.com",
   role = c("aut", "cre"), comment = c(ORCID = "0000-0002-0248-6230")), person("M. Isidora", "Ávila-Thieme", email = "msavila@uc.cl",
   role = c("aut"), comment = c(ORCID = "0000-0003-0772-4717")), person("Fernanda S.", "Valdovinos", role = c("aut")), person("Sergio A.", "Navarrete", role = c("aut")), 
-  person("Pablo A.", "Marquet", role = c("aut"), comment = c(ORCID = "0000-0001-6369-9339")))
+  person("Pablo A.", "Marquet", role = c("aut"), comment = c(ORCID = "0000-0001-6369-9339")), person("Erik", "Kusch", email = "erik.kusch@bio.au.dk",
+  role = c("aut"), comment = c(ORCID = "0000-0002-4984-7646")))
 Maintainer: Derek Corcoran <derek.corcoran.barrios@gmail.com>
 Description: Simulates the extinction of species in the food web and it analyzes
              its cascading effects, described in Dunne et al. (2002) <doi:10.1073/pnas.192407699>.
@@ -15,7 +16,7 @@ Imports: broom, doParallel, dplyr, foreach, ggplot2, igraph, magrittr, network, 
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Suggests: 
     knitr,
     rmarkdown,
