@@ -281,7 +281,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
     } else if (clust.method == "none"){
       Membership = NA
     }else stop('Select a valid method for clustering. ?SimulateExtinction')
-    DF$Modularity[i] <- Membership$modularity
+    DF$Modularity[i] <- Membership$modularity[1]
 
     ## rewiring ++++++++++ ++++++++++
     accExt <- unique(append(accExt, DF$Spp[1:i]))
