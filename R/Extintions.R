@@ -133,6 +133,7 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
 #' @importFrom network delete.vertices
 #' @importFrom network network.edgecount
 #' @importFrom network network.size
+#' @importFrom network network.density
 #' @importFrom network get.vertex.attribute
 #' @importFrom network get.edge.attribute
 #' @importFrom igraph as.undirected
