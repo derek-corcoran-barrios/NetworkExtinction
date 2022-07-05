@@ -136,6 +136,7 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
 #' @importFrom network get.vertex.attribute
 #' @importFrom network get.edge.attribute
 #' @importFrom igraph as.undirected
+#' @importFrom igraph E
 #' @importFrom sna degree
 #' @importFrom stats complete.cases
 #' @importFrom network as.matrix.network.adjacency
@@ -271,7 +272,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
     }else if (clust.method == "cluster_infomap"){
       nb.trials = 107#network.size(Temp)
       Membership = suppressWarnings(cluster_infomap(as.undirected(netgraph),
-                                                    e.weights = E(netgraph)$weight,
+                                                    e.weights = igraph::E(netgraph)$weight,
                                                     v.weights = NULL,
                                                     nb.trials = nb.trials,
                                                     modularity = TRUE))
