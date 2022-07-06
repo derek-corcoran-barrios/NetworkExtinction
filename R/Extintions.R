@@ -75,6 +75,7 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
                                 Rewiring = FALSE, RewiringDist, RewiringProb = 0.5,
                                 verbose = TRUE){
   Network <- .DataInit(x = Network)
+  if(!NetworkType %in% c("Trophic", "Mutualistic")){stop("Please specify NetworkType as either 'Trophic' or 'Mutualistic'")}
 
   if(!is.null(Order)){Method <- "Ordered"}
 
@@ -83,8 +84,8 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
 
   if(Method == "Mostconnected"){
     edgelist <- as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
-    Conected <- data.frame(ID = 1:network.size(Network), Grado = degree(edgelist, c("total")))
-    Conected <- arrange(Conected, desc(Grado))
+    Conected <- data.frame(ID = 1:network::network.size(Network), Grado = sna::degree(edgelist, c("total")))
+    Conected <- dplyr::arrange(Conected, desc(Grado))
     DF <- ExtinctionOrder(Network = Network, Order = Conected$ID, clust.method = clust.method,
                           IS = IS, Rewiring = Rewiring, RewiringDist = RewiringDist,
                           verbose = verbose, RewiringProb = RewiringProb, NetworkType = NetworkType)
@@ -156,11 +157,12 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
                             Rewiring = FALSE, RewiringDist, RewiringProb = 0.5,
                             verbose = TRUE
 ){
+  if(!NetworkType %in% c("Trophic", "Mutualistic")){stop("Please specify NetworkType as either 'Trophic' or 'Mutualistic'")}
   # Setting up Objects for function run ++++++++++ ++++++++++ ++++++++++ ++++++++++
   Link_density <- Modularity <- Grado <- NULL
   Network <- .DataInit(x = Network)
   edgelist <- as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
-  Conected <- data.frame(ID = 1:network.size(Network), Grado = degree(edgelist, c("total")))
+  Conected <- data.frame(ID = 1:network.size(Network), Grado = sna::degree(edgelist, c("total")))
   Conected1 <- Order
 
   ## Interaction Strength Loss Preparations ++++++++++ ++++++++++
@@ -192,15 +194,21 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
     #   stop("Either your network does not contain any edges with weights or your network does not have the edge attribute `weight` required for calculation of extinctions based on relative interaction strength loss.")
     # }
     netgraph <- suppressMessages(graph_from_adjacency_matrix(net, weighted = TRUE))
-    strengthbasenet <- igraph::strength(netgraph)
+    if(NetworkType == "Trophic"){
+      strengthbaseout <- igraph::strength(netgraph, mode = "out")
+      strengthbasein <- igraph::strength(netgraph, mode = "in")
+    }
+    if(NetworkType == "Mutualistic"){
+      strengthbasenet <- igraph::strength(netgraph)
+    }
   }
 
   ## identification of producers and top predators ++++++++++ ++++++++++
-  indegreebasenet <- degree(Network, cmode = "indegree")
-  indegreebasenetzeros <- sum(degree(Network, cmode = "indegree") == 0)
-  indegreetopnetzeros <- sum(degree(Network, cmode = "outdegree") == 0)
-  Producers <- network::get.vertex.attribute(Network, "vertex.names")[degree(Network, cmode = "indegree") == 0]
-  TopPredators <- network::get.vertex.attribute(Network, "vertex.names")[degree(Network, cmode = "outdegree") == 0]
+  indegreebasenet <- sna::degree(Network, cmode = "indegree")
+  indegreebasenetzeros <- sum(sna::degree(Network, cmode = "indegree") == 0)
+  indegreetopnetzeros <- sum(sna::degree(Network, cmode = "outdegree") == 0)
+  Producers <- network::get.vertex.attribute(Network, "vertex.names")[sna::degree(Network, cmode = "indegree") == 0]
+  TopPredators <- network::get.vertex.attribute(Network, "vertex.names")[sna::degree(Network, cmode = "outdegree") == 0]
 
   ## output object ++++++++++ ++++++++++
   DF <- data.frame(Spp = rep(NA, length(Order)),
@@ -282,7 +290,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
     } else if (clust.method == "none"){
       Membership = NA
     }else stop('Select a valid method for clustering. ?SimulateExtinction')
-    DF$Modularity[i] <- Membership$modularity[1]
+    DF$Modularity[i] <- Membership$modularity
 
     ## rewiring ++++++++++ ++++++++++
     accExt <- unique(append(accExt, DF$Spp[1:i]))
@@ -353,27 +361,37 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
     ## identify secondary extinctions ++++++++++ ++++++++++
     ### Relative Interaction Strength loss ++++++++++
     if(sum(IS) == 0){
-      # Predationrel <- network::get.vertex.attribute(Temp, "vertex.names")[which(degree(Temp, cmode = "outdegree") == 0)]
-      # Secundaryextrel <- network::get.vertex.attribute(Temp, "vertex.names")[which(degree(Temp, cmode = "indegree") == 0)]
-
-      SecundaryextNames <- network::get.vertex.attribute(Temp, "vertex.names")[which(degree(Temp) == 0)]
-      Secundaryext <- match(SecundaryextNames, network::get.vertex.attribute(Network, "vertex.names"))
+        SecundaryextNames <- network::get.vertex.attribute(Temp, "vertex.names")[which(degree(Temp) == 0)]
+        Secundaryext <- match(SecundaryextNames, network::get.vertex.attribute(Network, "vertex.names"))
     }else{
-      AbsIS <- igraph::strength(suppressMessages(graph_from_adjacency_matrix(
-        as.matrix.network.adjacency(Temp, attrname = "weight"),
-        weighted = TRUE)
-      ))
-      RelISloss <-  AbsIS / strengthbasenet[names(strengthbasenet) %in% network::get.vertex.attribute(Temp, "vertex.names")]
-      SecundaryextNames <- which(AbsIS == 0 | (1-RelISloss) < IS[match(names(RelISloss), names(IS))])
-      Secundaryext <- match(names(SecundaryextNames), network::get.vertex.attribute(Network, "vertex.names"))
+      if(NetworkType == "Trophic"){
+        AbsISin <- igraph::strength(suppressMessages(graph_from_adjacency_matrix(
+          as.matrix.network.adjacency(Temp, attrname = "weight"),
+          weighted = TRUE)
+        ), mode = "in")
+        RelISlossIn <-  AbsISin / strengthbasein[names(strengthbasein) %in% network::get.vertex.attribute(Temp, "vertex.names")]
+        SecundaryextNames <- names(which(AbsISin == 0 | (1-RelISlossIn) > IS[match(names(RelISlossIn), names(IS))]))
+        SecundaryextNames <- SecundaryextNames[!(SecundaryextNames %in% Producers)]
+        Secundaryext <- match(SecundaryextNames, network::get.vertex.attribute(Network, "vertex.names"))
+      }
+
+      if(NetworkType == "Mutualistic"){
+        AbsIS <- igraph::strength(suppressMessages(graph_from_adjacency_matrix(
+          as.matrix.network.adjacency(Temp, attrname = "weight"),
+          weighted = TRUE)
+        ))
+        RelISloss <-  AbsIS / strengthbasenet[names(strengthbasenet) %in% network::get.vertex.attribute(Temp, "vertex.names")]
+        SecundaryextNames <- names(which(AbsIS == 0 | (1-RelISloss) < IS[match(names(RelISloss), names(IS))]))
+        Secundaryext <- match(SecundaryextNames, network::get.vertex.attribute(Network, "vertex.names"))
+      }
     }
 
     ### for trophic networks ++++++++++
     if(NetworkType == "Trophic"){
-      MidPredExt <- network::get.vertex.attribute(Temp, "vertex.names")[degree(Temp, cmode = "indegree") == 0]
+      MidPredExt <- network::get.vertex.attribute(Temp, "vertex.names")[sna::degree(Temp, cmode = "indegree") == 0]
       MidPredExt <- match(MidPredExt[!(MidPredExt %in% Producers)], network::get.vertex.attribute(Network, "vertex.names"))
-      SecundaryextTrue <- c(SecundaryextNames[!(SecundaryextNames %in% as.character(Producers))],
-                            MidPredExt)
+      SecundaryextTrue <- unique(c(SecundaryextNames[!(SecundaryextNames %in% as.character(Producers))],
+                            MidPredExt))
       Secundaryext <- match(SecundaryextTrue, network::get.vertex.attribute(Network, "vertex.names"))
       DF$SecExt[i] <- length(SecundaryextTrue)
       DF$Pred_release[i] <- length(SecundaryextNames[!(SecundaryextNames %in% as.character(TopPredators))])
@@ -477,6 +495,7 @@ RandomExtinctions <- function(Network, nsim = 10,
                               IS = 0,
                               Rewiring = FALSE, RewiringDist, RewiringProb = 0.5,
                               verbose = TRUE){
+  if(!NetworkType %in% c("Trophic", "Mutualistic")){stop("Please specify NetworkType as either 'Trophic' or 'Mutualistic'")}
   ## setting up objects
   NumExt <- sd <- AccSecExt <- AccSecExt_95CI <- AccSecExt_mean <- Lower <- NULL
   network <- .DataInit(x = Network)
