@@ -264,7 +264,7 @@ The main objective of fitting the cumulative distribution of the degrees to thos
 
 By default, the functions in *NetworkExtinction* assume that, for a secondary extinction to happen, a node needs to loose all connections to its prey (if `NetworkType == "Trophic"`) or all other nodes (if `NetworkType == "Mutualistic"`). 
 
-One may also want to assume that species are only capable of sustaining existence given a loss of a threshold of interaction strengths. This is implemented with the `IS` argument, with which one can either set a global node-dependency on interaction strengths or, alternatively, define an `IS` value for each node in the supplied network.
+One may also want to assume that species are only capable of sustaining existence given a threshold of remaining interaction strengths. This is implemented with the `IS` argument, with which one can either set a global node-dependency on interaction strengths or, alternatively, define an `IS` value for each node in the supplied network.
 
 As a minimal example, let's consider primary extinctions of two of the producers in our toy network not taking into account any interaction strength loss thresholds:
 ```{r, results='hide', fig.keep='all', message = FALSE}
@@ -277,13 +277,13 @@ knitr::kable(IS_0 , caption = "Table 5: The resulting dataframe of the basic ver
 
 As you can see, with the base version of `SimulateExtinctions()`, we obtain two secondary extinctions.
 
-Now, let's consider that all our species in `net` need to lose a minimum of 30% of interaction strength before going extinct (rather than a 100% as is the default):
+Now, let's consider that all our species in `net` need to retain a minimum of 70% of interaction strength to not go extinct (rather than a 0% as is the default):
 ```{r, results='hide', fig.keep='all', message = FALSE}
-IS_0.3 <- SimulateExtinctions(Network = net, Order = 1:2, Method = "Ordered", IS = 0.3)[[1]]
+IS_0.7 <- SimulateExtinctions(Network = net, Order = 1:2, Method = "Ordered", IS = 0.7)[[1]]
 ```
 
 ```{r, echo = FALSE}
-knitr::kable(IS_0.3 , caption = "Table 6: The resulting dataframe of the interaction-strength loss version of SimulateExtinctions")
+knitr::kable(IS_0.7 , caption = "Table 6: The resulting dataframe of the interaction-strength loss version of SimulateExtinctions")
 ```
 As you can see, this drastically changes how many secondary extinctions we estimate.
 
@@ -320,7 +320,7 @@ Lastly, `RewiringProb` is called upon to determine whether rewiring can happen a
 Finally, let's out this all together with the `IS` example from above. Can we reduce the number of secondary extinctions when allowing for rewiring?
 
 ```{r, results='hide', fig.keep='all', message = FALSE}
-Rewiring <- SimulateExtinctions(Network = net, Order = 1:2, Method = "Ordered", IS = 0.3,
+Rewiring <- SimulateExtinctions(Network = net, Order = 1:2, Method = "Ordered", IS = 0.7,
                               Rewiring = function(x){x}, RewiringDist = dist, RewiringProb = 0.5)[[1]]
 ```
 
