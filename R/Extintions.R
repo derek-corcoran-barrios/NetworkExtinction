@@ -193,7 +193,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
     # if(sum(network::get.edge.attribute(Network, "weight"), na.rm = TRUE) == 0){
     #   stop("Either your network does not contain any edges with weights or your network does not have the edge attribute `weight` required for calculation of extinctions based on relative interaction strength loss.")
     # }
-    netgraph <- suppressMessages(graph_from_adjacency_matrix(net, weighted = TRUE))
+    netgraph <- suppressMessages(igraph::graph_from_adjacency_matrix(net, weighted = TRUE))
     if(NetworkType == "Trophic"){
       strengthbaseout <- igraph::strength(netgraph, mode = "out")
       strengthbasein <- igraph::strength(netgraph, mode = "in")
@@ -264,11 +264,11 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
     ## calculating modularity ++++++++++ ++++++++++
     Networkclass = class(Temp)
     if (Networkclass[1] == "matrix"){
-      netgraph = graph_from_adjacency_matrix(Temp, mode = "directed", weighted = TRUE)
+      netgraph = igrap::graph_from_adjacency_matrix(Temp, mode = "directed", weighted = TRUE)
     }
     if (Networkclass[1] == "network"){
       net = as.matrix.network.adjacency(Temp)
-      netgraph = suppressMessages(graph_from_adjacency_matrix(net, mode = "directed", weighted = TRUE))
+      netgraph = suppressMessages(igraph::graph_from_adjacency_matrix(net, mode = "directed", weighted = TRUE))
     }
     if (clust.method == "cluster_edge_betweenness"){
       Membership = suppressWarnings(cluster_edge_betweenness(netgraph, weights = TRUE, directed = TRUE, edge.betweenness = TRUE,
@@ -281,11 +281,11 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
                                                        fixed = NULL))
     }else if (clust.method == "cluster_infomap"){
       nb.trials = 107#network.size(Temp)
-      Membership = suppressWarnings(cluster_infomap(as.undirected(netgraph),
-                                                    e.weights = igraph::E(netgraph)$weight,
-                                                    v.weights = NULL,
-                                                    nb.trials = nb.trials,
-                                                    modularity = TRUE))
+      Membership = suppressWarnings(igraph::cluster_infomap(igraph::as.undirected(netgraph),
+                                                            e.weights = igraph::E(netgraph)$weight,
+                                                            v.weights = NULL,
+                                                            nb.trials = nb.trials,
+                                                            modularity = TRUE))
 
     } else if (clust.method == "none"){
       Membership = NA
@@ -361,16 +361,16 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
     ## identify secondary extinctions ++++++++++ ++++++++++
     ### Relative Interaction Strength loss ++++++++++
     if(sum(IS) == 0){
-        SecundaryextNames <- network::get.vertex.attribute(Temp, "vertex.names")[which(degree(Temp) == 0)]
-        Secundaryext <- match(SecundaryextNames, network::get.vertex.attribute(Network, "vertex.names"))
+      SecundaryextNames <- network::get.vertex.attribute(Temp, "vertex.names")[which(degree(Temp) == 0)]
+      Secundaryext <- match(SecundaryextNames, network::get.vertex.attribute(Network, "vertex.names"))
     }else{
       if(NetworkType == "Trophic"){
-        AbsISin <- igraph::strength(suppressMessages(graph_from_adjacency_matrix(
+        AbsISin <- igraph::strength(suppressMessages(igraph::graph_from_adjacency_matrix(
           as.matrix.network.adjacency(Temp, attrname = "weight"),
           weighted = TRUE)
         ), mode = "in")
-        RelISlossIn <-  AbsISin / strengthbasein[names(strengthbasein) %in% network::get.vertex.attribute(Temp, "vertex.names")]
-        SecundaryextNames <- names(which(AbsISin == 0 | (1-RelISlossIn) > IS[match(names(RelISlossIn), names(IS))]))
+        RelISRemainIn <-  AbsISin / strengthbasein[names(strengthbasein) %in% network::get.vertex.attribute(Temp, "vertex.names")]
+        SecundaryextNames <- names(which(AbsISin == 0 | (1-RelISRemainIn) > IS[match(names(RelISRemainIn), names(IS))]))
         SecundaryextNames <- SecundaryextNames[!(SecundaryextNames %in% Producers)]
         Secundaryext <- match(SecundaryextNames, network::get.vertex.attribute(Network, "vertex.names"))
       }
@@ -391,22 +391,32 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
       MidPredExt <- network::get.vertex.attribute(Temp, "vertex.names")[sna::degree(Temp, cmode = "indegree") == 0]
       MidPredExt <- match(MidPredExt[!(MidPredExt %in% Producers)], network::get.vertex.attribute(Network, "vertex.names"))
       SecundaryextTrue <- unique(c(SecundaryextNames[!(SecundaryextNames %in% as.character(Producers))],
-                            MidPredExt))
+                                   MidPredExt))
       Secundaryext <- match(SecundaryextTrue, network::get.vertex.attribute(Network, "vertex.names"))
-      DF$SecExt[i] <- length(SecundaryextTrue)
+      DF$SecExt[i] <- length(Secundaryext)
       DF$Pred_release[i] <- length(SecundaryextNames[!(SecundaryextNames %in% as.character(TopPredators))])
     }
     ### for mutualistic networks ++++++++++
     if(NetworkType == "Mutualistic"){
       DF$SecExt[i] <- length(Secundaryext)
     }
-    DF$Iso_nodes[i] <- sum(degree(Temp) == 0)
+    DF$Iso_nodes[i] <- sum(sna::degree(Temp) == 0)
 
     ## Return of objects ++++++++++ ++++++++++
     FinalExt[[i]] <- Secundaryext
     accExt <- append(accExt, DF$Spp[1:i])
     accExt <- unique(append(accExt,Secundaryext))
     if(verbose){setTxtProgressBar(ProgBar, i)}
+
+    ## final Temp deletion ++++++++++ ++++++++++
+    if(length(accExt)>0){
+      Temp <- Network
+      Temp <- network::delete.vertices(Temp, c(accExt))
+      edgelist <- as.matrix.network.edgelist(Temp,matrix.type="edgelist")
+      DF$Spp[i] <- Conected1[i]
+      Temp <- Network
+      network::delete.vertices(Temp, unique(c(c(DF$Spp[1:i]),accExt)))
+    }
   }
 
   # return of final data objects ++++++++++ ++++++++++
@@ -416,6 +426,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
   DF$TotalExt <- DF$AccSecExt + DF$NumExt
   DF <- relocate(DF, Modularity, .after = Link_density)
   class(DF) <- c("data.frame", "SimulateExt")
+
   return(list(sims = DF,
               Network = Temp))
 }
