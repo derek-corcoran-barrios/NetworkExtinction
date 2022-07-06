@@ -11,7 +11,7 @@
 #' @param NetworkType a character with the options Trophic and Mutualistic - is used to calculate secondary extinctions.
 #' @param clust.method a character with the options cluster_edge_betweenness, cluster_spinglass,
 #' cluster_label_prop or cluster_infomap, defaults to cluster_infomap
-#' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require before being considered secondarily extinct (i.e. IS = 0.7 leads to removal of all nodes which lose 30% of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
+#' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species need to loose before being considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 30% of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
 #' @param Rewiring either a function or a named vector of functions. Signifies how rewiring probabilities are calculated from the RewiringDist argument. If FALSE, no rewiring is carried out.
 #' @param RewiringDist a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities.
 #' @param RewiringProb a numeric which identifies the threshold at which to assume rewiring potential is met.
@@ -110,7 +110,7 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
 #' @param NetworkType a character with the options Trophic and Mutualistic - is used to calculate secondary extinctions.
 #' @param clust.method a character with the options cluster_edge_betweenness, cluster_spinglass,
 #' cluster_label_prop or cluster_infomap, defaults to cluster_infomap
-#' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require before being considered secondarily extinct (i.e. IS = 0.7 leads to removal of all nodes which lose 30% of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
+#' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species need to loose before being considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 30% of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
 #' @param Rewiring either a function or a named vector of functions. Signifies how rewiring probabilities are calculated from the RewiringDist argument. If FALSE, no rewiring is carried out.
 #' @param RewiringDist a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities.
 #' @param RewiringProb a numeric which identifies the threshold at which to assume rewiring potential is met.
@@ -376,12 +376,12 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
       }
 
       if(NetworkType == "Mutualistic"){
-        AbsIS <- igraph::strength(suppressMessages(graph_from_adjacency_matrix(
+        AbsIS <- igraph::strength(suppressMessages(igraph::graph_from_adjacency_matrix(
           as.matrix.network.adjacency(Temp, attrname = "weight"),
           weighted = TRUE)
         ))
         RelISloss <-  AbsIS / strengthbasenet[names(strengthbasenet) %in% network::get.vertex.attribute(Temp, "vertex.names")]
-        SecundaryextNames <- names(which(AbsIS == 0 | (1-RelISloss) < IS[match(names(RelISloss), names(IS))]))
+        SecundaryextNames <- names(which(AbsIS == 0 | (1-RelISloss) > IS[match(names(RelISloss), names(IS))]))
         Secundaryext <- match(SecundaryextNames, network::get.vertex.attribute(Network, "vertex.names"))
       }
     }
@@ -448,7 +448,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
 #' @param parallel if TRUE, it will use parallel procesing, if FALSE (default) it will run
 #' sequentially
 #' @param ncores numeric, number of cores to use if using parallel procesing
-#' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require before being considered secondarily extinct (i.e. IS = 0.7 leads to removal of all nodes which lose 30% of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
+#' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species need to loose before being considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 30% of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
 #' @param Rewiring either a function or a named vector of functions. Signifies how rewiring probabilities are calculated from the RewiringDist argument. If FALSE, no rewiring is carried out.
 #' @param RewiringDist a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities.
 #' @param RewiringProb a numeric which identifies the threshold at which to assume rewiring potential is met.

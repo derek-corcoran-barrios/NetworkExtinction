@@ -44,7 +44,7 @@ sequentially}
 
 \item{ncores}{numeric, number of cores to use if using parallel procesing}
 
-\item{IS}{either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require before being considered secondarily extinct (i.e. IS = 0.7 leads to removal of all nodes which lose 30% of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.}
+\item{IS}{either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species need to loose before being considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 30% of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.}
 
 \item{Rewiring}{either a function or a named vector of functions. Signifies how rewiring probabilities are calculated from the RewiringDist argument. If FALSE, no rewiring is carried out.}
 
