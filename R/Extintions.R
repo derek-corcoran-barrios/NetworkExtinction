@@ -264,7 +264,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
     ## calculating modularity ++++++++++ ++++++++++
     Networkclass = class(Temp)
     if (Networkclass[1] == "matrix"){
-      netgraph = igrap::graph_from_adjacency_matrix(Temp, mode = "directed", weighted = TRUE)
+      netgraph = igraph::graph_from_adjacency_matrix(Temp, mode = "directed", weighted = TRUE)
     }
     if (Networkclass[1] == "network"){
       net = as.matrix.network.adjacency(Temp)
