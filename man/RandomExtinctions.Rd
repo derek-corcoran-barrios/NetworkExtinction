@@ -7,35 +7,66 @@
 RandomExtinctions(
   Network,
   nsim = 10,
+  Record = FALSE,
+  plot = FALSE,
+  SimNum = NULL,
+  NetworkType = "Trophic",
+  clust.method = "cluster_infomap",
   parallel = FALSE,
   ncores,
-  Record = F,
-  plot = F
+  IS = 0,
+  Rewiring = FALSE,
+  RewiringDist,
+  RewiringProb = 0.5,
+  verbose = TRUE
 )
 }
 \arguments{
-\item{Network}{a trophic network of class network}
+\item{Network}{a network representation as a an adjacency matrix, edgelist,
+or a network object}
 
-\item{nsim}{number of simulations}
-
-\item{parallel}{if TRUE, it will use parallel procesing, if FALSE (default) it will run
-sequentially}
-
-\item{ncores}{number of cores to use if using parallel procesing}
+\item{nsim}{numeric, number of simulations}
 
 \item{Record}{logical, if TRUE, records every simulation and you can read the
 raw results in the object FullSims}
 
-\item{plot}{logical if true, will add a graph to the results}
+\item{plot}{logical if TRUE, will add a graph to the results}
+
+\item{SimNum}{numeric, how many nodes to register for primary extinction. By default sets all of them.}
+
+\item{NetworkType}{a character with the options Trophic and Mutualistic - is used to calculate secondary extinctions.}
+
+\item{clust.method}{a character with the options cluster_edge_betweenness, cluster_spinglass,
+cluster_label_prop or cluster_infomap, defaults to cluster_infomap}
+
+\item{parallel}{if TRUE, it will use parallel procesing, if FALSE (default) it will run
+sequentially}
+
+\item{ncores}{numeric, number of cores to use if using parallel procesing}
+
+\item{IS}{either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70% of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.}
+
+\item{Rewiring}{either a function or a named vector of functions. Signifies how rewiring probabilities are calculated from the RewiringDist argument. If FALSE, no rewiring is carried out.}
+
+\item{RewiringDist}{a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities.}
+
+\item{RewiringProb}{a numeric which identifies the threshold at which to assume rewiring potential is met.}
+
+\item{verbose}{Logical. Whether to report on function progress or not.}
 }
 \value{
-exports data frame with the characteristics of the network after every
-extintion, and a graph with the mean and 95% interval
+exports list containing a data frame with the characteristics of the network after every extinction, a network object containing the final network, and a graph with the mean and 95% interval. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.
 }
 \description{
-Generates a null model by generating random extinction histories and calculating
-the mean and standard deviation of the accumulated secondary extinctions developed
-by making n random extinction histories
+Generates a null model by generating random extinction histories and calculating the mean and standard deviation of the accumulated secondary extinctions developed by making n random extinction histories.
+}
+\details{
+When NetworkType = Trophic, secondary extinctions only occur for any predator, but not producers. If NetworkType = Mutualistic, secondary extinctions occur for all species in the network.
+
+When clust.method = cluster_edge_betweenness computes the network modularity using cluster_edge_betweenness methods from igraph to detect communities
+When clust.method = cluster_spinglass computes the network modularity using cluster_spinglass methods from igraph to detect communities, here the number of spins are equal to the network size
+When clust.method = cluster_label_prop computes the network modularity using cluster_label_prop methods from igraph to detect communities
+When clust.method = cluster_infomap computes the network modularity using cluster_infomap methods from igraph to detect communities, here the number of nb.trials are equal to the network size
 }
 \examples{
 #first example
@@ -55,4 +86,6 @@ RandomExtinctions(Network = More_Connected, nsim = 20, parallel = TRUE, ncores =
 Derek Corcoran <derek.corcoran.barrios@gmail.com>
 
 M. Isidora Ávila-Thieme <msavila@uc.cl>
+
+Erik Kusch <erik.kusch@bio.au.dk>
 }

@@ -2,55 +2,63 @@
 % Please edit documentation in R/Extintions.R
 \name{SimulateExtinctions}
 \alias{SimulateExtinctions}
-\title{Extinctions analysis for trophic networks}
+\title{Extinctions analysis for ecological networks}
 \usage{
 SimulateExtinctions(
   Network,
   Method,
   Order = NULL,
-  clust.method = "cluster_infomap"
+  NetworkType = "Trophic",
+  clust.method = "cluster_infomap",
+  IS = 0,
+  Rewiring = FALSE,
+  RewiringDist,
+  RewiringProb = 0.5,
+  verbose = TRUE
 )
 }
 \arguments{
-\item{Network}{a network representation as a an adyacency matrix, edgelist,
+\item{Network}{a network representation as a an adjacency matrix, edgelist,
 or a network object}
 
-\item{Method}{a character with the options Mostconnected, Oredered, or Random}
+\item{Method}{a character with the options Mostconnected and Ordered}
 
-\item{Order}{this should be NULL, unless using the Ordered method, in that case
-it should be a vector with the order of extinctions by ID}
+\item{Order}{a numeric vector indexing order of primary extinctions. For Method = Mostconnected Order must be NULL. If Order is not NULL, Method is internally forced to be Ordered.}
+
+\item{NetworkType}{a character with the options Trophic and Mutualistic - is used to calculate secondary extinctions.}
 
 \item{clust.method}{a character with the options cluster_edge_betweenness, cluster_spinglass,
 cluster_label_prop or cluster_infomap, defaults to cluster_infomap}
+
+\item{IS}{either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70% of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.}
+
+\item{Rewiring}{either a function or a named vector of functions. Signifies how rewiring probabilities are calculated from the RewiringDist argument. If FALSE, no rewiring is carried out.}
+
+\item{RewiringDist}{a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities.}
+
+\item{RewiringProb}{a numeric which identifies the threshold at which to assume rewiring potential is met.}
+
+\item{verbose}{Logical. Whether to report on function progress or not.}
 }
 \value{
-exports data frame with the characteristics of the network after every
-extintion. The resulting data frame contains 11 columns that incorporate the
-topological index, the secondary extinctions, predation release, and total extinctions of the network
-in each primary extinction.
+exports list containing a data frame with the characteristics of the network after every extinction and a network object containing the final network. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.
 }
 \description{
 The SimulateExtinctions function, can be used to test how the order of species
-extinctions might affect the stability of the network by comparing  The extintion history
+extinctions, species-dependency on existing interaction strength, and rewiring potential might affect the stability of the network by comparing  The extinction history
 and checking for secondary extinctions.
 }
 \details{
-When method is Mostconnected, it takes a network and it calculates wich node is the most connected
-of the network, using total degree. Then remove the most connected node,
-and calculates the the topological indexes of the network and the number of
-secundary extintions (how many species have indegree 0, without considered
-primary producers). After that, remove the nodes that were secondarily extinct
-in the previous step and recalculate which is the new most connected
-node and so on, until the number of links in the network is zero.
+When method is Mostconnected, the function takes the network and calculates which node is the most connected of the network, using total degree. Then remove the most connected node, and calculates the the topological indexes of the network and the number of secondary extinctions.
 
-When method is Ordered, it takes a network, and extinguishes nodes using a custom order,
-then it calculates the secondary extinctions and plots the accumulated
-secondary extinctions.
+When method is Ordered, it takes a network, and extinguishes nodes using a custom order, then it calculates the secondary extinctions and plots the accumulated secondary extinctions.
+
+When NetworkType = Trophic, secondary extinctions only occur for any predator, but not producers. If NetworkType = Mutualistic, secondary extinctions occur for all species in the network.
 
 When clust.method = cluster_edge_betweenness computes the network modularity using cluster_edge_betweenness methods from igraph to detect communities
-When clust.method = cluster_spinglass computes the network modularity using cluster_spinglass methods from igraph to detect communities, here the number of spins are equal to the nerwork size
+When clust.method = cluster_spinglass computes the network modularity using cluster_spinglass methods from igraph to detect communities, here the number of spins are equal to the network size
 When clust.method = cluster_label_prop computes the network modularity using cluster_label_prop methods from igraph to detect communities
-When clust.method = cluster_infomap computes the network modularity using cluster_infomap methods from igraph to detect communities, here the number of nb.trials are equal to the nerwork size
+When clust.method = cluster_infomap computes the network modularity using cluster_infomap methods from igraph to detect communities, here the number of nb.trials are equal to the network size
 }
 \examples{
 # Mostconnected example
@@ -67,9 +75,34 @@ Method = "Ordered" , clust.method = "cluster_infomap")
 data("net")
 SimulateExtinctions(Network = net, Order = c(2,8,9),
 Method = "Ordered", clust.method = "cluster_infomap")
+
+#Network-Dependency Example
+data("net")
+SimulateExtinctions(Network = net, Order = c(2,8), IS = 0.3,
+Method = "Ordered", clust.method = "cluster_infomap")
+
+ #Rewiring
+data("net")
+data(dist)
+SimulateExtinctions(Network = net, Order = c(2,8), IS = 0.3,
+Rewiring = function(x){1-pexp(x, rate = 1/0.5)}, # assuming an exponential decline in rewiring potential as values in RewiringDist increase
+RewiringDist = dist, # distance matrix
+RewiringProb = 0.2, # low threshold for rewiring potential
+Method = "Ordered", clust.method = "cluster_infomap")
+
+#Rewiring, assuming dist contains probabilities
+#' data("net")
+data(dist)
+SimulateExtinctions(Network = net, Order = c(2,8), IS = 0.3,
+Rewiring = function(x){x}, # no changes to the RewiringDist object means
+RewiringDist = dist, RewiringProb = 0.2,
+Method = "Ordered", clust.method = "cluster_infomap")
+
 }
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>
 
 M. Isidora Ávila-Thieme <msavila@uc.cl>
+
+Erik Kusch <erik.kusch@bio.au.dk>
 }
