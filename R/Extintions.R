@@ -282,7 +282,9 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
     }else if (clust.method == "cluster_infomap"){
       nb.trials = 107#network.size(Temp)
       Membership = suppressWarnings(igraph::cluster_infomap(igraph::as.undirected(netgraph),
-                                                            e.weights = igraph::E(netgraph)$weight,
+                                                            e.weights = igraph::E(
+                                                              igraph::as.undirected(netgraph)
+                                                              )$weight,
                                                             v.weights = NULL,
                                                             nb.trials = nb.trials,
                                                             modularity = TRUE))
