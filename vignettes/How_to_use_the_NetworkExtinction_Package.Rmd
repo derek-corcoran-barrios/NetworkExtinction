@@ -19,6 +19,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   warning = FALSE
 )
+knitr::opts_chunk$set(fig.path = getwd())
 knitr::opts_chunk$set(fig.width=6, fig.height=4, message = FALSE) 
 ```
 
@@ -110,7 +111,7 @@ a
 
 Once the matrix is ready, we use the *as.network* function from the *network* package to build a network object.
 
-```{r}
+```{r library}
 library(network)
 net <- as.network(a, loops = TRUE)
 net
@@ -125,13 +126,13 @@ net
 
 The `Mostconnected()` function sorts the species from the most connected node to the least connected node, using total degree. Then, it removes the most connected node in the network, simulating its extinction, and recalculates the topological indexes of the network and counts how many species have indegree 0 (secondary extinction), not considering primary producers. Then, it removes the nodes that were secondarily extinct in the previous step and recalculates which node is the new most connected species. This step is repeated until the number of links in the network is zero [@sole2001complexity; @dunne2002food; @dunne2009cascading].
 
-```{r, eval=FALSE}
+```{r mostconnected1, eval=FALSE}
 library(NetworkExtinction)
 data("net")
 SimulateExtinctions(Network = net, Method = "Mostconnected")
 ```
 
-```{r, echo=FALSE, results='hide', fig.keep='all', message = FALSE}
+```{r mostconnected2, echo=FALSE, results='hide', fig.keep='all', message = FALSE}
 library(NetworkExtinction)
 data("net")
 knitr::kable(
@@ -141,7 +142,7 @@ knitr::kable(
 
 The result of this function is a list which contains the dataframe shown in table 1. The first column called *Spp* indicates the order in which the species were removed simulating an extinction. The column *Secondary_extinctions* represents the numbers of species that become extinct given that they do not have any food items left in the food web, while the *AccSecondaryExtinction* column represents the accumulated secondary extinctions. (To plot the results, see function `ExtinctionPlot()`.)
 
-```{r, fig.cap="Figure 3. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most to the least connected species", results='hide', fig.keep='all', message = FALSE}
+```{r mostconnected3, fig.cap="Figure 3. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most to the least connected species", results='hide', fig.keep='all', message = FALSE}
 data("More_Connected")
 history <- SimulateExtinctions(Network = net, Method = "Mostconnected")
 ExtinctionPlot(History = history[[1]], Variable = "AccSecExt")
