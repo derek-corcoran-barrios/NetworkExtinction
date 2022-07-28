@@ -92,7 +92,8 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
     # }
     DF <- ExtinctionOrder(Network = Network, Order = Conected, clust.method = clust.method,
                           IS = IS, Rewiring = Rewiring, RewiringDist = RewiringDist,
-                          verbose = verbose, RewiringProb = RewiringProb, NetworkType = NetworkType)
+                          verbose = verbose, RewiringProb = RewiringProb, NetworkType = NetworkType,
+                          RecalcConnect = TRUE)
   }
   if(Method == "Ordered"){
     DF <- ExtinctionOrder(Network = Network, Order = Order, clust.method = clust.method,
@@ -119,6 +120,7 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
 #' @param RewiringDist a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities.
 #' @param RewiringProb a numeric which identifies the threshold at which to assume rewiring potential is met.
 #' @param verbose Logical. Whether to report on function progress or not.
+#' @param RecalcConnect Logical. Whether to recalculate connectedness of each node following each round of extinction simulation and subsequently update extinction order with newly mostconnected nodes.
 #' @return exports list containing a data frame with the characteristics of the network after every extinction and a network object containing the final network. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.
 #' @details When NetworkType = Trophic, secondary extinctions only occur for any predator, but not producers. If NetworkType = Mutualistic, secondary extinctions occur for all species in the network.
 #'
@@ -159,7 +161,8 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
 ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.method = "cluster_infomap",
                             IS = 0,
                             Rewiring = FALSE, RewiringDist, RewiringProb = 0.5,
-                            verbose = TRUE
+                            verbose = TRUE,
+                            RecalcConnect = FALSE
 ){
   if(!NetworkType %in% c("Trophic", "Mutualistic")){stop("Please specify NetworkType as either 'Trophic' or 'Mutualistic'")}
   # Setting up Objects for function run ++++++++++ ++++++++++ ++++++++++ ++++++++++
@@ -245,7 +248,18 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
       Temp <- Network
       Temp <- network::delete.vertices(Temp, c(accExt))
       edgelist <- as.matrix.network.edgelist(Temp,matrix.type="edgelist")
-      DF$Spp[i] <- Conected1[i]
+
+      if(RecalcConnect){
+        Conected2 <- data.frame(ID = 1:network.size(Temp), Grado = degree(edgelist, c("total")))
+        Conected2 <- arrange(Conected2, desc(Grado))
+        for(j in sort(accExt)){
+          Conected2$ID <- ifelse(Conected2$ID < j, Conected2$ID, Conected2$ID + 1)
+        }
+        DF$Spp[i] <- Conected2$ID[1]
+      }else{
+        DF$Spp[i] <- Conected1[i]
+      }
+
       Temp <- Network
       network::delete.vertices(Temp, unique(c(c(DF$Spp[1:i]),accExt)))
     }

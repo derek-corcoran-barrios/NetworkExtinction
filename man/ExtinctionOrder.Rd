@@ -13,7 +13,8 @@ ExtinctionOrder(
   Rewiring = FALSE,
   RewiringDist,
   RewiringProb = 0.5,
-  verbose = TRUE
+  verbose = TRUE,
+  RecalcConnect = FALSE
 )
 }
 \arguments{
@@ -36,6 +37,8 @@ cluster_label_prop or cluster_infomap, defaults to cluster_infomap}
 \item{RewiringProb}{a numeric which identifies the threshold at which to assume rewiring potential is met.}
 
 \item{verbose}{Logical. Whether to report on function progress or not.}
+
+\item{RecalcConnect}{Logical. Whether to recalculate connectedness of each node following each round of extinction simulation and subsequently update extinction order with newly mostconnected nodes.}
 
 \item{Method}{a character with the options Mostconnected and Ordered}
 }
