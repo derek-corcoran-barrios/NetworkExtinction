@@ -82,6 +82,7 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
   '%ni%'<- Negate('%in%')
   if(Method %ni% c("Mostconnected", "Ordered")) stop('Choose the right method. See ?SimulateExtinction.')
 
+  edgelist <- network::as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
   if(Method == "Mostconnected"){
     if(NetworkType == "Trophic"){
       Connected <- sort(table(edgelist[,1]))
