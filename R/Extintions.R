@@ -17,7 +17,7 @@
 #' @param RewiringProb a numeric which identifies the threshold at which to assume rewiring potential is met.
 #' @param verbose Logical. Whether to report on function progress or not.
 #' @return exports list containing a data frame with the characteristics of the network after every extinction and a network object containing the final network. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.
-#' @details When method is Mostconnected, the function takes the network and calculates which node is the most connected of the network, using total degree. Then remove the most connected node, and calculates the the topological indexes of the network and the number of secondary extinctions.
+#' @details When method is Mostconnected, the function takes the network and calculates which node is the most connected of the network, using total degree. Then remove the most connected node, and calculates the the topological indexes of the network and the number of secondary extinctions. This process is repeated until the entire network has gone extinct.
 #'
 #' When method is Ordered, it takes a network, and extinguishes nodes using a custom order, then it calculates the secondary extinctions and plots the accumulated secondary extinctions.
 #'
