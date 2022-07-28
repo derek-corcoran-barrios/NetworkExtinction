@@ -65,7 +65,8 @@
 <span>  Rewiring <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">RewiringDist</span>,</span>
 <span>  RewiringProb <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  RecalcConnect <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -95,6 +96,7 @@ cluster_label_prop or cluster_infomap, defaults to cluster_infomap</p></dd>
 <p>RewiringDista numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities.</p>
 <p>RewiringProba numeric which identifies the threshold at which to assume rewiring potential is met.</p>
 <p>verboseLogical. Whether to report on function progress or not.</p>
+<p>RecalcConnectLogical. Whether to recalculate connectedness of each node following each round of extinction simulation and subsequently update extinction order with newly mostconnected nodes.</p>
 <p>Methoda character with the options Mostconnected and Ordered</p></dd>
 
 </dl><p>exports list containing a data frame with the characteristics of the network after every extinction and a network object containing the final network. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.</p>
