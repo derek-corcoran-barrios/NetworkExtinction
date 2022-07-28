@@ -168,8 +168,9 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
   # Setting up Objects for function run ++++++++++ ++++++++++ ++++++++++ ++++++++++
   Link_density <- Modularity <- Grado <- NULL
   Network <- .DataInit(x = Network)
-  edgelist <- as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
-  Conected <- data.frame(ID = 1:network.size(Network), Grado = sna::degree(edgelist, c("total")))
+  edgelist <- network::as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
+  Conected <- data.frame(ID = 1:network::network.size(Network), Grado = sna::degree(edgelist, c("total")))
+  Conected <- dplyr::arrange(Conected, desc(Grado))
   Conected1 <- Order
 
   ## Interaction Strength Loss Preparations ++++++++++ ++++++++++
@@ -433,7 +434,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
       Temp <- Network
       Temp <- network::delete.vertices(Temp, c(accExt))
       edgelist <- as.matrix.network.edgelist(Temp,matrix.type="edgelist")
-      DF$Spp[i] <- Conected1[i]
+      # DF$Spp[i] <- Conected1[i]
       Temp <- Network
       network::delete.vertices(Temp, unique(c(c(DF$Spp[1:i]),accExt)))
     }
