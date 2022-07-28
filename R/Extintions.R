@@ -85,7 +85,7 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
   edgelist <- network::as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
   if(Method == "Mostconnected"){
     if(NetworkType == "Trophic"){
-      Conected <- as.numeric(names(sort(table(edgelist[,1]))))
+      Conected <- as.numeric(names(sort(table(edgelist[,1]), decreasing = TRUE)))
     }else{
       Conected <- data.frame(ID = 1:network::network.size(Network), Grado = sna::degree(edgelist, c("total")))
       Conected <- dplyr::arrange(Conected, desc(Grado))$ID
