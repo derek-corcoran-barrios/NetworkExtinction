@@ -21,7 +21,7 @@
 #'
 #' When method is Ordered, it takes a network, and extinguishes nodes using a custom order, then it calculates the secondary extinctions and plots the accumulated secondary extinctions.
 #'
-#' When NetworkType = Trophic, secondary extinctions only occur for any predator, but not producers. If NetworkType = Mutualistic, secondary extinctions occur for all species in the network.
+#' When NetworkType = Trophic, secondary extinctions only occur for any predator, but not producers and only mostconnected prey nodes are used when Method = "Mostconnected". If NetworkType = Mutualistic, secondary extinctions occur for all species in the network.
 #'
 #' When clust.method = cluster_edge_betweenness computes the network modularity using cluster_edge_betweenness methods from igraph to detect communities
 #' When clust.method = cluster_spinglass computes the network modularity using cluster_spinglass methods from igraph to detect communities, here the number of spins are equal to the network size
@@ -82,11 +82,15 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
   '%ni%'<- Negate('%in%')
   if(Method %ni% c("Mostconnected", "Ordered")) stop('Choose the right method. See ?SimulateExtinction.')
 
+  edgelist <- network::as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
   if(Method == "Mostconnected"){
-    edgelist <- as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
-    Conected <- data.frame(ID = 1:network::network.size(Network), Grado = sna::degree(edgelist, c("total")))
-    Conected <- dplyr::arrange(Conected, desc(Grado))
-    DF <- ExtinctionOrder(Network = Network, Order = Conected$ID, clust.method = clust.method,
+    if(NetworkType == "Trophic"){
+      Conected <- as.numeric(names(sort(table(edgelist[,1]), decreasing = TRUE)))
+    }else{
+      Conected <- data.frame(ID = 1:network::network.size(Network), Grado = sna::degree(edgelist, c("total")))
+      Conected <- dplyr::arrange(Conected, desc(Grado))$ID
+    }
+    DF <- ExtinctionOrder(Network = Network, Order = Conected, clust.method = clust.method,
                           IS = IS, Rewiring = Rewiring, RewiringDist = RewiringDist,
                           verbose = verbose, RewiringProb = RewiringProb, NetworkType = NetworkType)
   }
