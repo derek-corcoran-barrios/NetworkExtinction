@@ -17,11 +17,11 @@
 #' @param RewiringProb a numeric which identifies the threshold at which to assume rewiring potential is met.
 #' @param verbose Logical. Whether to report on function progress or not.
 #' @return exports list containing a data frame with the characteristics of the network after every extinction and a network object containing the final network. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.
-#' @details When method is Mostconnected, the function takes the network and calculates which node is the most connected of the network, using total degree. Then remove the most connected node, and calculates the the topological indexes of the network and the number of secondary extinctions.
+#' @details When method is Mostconnected, the function takes the network and calculates which node is the most connected of the network, using total degree. Then remove the most connected node, and calculates the the topological indexes of the network and the number of secondary extinctions. This process is repeated until the entire network has gone extinct.
 #'
 #' When method is Ordered, it takes a network, and extinguishes nodes using a custom order, then it calculates the secondary extinctions and plots the accumulated secondary extinctions.
 #'
-#' When NetworkType = Trophic, secondary extinctions only occur for any predator, but not producers and only mostconnected prey nodes are used when Method = "Mostconnected". If NetworkType = Mutualistic, secondary extinctions occur for all species in the network.
+#' When NetworkType = Trophic, secondary extinctions only occur for any predator, but not producers. If NetworkType = Mutualistic, secondary extinctions occur for all species in the network.
 #'
 #' When clust.method = cluster_edge_betweenness computes the network modularity using cluster_edge_betweenness methods from igraph to detect communities
 #' When clust.method = cluster_spinglass computes the network modularity using cluster_spinglass methods from igraph to detect communities, here the number of spins are equal to the network size
@@ -84,15 +84,16 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
 
   edgelist <- network::as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
   if(Method == "Mostconnected"){
-    if(NetworkType == "Trophic"){
-      Conected <- as.numeric(names(sort(table(edgelist[,1]), decreasing = TRUE)))
-    }else{
+    # if(NetworkType == "Trophic"){
+    #   Conected <- as.numeric(names(sort(table(edgelist[,1]), decreasing = TRUE)))
+    # }else{
       Conected <- data.frame(ID = 1:network::network.size(Network), Grado = sna::degree(edgelist, c("total")))
       Conected <- dplyr::arrange(Conected, desc(Grado))$ID
-    }
+    # }
     DF <- ExtinctionOrder(Network = Network, Order = Conected, clust.method = clust.method,
                           IS = IS, Rewiring = Rewiring, RewiringDist = RewiringDist,
-                          verbose = verbose, RewiringProb = RewiringProb, NetworkType = NetworkType)
+                          verbose = verbose, RewiringProb = RewiringProb, NetworkType = NetworkType,
+                          RecalcConnect = TRUE)
   }
   if(Method == "Ordered"){
     DF <- ExtinctionOrder(Network = Network, Order = Order, clust.method = clust.method,
@@ -119,6 +120,7 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
 #' @param RewiringDist a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities.
 #' @param RewiringProb a numeric which identifies the threshold at which to assume rewiring potential is met.
 #' @param verbose Logical. Whether to report on function progress or not.
+#' @param RecalcConnect Logical. Whether to recalculate connectedness of each node following each round of extinction simulation and subsequently update extinction order with newly mostconnected nodes.
 #' @return exports list containing a data frame with the characteristics of the network after every extinction and a network object containing the final network. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.
 #' @details When NetworkType = Trophic, secondary extinctions only occur for any predator, but not producers. If NetworkType = Mutualistic, secondary extinctions occur for all species in the network.
 #'
@@ -159,14 +161,16 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
 ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.method = "cluster_infomap",
                             IS = 0,
                             Rewiring = FALSE, RewiringDist, RewiringProb = 0.5,
-                            verbose = TRUE
+                            verbose = TRUE,
+                            RecalcConnect = FALSE
 ){
   if(!NetworkType %in% c("Trophic", "Mutualistic")){stop("Please specify NetworkType as either 'Trophic' or 'Mutualistic'")}
   # Setting up Objects for function run ++++++++++ ++++++++++ ++++++++++ ++++++++++
   Link_density <- Modularity <- Grado <- NULL
   Network <- .DataInit(x = Network)
-  edgelist <- as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
-  Conected <- data.frame(ID = 1:network.size(Network), Grado = sna::degree(edgelist, c("total")))
+  edgelist <- network::as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
+  Conected <- data.frame(ID = 1:network::network.size(Network), Grado = sna::degree(edgelist, c("total")))
+  Conected <- dplyr::arrange(Conected, desc(Grado))
   Conected1 <- Order
 
   ## Interaction Strength Loss Preparations ++++++++++ ++++++++++
@@ -245,7 +249,18 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
       Temp <- Network
       Temp <- network::delete.vertices(Temp, c(accExt))
       edgelist <- as.matrix.network.edgelist(Temp,matrix.type="edgelist")
-      DF$Spp[i] <- Conected1[i]
+
+      if(RecalcConnect){
+        Conected2 <- data.frame(ID = 1:network.size(Temp), Grado = degree(edgelist, c("total")))
+        Conected2 <- arrange(Conected2, desc(Grado))
+        for(j in sort(accExt)){
+          Conected2$ID <- ifelse(Conected2$ID < j, Conected2$ID, Conected2$ID + 1)
+        }
+        DF$Spp[i] <- Conected2$ID[1]
+      }else{
+        DF$Spp[i] <- Conected1[i]
+      }
+
       Temp <- Network
       network::delete.vertices(Temp, unique(c(c(DF$Spp[1:i]),accExt)))
     }
@@ -419,7 +434,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
       Temp <- Network
       Temp <- network::delete.vertices(Temp, c(accExt))
       edgelist <- as.matrix.network.edgelist(Temp,matrix.type="edgelist")
-      DF$Spp[i] <- Conected1[i]
+      # DF$Spp[i] <- Conected1[i]
       Temp <- Network
       network::delete.vertices(Temp, unique(c(c(DF$Spp[1:i]),accExt)))
     }

@@ -53,7 +53,7 @@ When method is Mostconnected, the function takes the network and calculates whic
 
 When method is Ordered, it takes a network, and extinguishes nodes using a custom order, then it calculates the secondary extinctions and plots the accumulated secondary extinctions.
 
-When NetworkType = Trophic, secondary extinctions only occur for any predator, but not producers and only mostconnected prey nodes are used when Method = "Mostconnected". If NetworkType = Mutualistic, secondary extinctions occur for all species in the network.
+When NetworkType = Trophic, secondary extinctions only occur for any predator, but not producers. If NetworkType = Mutualistic, secondary extinctions occur for all species in the network.
 
 When clust.method = cluster_edge_betweenness computes the network modularity using cluster_edge_betweenness methods from igraph to detect communities
 When clust.method = cluster_spinglass computes the network modularity using cluster_spinglass methods from igraph to detect communities, here the number of spins are equal to the network size
