@@ -44,7 +44,7 @@ sequentially}
 
 \item{ncores}{numeric, number of cores to use if using parallel procesing}
 
-\item{IS}{either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70% of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.}
+\item{IS}{either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70 precent of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.}
 
 \item{Rewiring}{either a function or a named vector of functions. Signifies how rewiring probabilities are calculated from the RewiringDist argument. If FALSE, no rewiring is carried out.}
 
@@ -55,7 +55,7 @@ sequentially}
 \item{verbose}{Logical. Whether to report on function progress or not.}
 }
 \value{
-exports list containing a data frame with the characteristics of the network after every extinction, a network object containing the final network, and a graph with the mean and 95% interval. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.
+exports list containing a data frame with the characteristics of the network after every extinction, a network object containing the final network, and a graph with the mean and 95percent interval. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.
 }
 \description{
 Generates a null model by generating random extinction histories and calculating the mean and standard deviation of the accumulated secondary extinctions developed by making n random extinction histories.
