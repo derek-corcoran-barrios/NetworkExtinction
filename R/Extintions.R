@@ -11,7 +11,7 @@
 #' @param NetworkType a character with the options Trophic and Mutualistic - is used to calculate secondary extinctions.
 #' @param clust.method a character with the options cluster_edge_betweenness, cluster_spinglass,
 #' cluster_label_prop or cluster_infomap, defaults to cluster_infomap
-#' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70% of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
+#' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70 percent of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
 #' @param Rewiring either a function or a named vector of functions. Signifies how rewiring probabilities are calculated from the RewiringDist argument. If FALSE, no rewiring is carried out.
 #' @param RewiringDist a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities.
 #' @param RewiringProb a numeric which identifies the threshold at which to assume rewiring potential is met.
@@ -115,7 +115,7 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
 #' @param NetworkType a character with the options Trophic and Mutualistic - is used to calculate secondary extinctions.
 #' @param clust.method a character with the options cluster_edge_betweenness, cluster_spinglass,
 #' cluster_label_prop or cluster_infomap, defaults to cluster_infomap
-#' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70% of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
+#' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70percent of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
 #' @param Rewiring either a function or a named vector of functions. Signifies how rewiring probabilities are calculated from the RewiringDist argument. If FALSE, no rewiring is carried out.
 #' @param RewiringDist a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities.
 #' @param RewiringProb a numeric which identifies the threshold at which to assume rewiring potential is met.
@@ -469,12 +469,12 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
 #' @param parallel if TRUE, it will use parallel procesing, if FALSE (default) it will run
 #' sequentially
 #' @param ncores numeric, number of cores to use if using parallel procesing
-#' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70% of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
+#' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70 precent of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
 #' @param Rewiring either a function or a named vector of functions. Signifies how rewiring probabilities are calculated from the RewiringDist argument. If FALSE, no rewiring is carried out.
 #' @param RewiringDist a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities.
 #' @param RewiringProb a numeric which identifies the threshold at which to assume rewiring potential is met.
 #' @param verbose Logical. Whether to report on function progress or not.
-#' @return exports list containing a data frame with the characteristics of the network after every extinction, a network object containing the final network, and a graph with the mean and 95% interval. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.
+#' @return exports list containing a data frame with the characteristics of the network after every extinction, a network object containing the final network, and a graph with the mean and 95percent interval. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.
 #' @details When NetworkType = Trophic, secondary extinctions only occur for any predator, but not producers. If NetworkType = Mutualistic, secondary extinctions occur for all species in the network.
 #'
 #' When clust.method = cluster_edge_betweenness computes the network modularity using cluster_edge_betweenness methods from igraph to detect communities
