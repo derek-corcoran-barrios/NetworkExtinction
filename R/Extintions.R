@@ -338,6 +338,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
           for(Iter_LostIS in 1:nrow(Lost_df)){ ## looping over all species that were linked to the current primary extinction
             # Iter_LostIS = 1
             LostPartnerSim <- eval(str2lang(Rewiring[which(names(Rewiring) == Lost_df$names[Iter_LostIS])]))(RewiringDist[,LostPartner]) # probability of rewiring too each node in network given rewiring function and species similraity
+            names(LostPartnerSim) <- colnames(RewiringDist)
             RewiringCandidates <- LostPartnerSim[LostPartnerSim > RewiringProb & names(LostPartnerSim) %in% network::get.vertex.attribute(Temp, "vertex.names")] # rewiring probability for nodes still in temporary network and having a higher rewiring probability than 0.5
             RewiredPartner <- names(which.max(RewiringCandidates)) # most likely rewiring partner
             if(!is.null(RewiredPartner)){ # if a rewired partner has been found
