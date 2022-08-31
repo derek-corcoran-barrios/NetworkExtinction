@@ -16,7 +16,7 @@ RandomExtinctions(
   ncores,
   IS = 0,
   Rewiring = FALSE,
-  RewiringDist,
+  RewiringDist = NULL,
   RewiringProb = 0.5,
   verbose = TRUE
 )

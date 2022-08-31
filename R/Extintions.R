@@ -526,7 +526,7 @@ RandomExtinctions <- function(Network, nsim = 10,
                               NetworkType = "Trophic", clust.method = "cluster_infomap",
                               parallel = FALSE, ncores,
                               IS = 0,
-                              Rewiring = FALSE, RewiringDist, RewiringProb = 0.5,
+                              Rewiring = FALSE, RewiringDist = NULL, RewiringProb = 0.5,
                               verbose = TRUE){
   if(!NetworkType %in% c("Trophic", "Mutualistic")){stop("Please specify NetworkType as either 'Trophic' or 'Mutualistic'")}
   ## setting up objects
