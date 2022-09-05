@@ -634,7 +634,7 @@ CompareExtinctions <- function(Nullmodel, Hypothesis){
       g <- Nullmodel$graph + geom_line(aes(color = "blue"))
       g <- g + geom_point(data = Hypothesis, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison",values =c("black", "blue"), label = c("Observed","Null hypothesis"))
     } else {
-      g <- ggplot(Nullmodel$sims, aes(x = NumExt, y = AccSecExt_mean)) + geom_ribbon(aes_string(ymin = "Lower", ymax = "Upper"), fill = scales::muted("red")) + geom_line() + ylab("Acc. Secondary extinctions") + xlab("Primary extinctions") + theme_bw()
+      g <- ggplot(Nullmodel$sims, aes(x = NumExt, y = AccSecExt_mean)) + geom_ribbon(aes_string(ymin = "Lower", ymax = "Upper"), fill = scales::muted("red")) + geom_line(color = "blue") + ylab("Acc. Secondary extinctions") + xlab("Primary extinctions") + theme_bw()
       g <- g + geom_point(data = Hypothesis$sims, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis$sims, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison",values =c("black", "blue"), label = c("Observed","Null hypothesis"))
       g
     }
