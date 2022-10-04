@@ -30,7 +30,7 @@ or a network object}
 \item{clust.method}{a character with the options cluster_edge_betweenness, cluster_spinglass,
 cluster_label_prop or cluster_infomap, defaults to cluster_infomap}
 
-\item{IS}{either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70% of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.}
+\item{IS}{either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70 percent of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.}
 
 \item{Rewiring}{either a function or a named vector of functions. Signifies how rewiring probabilities are calculated from the RewiringDist argument. If FALSE, no rewiring is carried out.}
 
@@ -49,7 +49,7 @@ extinctions, species-dependency on existing interaction strength, and rewiring p
 and checking for secondary extinctions.
 }
 \details{
-When method is Mostconnected, the function takes the network and calculates which node is the most connected of the network, using total degree. Then remove the most connected node, and calculates the the topological indexes of the network and the number of secondary extinctions.
+When method is Mostconnected, the function takes the network and calculates which node is the most connected of the network, using total degree. Then remove the most connected node, and calculates the the topological indexes of the network and the number of secondary extinctions. This process is repeated until the entire network has gone extinct.
 
 When method is Ordered, it takes a network, and extinguishes nodes using a custom order, then it calculates the secondary extinctions and plots the accumulated secondary extinctions.
 

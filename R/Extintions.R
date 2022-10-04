@@ -11,7 +11,7 @@
 #' @param NetworkType a character with the options Trophic and Mutualistic - is used to calculate secondary extinctions.
 #' @param clust.method a character with the options cluster_edge_betweenness, cluster_spinglass,
 #' cluster_label_prop or cluster_infomap, defaults to cluster_infomap
-#' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70% of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
+#' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70 percent of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
 #' @param Rewiring either a function or a named vector of functions. Signifies how rewiring probabilities are calculated from the RewiringDist argument. If FALSE, no rewiring is carried out.
 #' @param RewiringDist a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities.
 #' @param RewiringProb a numeric which identifies the threshold at which to assume rewiring potential is met.
@@ -87,8 +87,8 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
     # if(NetworkType == "Trophic"){
     #   Conected <- as.numeric(names(sort(table(edgelist[,1]), decreasing = TRUE)))
     # }else{
-      Conected <- data.frame(ID = 1:network::network.size(Network), Grado = sna::degree(edgelist, c("total")))
-      Conected <- dplyr::arrange(Conected, desc(Grado))$ID
+    Conected <- data.frame(ID = 1:network::network.size(Network), Grado = sna::degree(edgelist, c("total")))
+    Conected <- dplyr::arrange(Conected, desc(Grado))$ID
     # }
     DF <- ExtinctionOrder(Network = Network, Order = Conected, clust.method = clust.method,
                           IS = IS, Rewiring = Rewiring, RewiringDist = RewiringDist,
@@ -115,7 +115,7 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
 #' @param NetworkType a character with the options Trophic and Mutualistic - is used to calculate secondary extinctions.
 #' @param clust.method a character with the options cluster_edge_betweenness, cluster_spinglass,
 #' cluster_label_prop or cluster_infomap, defaults to cluster_infomap
-#' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70% of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
+#' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70percent of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
 #' @param Rewiring either a function or a named vector of functions. Signifies how rewiring probabilities are calculated from the RewiringDist argument. If FALSE, no rewiring is carried out.
 #' @param RewiringDist a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities.
 #' @param RewiringProb a numeric which identifies the threshold at which to assume rewiring potential is met.
@@ -175,7 +175,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
 
   ## Interaction Strength Loss Preparations ++++++++++ ++++++++++
   if(length(IS )== 1){ # when the same dependency is to be applied for all species
-    IS <- rep(IS, network.size(Network)) # repeat IS argument for all species
+    IS <- rep(IS, network::network.size(Network)) # repeat IS argument for all species
     names(IS) <- network::get.vertex.attribute(Network, "vertex.names") # assign species names to IS arguments
   }else{
     if(sum(!(network::get.vertex.attribute(Network, "vertex.names") %in% names(IS))) != 0){stop("Please ensure that the names of the nodes in your Network are matched by names of the elements in your IS argument vector.")}
@@ -186,7 +186,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
     diag(RewiringDist)<- NA # set diagonal to NA as one can't rewire to oneself
     if(length(Rewiring) == 1){ # when the same Rewiring happen for all species
       fun <- deparse1(Rewiring) # turn function into string
-      Rewiring <- rep(fun, network.size(Network)) # repeat function for each species
+      Rewiring <- rep(fun, network::network.size(Network)) # repeat function for each species
       names(Rewiring) <- network::get.vertex.attribute(Network, "vertex.names") # assign names of species in network to rewiring functions
     }
     if(sum(!(network::get.vertex.attribute(Network, "vertex.names") %in% names(Rewiring))) != 0){stop("Please ensure that the names of the nodes in your Network are matched by names of the elements in your Rewiring argument vector.")}
@@ -195,7 +195,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
   # Base net calculations ++++++++++ ++++++++++ ++++++++++ ++++++++++
   ## base interaction strengths per node ++++++++++ ++++++++++
   options(warn=-1) # turn warning off
-  Weight_mat <- net <- as.matrix.network.adjacency(Network, attrname = "weight")
+  Weight_mat <- net <- network::as.matrix.network.adjacency(Network, attrname = "weight")
   options(warn=0) # turn warnings on
   if(sum(IS) != 0){
     # if(sum(network::get.edge.attribute(Network, "weight"), na.rm = TRUE) == 0){
@@ -248,10 +248,10 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
     if (length(accExt)>0){ # on any subsequent iteration
       Temp <- Network
       Temp <- network::delete.vertices(Temp, c(accExt))
-      edgelist <- as.matrix.network.edgelist(Temp,matrix.type="edgelist")
+      edgelist <- network::as.matrix.network.edgelist(Temp,matrix.type="edgelist")
 
       if(RecalcConnect){
-        Conected2 <- data.frame(ID = 1:network.size(Temp), Grado = degree(edgelist, c("total")))
+        Conected2 <- data.frame(ID = 1:network::network.size(Temp), Grado = sna::degree(edgelist, c("total")))
         Conected2 <- arrange(Conected2, desc(Grado))
         for(j in sort(accExt)){
           Conected2$ID <- ifelse(Conected2$ID < j, Conected2$ID, Conected2$ID + 1)
@@ -266,9 +266,9 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
     }
 
     ## network metrics to output object  ++++++++++ ++++++++++
-    DF$S[i] <- network.size(Temp)
-    DF$L[i] <- network.edgecount(Temp)
-    DF$C[i] <- network.density(Temp)
+    DF$S[i] <- network::network.size(Temp)
+    DF$L[i] <- network::network.edgecount(Temp)
+    DF$C[i] <- network::network.density(Temp)
     DF$Link_density[i] <- DF$L[i]/DF$S[i]
 
     ## premature complete annihilation message ++++++++++ ++++++++++
@@ -286,24 +286,24 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
       netgraph = igraph::graph_from_adjacency_matrix(Temp, mode = "directed", weighted = TRUE)
     }
     if (Networkclass[1] == "network"){
-      net = as.matrix.network.adjacency(Temp)
+      net = network::as.matrix.network.adjacency(Temp)
       netgraph = suppressMessages(igraph::graph_from_adjacency_matrix(net, mode = "directed", weighted = TRUE))
     }
     if (clust.method == "cluster_edge_betweenness"){
       Membership = suppressWarnings(cluster_edge_betweenness(netgraph, weights = TRUE, directed = TRUE, edge.betweenness = TRUE,
                                                              merges = TRUE, bridges = TRUE, modularity = TRUE, membership = TRUE))
     } else if (clust.method == "cluster_spinglass"){
-      spins = 107#network.size(Temp)
+      spins = network::network.size(Temp)
       Membership = suppressWarnings(cluster_spinglass(netgraph, spins=spins)) #spins could be the Richness
     }else if (clust.method == "cluster_label_prop"){
       Membership = suppressWarnings(cluster_label_prop(netgraph, weights = TRUE, initial = NULL,
                                                        fixed = NULL))
     }else if (clust.method == "cluster_infomap"){
-      nb.trials = 107#network.size(Temp)
+      nb.trials = network::network.size(Temp)
       Membership = suppressWarnings(igraph::cluster_infomap(igraph::as.undirected(netgraph),
                                                             e.weights = igraph::E(
                                                               igraph::as.undirected(netgraph)
-                                                              )$weight,
+                                                            )$weight,
                                                             v.weights = NULL,
                                                             nb.trials = nb.trials,
                                                             modularity = TRUE))
@@ -338,6 +338,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
           for(Iter_LostIS in 1:nrow(Lost_df)){ ## looping over all species that were linked to the current primary extinction
             # Iter_LostIS = 1
             LostPartnerSim <- eval(str2lang(Rewiring[which(names(Rewiring) == Lost_df$names[Iter_LostIS])]))(RewiringDist[,LostPartner]) # probability of rewiring too each node in network given rewiring function and species similraity
+            names(LostPartnerSim) <- colnames(RewiringDist)
             RewiringCandidates <- LostPartnerSim[LostPartnerSim > RewiringProb & names(LostPartnerSim) %in% network::get.vertex.attribute(Temp, "vertex.names")] # rewiring probability for nodes still in temporary network and having a higher rewiring probability than 0.5
             RewiredPartner <- names(which.max(RewiringCandidates)) # most likely rewiring partner
             if(!is.null(RewiredPartner)){ # if a rewired partner has been found
@@ -382,12 +383,12 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
     ## identify secondary extinctions ++++++++++ ++++++++++
     ### Relative Interaction Strength loss ++++++++++
     if(sum(IS) == 0){
-      SecundaryextNames <- network::get.vertex.attribute(Temp, "vertex.names")[which(degree(Temp) == 0)]
+      SecundaryextNames <- network::get.vertex.attribute(Temp, "vertex.names")[which(sna::degree(Temp) == 0)]
       Secundaryext <- match(SecundaryextNames, network::get.vertex.attribute(Network, "vertex.names"))
     }else{
       if(NetworkType == "Trophic"){
         AbsISin <- igraph::strength(suppressMessages(igraph::graph_from_adjacency_matrix(
-          as.matrix.network.adjacency(Temp, attrname = "weight"),
+          network::as.matrix.network.adjacency(Temp, attrname = "weight"),
           weighted = TRUE)
         ), mode = "in")
         RelISRemainIn <-  AbsISin / strengthbasein[names(strengthbasein) %in% network::get.vertex.attribute(Temp, "vertex.names")]
@@ -398,7 +399,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
 
       if(NetworkType == "Mutualistic"){
         AbsIS <- igraph::strength(suppressMessages(igraph::graph_from_adjacency_matrix(
-          as.matrix.network.adjacency(Temp, attrname = "weight"),
+          network::as.matrix.network.adjacency(Temp, attrname = "weight"),
           weighted = TRUE)
         ))
         RelISloss <-  AbsIS / strengthbasenet[names(strengthbasenet) %in% network::get.vertex.attribute(Temp, "vertex.names")]
@@ -433,7 +434,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
     if(length(accExt)>0){
       Temp <- Network
       Temp <- network::delete.vertices(Temp, c(accExt))
-      edgelist <- as.matrix.network.edgelist(Temp,matrix.type="edgelist")
+      edgelist <- network::as.matrix.network.edgelist(Temp,matrix.type="edgelist")
       # DF$Spp[i] <- Conected1[i]
       Temp <- Network
       network::delete.vertices(Temp, unique(c(c(DF$Spp[1:i]),accExt)))
@@ -469,12 +470,12 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
 #' @param parallel if TRUE, it will use parallel procesing, if FALSE (default) it will run
 #' sequentially
 #' @param ncores numeric, number of cores to use if using parallel procesing
-#' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70% of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
+#' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70 precent of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
 #' @param Rewiring either a function or a named vector of functions. Signifies how rewiring probabilities are calculated from the RewiringDist argument. If FALSE, no rewiring is carried out.
 #' @param RewiringDist a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities.
 #' @param RewiringProb a numeric which identifies the threshold at which to assume rewiring potential is met.
 #' @param verbose Logical. Whether to report on function progress or not.
-#' @return exports list containing a data frame with the characteristics of the network after every extinction, a network object containing the final network, and a graph with the mean and 95% interval. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.
+#' @return exports list containing a data frame with the characteristics of the network after every extinction, a network object containing the final network, and a graph with the mean and 95percent interval. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.
 #' @details When NetworkType = Trophic, secondary extinctions only occur for any predator, but not producers. If NetworkType = Mutualistic, secondary extinctions occur for all species in the network.
 #'
 #' When clust.method = cluster_edge_betweenness computes the network modularity using cluster_edge_betweenness methods from igraph to detect communities
@@ -513,6 +514,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
 #' @importFrom network network.size
 #' @importFrom parallel makeCluster
 #' @importFrom parallel stopCluster
+#' @importFrom parallel clusterExport
 #' @importFrom scales muted
 #' @importFrom stats sd
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
@@ -525,14 +527,14 @@ RandomExtinctions <- function(Network, nsim = 10,
                               NetworkType = "Trophic", clust.method = "cluster_infomap",
                               parallel = FALSE, ncores,
                               IS = 0,
-                              Rewiring = FALSE, RewiringDist, RewiringProb = 0.5,
+                              Rewiring = FALSE, RewiringDist = NULL, RewiringProb = 0.5,
                               verbose = TRUE){
   if(!NetworkType %in% c("Trophic", "Mutualistic")){stop("Please specify NetworkType as either 'Trophic' or 'Mutualistic'")}
   ## setting up objects
   NumExt <- sd <- AccSecExt <- AccSecExt_95CI <- AccSecExt_mean <- Lower <- NULL
   network <- .DataInit(x = Network)
   if(is.null(SimNum)){
-    SimNum <- network.size(network)
+    SimNum <- network::network.size(network)
   }
 
   ## simulations
@@ -540,8 +542,12 @@ RandomExtinctions <- function(Network, nsim = 10,
   if(parallel){
     cl <- makeCluster(ncores)
     registerDoParallel(cl)
+    parallel::clusterExport(cl,
+                            varlist = c("network", "SimNum", "IS", "Rewiring", "RewiringDist", "RewiringProb"),
+                            envir = environment()
+    )
     sims <- foreach(i=1:nsim, .packages = "NetworkExtinction")%dopar%{
-      sims <- try(ExtinctionOrder(Network = network, Order = sample(1:network.size(network), size = SimNum),
+      sims <- try(ExtinctionOrder(Network = network, Order = sample(1:network::network.size(network), size = SimNum),
                                   IS = IS, NetworkType = NetworkType,
                                   Rewiring = Rewiring, RewiringDist = RewiringDist,
                                   verbose = FALSE, RewiringProb = RewiringProb), silent = TRUE)
@@ -552,7 +558,7 @@ RandomExtinctions <- function(Network, nsim = 10,
   }else{
     sims <- list()
     for(i in 1:nsim){
-      sims[[i]] <- try(ExtinctionOrder(Network = network, Order = sample(1:network.size(network), size = SimNum),
+      sims[[i]] <- try(ExtinctionOrder(Network = network, Order = sample(1:network::network.size(network), size = SimNum),
                                        IS = IS, NetworkType = NetworkType,
                                        Rewiring = Rewiring, RewiringDist = RewiringDist,
                                        verbose = FALSE, RewiringProb = RewiringProb), silent = TRUE)
@@ -572,7 +578,7 @@ RandomExtinctions <- function(Network, nsim = 10,
     FullSims <- sims
   }
 
-  sims <- sims[!is.na(sims$SecExt), ] %>% group_by(NumExt) %>% summarise(AccSecExt_95CI = 1.96*sd(AccSecExt), AccSecExt_mean = mean(AccSecExt)) %>% mutate(Upper = AccSecExt_mean + AccSecExt_95CI, Lower = AccSecExt_mean - AccSecExt_95CI, Lower = ifelse(Lower < 0, 0, Lower))
+  sims <- sims[!is.na(sims$SecExt), ] %>% dplyr::group_by(NumExt) %>% summarise(AccSecExt_95CI = 1.96*sd(AccSecExt), AccSecExt_mean = mean(AccSecExt)) %>% mutate(Upper = AccSecExt_mean + AccSecExt_95CI, Lower = AccSecExt_mean - AccSecExt_95CI, Lower = ifelse(Lower < 0, 0, Lower))
 
   ## plot output
   if(plot == TRUE){
@@ -628,7 +634,7 @@ CompareExtinctions <- function(Nullmodel, Hypothesis){
       g <- Nullmodel$graph + geom_line(aes(color = "blue"))
       g <- g + geom_point(data = Hypothesis, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison",values =c("black", "blue"), label = c("Observed","Null hypothesis"))
     } else {
-      g <- ggplot(Nullmodel$sims, aes(x = NumExt, y = AccSecExt_mean)) + geom_ribbon(aes_string(ymin = "Lower", ymax = "Upper"), fill = scales::muted("red")) + geom_line() + ylab("Acc. Secondary extinctions") + xlab("Primary extinctions") + theme_bw()
+      g <- ggplot(Nullmodel$sims, aes(x = NumExt, y = AccSecExt_mean)) + geom_ribbon(aes_string(ymin = "Lower", ymax = "Upper"), fill = scales::muted("red")) + geom_line(color = "blue") + ylab("Acc. Secondary extinctions") + xlab("Primary extinctions") + theme_bw()
       g <- g + geom_point(data = Hypothesis$sims, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis$sims, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison",values =c("black", "blue"), label = c("Observed","Null hypothesis"))
       g
     }
