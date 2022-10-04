@@ -85,7 +85,9 @@ Method = "Ordered", clust.method = "cluster_infomap")
 data("net")
 data(dist)
 SimulateExtinctions(Network = net, Order = c(2,8), IS = 0.3,
-Rewiring = function(x){1-pexp(x, rate = 1/0.5)}, # assuming an exponential decline in rewiring potential as values in RewiringDist increase
+# assuming an exponential decline in rewiring potential
+# as values in RewiringDist increase
+Rewiring = function(x){1-pexp(x, rate = 1/0.5)},
 RewiringDist = dist, # distance matrix
 RewiringProb = 0.2, # low threshold for rewiring potential
 Method = "Ordered", clust.method = "cluster_infomap")
@@ -97,7 +99,6 @@ SimulateExtinctions(Network = net, Order = c(2,8), IS = 0.3,
 Rewiring = function(x){x}, # no changes to the RewiringDist object means
 RewiringDist = dist, RewiringProb = 0.2,
 Method = "Ordered", clust.method = "cluster_infomap")
-
 }
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>

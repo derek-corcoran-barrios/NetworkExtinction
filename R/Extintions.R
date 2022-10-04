@@ -52,7 +52,9 @@
 #' data("net")
 #' data(dist)
 #' SimulateExtinctions(Network = net, Order = c(2,8), IS = 0.3,
-#' Rewiring = function(x){1-pexp(x, rate = 1/0.5)}, # assuming an exponential decline in rewiring potential as values in RewiringDist increase
+#' # assuming an exponential decline in rewiring potential
+#' # as values in RewiringDist increase
+#' Rewiring = function(x){1-pexp(x, rate = 1/0.5)},
 #' RewiringDist = dist, # distance matrix
 #' RewiringProb = 0.2, # low threshold for rewiring potential
 #' Method = "Ordered", clust.method = "cluster_infomap")
@@ -64,7 +66,7 @@
 #' Rewiring = function(x){x}, # no changes to the RewiringDist object means
 #' RewiringDist = dist, RewiringProb = 0.2,
 #' Method = "Ordered", clust.method = "cluster_infomap")
-#'
+#' @importFrom dplyr desc
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
 #' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
 #' @author Erik Kusch <erik.kusch@bio.au.dk>
@@ -87,6 +89,7 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
     # if(NetworkType == "Trophic"){
     #   Conected <- as.numeric(names(sort(table(edgelist[,1]), decreasing = TRUE)))
     # }else{
+    Grado <- NULL
     Conected <- data.frame(ID = 1:network::network.size(Network), Grado = sna::degree(edgelist, c("total")))
     Conected <- dplyr::arrange(Conected, desc(Grado))$ID
     # }
@@ -108,9 +111,7 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
 #'
 #' This function takes a network and eliminates nodes using a custom order. Subsequently, secondary extinctions are tallied up. Secondary extinction severity can be targeted by manipulating the node-dependency on network edges (IS) and node-rewiring potential upon loss of links (Rewiring).
 #'
-#' @param Network a network representation as a an adjacency matrix, edgelist,
-#' or a network object
-#' @param Method a character with the options Mostconnected and Ordered
+#' @param Network a network representation as a an adjacency matrix, edgelist, or a network object
 #' @param Order a numeric vector indexing order of primary extinctions. For Method = Mostconnected Order must be NULL. If Order is not NULL, Method is internally forced to be Ordered.
 #' @param NetworkType a character with the options Trophic and Mutualistic - is used to calculate secondary extinctions.
 #' @param clust.method a character with the options cluster_edge_betweenness, cluster_spinglass,
@@ -154,6 +155,10 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
 #' @importFrom igraph cluster_label_prop
 #' @importFrom igraph cluster_infomap
 #' @importFrom igraph modularity
+#' @importFrom stats na.omit
+#' @importFrom utils setTxtProgressBar
+#' @importFrom utils txtProgressBar
+#' @importFrom dplyr desc
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
 #' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
 #' @author Erik Kusch <erik.kusch@bio.au.dk>
@@ -517,6 +522,9 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
 #' @importFrom parallel clusterExport
 #' @importFrom scales muted
 #' @importFrom stats sd
+#' @importFrom stats na.omit
+#' @importFrom utils setTxtProgressBar
+#' @importFrom utils txtProgressBar
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
 #' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
 #' @author Erik Kusch <erik.kusch@bio.au.dk>
@@ -612,8 +620,8 @@ RandomExtinctions <- function(Network, nsim = 10,
 #'
 #' @examples
 #' data("Less_Connected")
-#' History <- SimulateExtinctions(Network = Less_Connected, Method = "Mostconnected", NetworkType = "Mutualistic")
-#' NullHyp <- RandomExtinctions(Network = Less_Connected, nsim = 100, NetworkType = "Mutualistic")
+#' History <- SimulateExtinctions(Network = Less_Connected, Method = "Mostconnected")
+#' NullHyp <- RandomExtinctions(Network = Less_Connected, nsim = 100)
 #' CompareExtinctions(Nullmodel = NullHyp, Hypothesis = History)
 #' @importFrom broom tidy
 #' @importFrom ggplot2 aes
@@ -651,6 +659,6 @@ CompareExtinctions <- function(Nullmodel, Hypothesis){
     return(g)
   }
   else{
-    message("Hipothesis not of class Mostconnected or ExtinctionOrder")
+    message("Hypothesis not of class Mostconnected or ExtinctionOrder")
   }
 }
