@@ -52,7 +52,9 @@
 #' data("net")
 #' data(dist)
 #' SimulateExtinctions(Network = net, Order = c(2,8), IS = 0.3,
-#' Rewiring = function(x){1-pexp(x, rate = 1/0.5)}, # assuming an exponential decline in rewiring potential as values in RewiringDist increase
+#' # assuming an exponential decline in rewiring potential
+#' # as values in RewiringDist increase
+#' Rewiring = function(x){1-pexp(x, rate = 1/0.5)},
 #' RewiringDist = dist, # distance matrix
 #' RewiringProb = 0.2, # low threshold for rewiring potential
 #' Method = "Ordered", clust.method = "cluster_infomap")
@@ -64,7 +66,7 @@
 #' Rewiring = function(x){x}, # no changes to the RewiringDist object means
 #' RewiringDist = dist, RewiringProb = 0.2,
 #' Method = "Ordered", clust.method = "cluster_infomap")
-#'
+#' @importFrom dplyr desc
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
 #' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
 #' @author Erik Kusch <erik.kusch@bio.au.dk>
@@ -87,6 +89,7 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
     # if(NetworkType == "Trophic"){
     #   Conected <- as.numeric(names(sort(table(edgelist[,1]), decreasing = TRUE)))
     # }else{
+    Grado <- NULL
     Conected <- data.frame(ID = 1:network::network.size(Network), Grado = sna::degree(edgelist, c("total")))
     Conected <- dplyr::arrange(Conected, desc(Grado))$ID
     # }
@@ -155,6 +158,7 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
 #' @importFrom stats na.omit
 #' @importFrom utils setTxtProgressBar
 #' @importFrom utils txtProgressBar
+#' @importFrom dplyr desc
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
 #' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
 #' @author Erik Kusch <erik.kusch@bio.au.dk>

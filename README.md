@@ -72,7 +72,7 @@ ExtinctionPlot(History = history[[1]], Variable = "AccSecExt")
 
 <div class="figure">
 
-<img src="vignettes/How_to_use_the_NetworkExtinction_Package_files/figure-html/mostconnected3-1.png" alt="Figure 3. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most to the least connected species" width="100%" />
+<img src="vignettes/figures/vignettesmostconnected3-1.png" alt="Figure 3. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most to the least connected species" width="100%" />
 
 <p class="caption">
 
@@ -120,7 +120,7 @@ Order <- SimulateExtinctions(Network = net, Order = 1:8, Method = "Ordered")
 ExtinctionPlot(History = Order[[1]], Variable = "AccSecExt")
 ```
 <div class="figure">
-<img src="vignettes/How_to_use_the_NetworkExtinction_Package_files/figure-html/unnamed-chunk-7-1.png" alt="Figure 4. The graph shows the number of accumulated secondary extinctions that occur when removing species in a custom order." width="100%" />
+<img src="vignettes/figures/vignettesunnamed-chunk-7-1.png" alt="Figure 4. The graph shows the number of accumulated secondary extinctions that occur when removing species in a custom order." width="100%" />
 <p class="caption">
 
 Figure 4. The graph shows the number of accumulated secondary extinctions that occur when removing species in a custom order.
@@ -143,7 +143,7 @@ RandomExtinctions(Network= net, nsim= 100, SimNum = 8)
 ```
 
 <div class="figure">
-<img src="vignettes/How_to_use_the_NetworkExtinction_Package_files/figure-html/unnamed-chunk-10-1.png" alt="Figure 5. The resulting graph of the RandomExtinctions function." width="100%" />
+<img src="vignettes/figures/vignettesunnamed-chunk-10-1.png" alt="Figure 5. The resulting graph of the RandomExtinctions function." width="100%" />
 <p class="caption">
 
 Figure 5. The resulting graph of the RandomExtinctions function.
@@ -162,7 +162,7 @@ Comparison <- CompareExtinctions(Nullmodel = Test, Hypothesis = Order)
 The result will be a graph (Figue 6) with a dashed line showing the observed extinction history and a solid line showing the expected value of secondary extinctions randomly generated.
 
 <div class="figure">
-<img src="vignettes/How_to_use_the_NetworkExtinction_Package_files/figure-html/unnamed-chunk-12-1.png" alt="Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random." width="100%" />
+<img src="vignettes/figures/vignettesunnamed-chunk-12-1.png" alt="Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random." width="100%" />
 <p class="caption">
 
 Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random.
@@ -179,7 +179,7 @@ ExtinctionPlot(History = Order[[1]])
 ```
 
 <div class="figure">
-<img src="vignettes/How_to_use_the_NetworkExtinction_Package_files/figure-html/unnamed-chunk-13-1.png" alt="Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions." width="100%" />
+<img src="vignettes/figures/vignettesunnamed-chunk-13-1.png" alt="Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions." width="100%" />
 <p class="caption">
 
 Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions.
@@ -191,7 +191,7 @@ ExtinctionPlot(History = Order[[1]], Variable = "Link_density")
 ```
 
 <div class="figure">
-<img src="vignettes/How_to_use_the_NetworkExtinction_Package_files/figure-html/unnamed-chunk-14-1.png" alt="Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions." width="100%" />
+<img src="vignettes/figures/vignettesunnamed-chunk-14-1.png" alt="Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions." width="100%" />
 <p class="caption">
 
 Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions.
@@ -211,7 +211,7 @@ DegreeDistribution(chilean_intertidal)
 ```
 
 <div class="figure">
-<img src="vignettes/How_to_use_the_NetworkExtinction_Package_files/figure-html/unnamed-chunk-17-1.png" alt="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively." width="100%" />
+<img src="vignettes/figures/vignettesunnamed-chunk-17-1.png" alt="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively." width="100%" />
 <p class="caption">
 
 Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively.

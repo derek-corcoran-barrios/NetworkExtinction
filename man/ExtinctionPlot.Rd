@@ -24,9 +24,9 @@ after every extinction
 # by default
 data("net")
 history <- SimulateExtinctions(Network = net, Method = "Mostconnected")
-ExtinctionPlot(History = history)
+ExtinctionPlot(History = history$sims)
 # You can also specify the variable to be ploted in the y axis
-ExtinctionPlot(History = history, Variable = "Link_density")
+ExtinctionPlot(History = history$sims, Variable = "Link_density")
 }
 \seealso{
 [NetworkExtintion::ExtinctionOrder()]
