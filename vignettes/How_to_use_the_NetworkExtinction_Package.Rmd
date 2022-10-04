@@ -17,7 +17,8 @@ bibliography: biblio.bib
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  warning = FALSE
+  warning = FALSE,
+  cache = FALSE
 )
 knitr::opts_chunk$set(fig.path = getwd())
 knitr::opts_chunk$set(fig.width=6, fig.height=4, message = FALSE) 

@@ -18,8 +18,7 @@ ExtinctionOrder(
 )
 }
 \arguments{
-\item{Network}{a network representation as a an adjacency matrix, edgelist,
-or a network object}
+\item{Network}{a network representation as a an adjacency matrix, edgelist, or a network object}
 
 \item{Order}{a numeric vector indexing order of primary extinctions. For Method = Mostconnected Order must be NULL. If Order is not NULL, Method is internally forced to be Ordered.}
 
@@ -39,8 +38,6 @@ cluster_label_prop or cluster_infomap, defaults to cluster_infomap}
 \item{verbose}{Logical. Whether to report on function progress or not.}
 
 \item{RecalcConnect}{Logical. Whether to recalculate connectedness of each node following each round of extinction simulation and subsequently update extinction order with newly mostconnected nodes.}
-
-\item{Method}{a character with the options Mostconnected and Ordered}
 }
 \value{
 exports list containing a data frame with the characteristics of the network after every extinction and a network object containing the final network. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.

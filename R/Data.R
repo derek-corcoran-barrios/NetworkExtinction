@@ -14,7 +14,7 @@
 #'
 "dist"
 
-#' The foodweb of the intertidal zone in central chile
+#' The binaryfoodweb of the intertidal zone in central chile
 #'
 #' A trophic network with 107 species present in the  intertidal zone of central Chile.
 #' The food web was reconstructed from the Kefi et al. 2015
@@ -22,6 +22,23 @@
 #' @format a network
 #' @references Kefi, Sonia, Eric L. Berlow, Evie A. Wieters, Lucas N. Joppa, Spencer A. Wood, Ulrich Brose, and Sergio A. Navarrete. "Network structure beyond food webs: mapping non trophic and trophic interactions on Chilean rocky shores." Ecology 96, no. 1 (2015.
 "chilean_intertidal"
+
+#' The weighted foodweb of the intertidal zone in central chile
+#'
+#' A trophic network with 107 species present in the  intertidal zone of central Chile.
+#' The food web was reconstructed from the Kefi et al. 2015
+#
+#' @format a network
+#' @references Kefi, Sonia, Eric L. Berlow, Evie A. Wieters, Lucas N. Joppa, Spencer A. Wood, Ulrich Brose, and Sergio A. Navarrete. "Network structure beyond food webs: mapping non trophic and trophic interactions on Chilean rocky shores." Ecology 96, no. 1 (2015.
+"chilean_weighted"
+
+#' The potential foodweb of the intertidal zone in central chile
+#'
+#' A trophic network with 107 species present in the  intertidal zone of central Chile.
+#' The food web was reconstructed from the Kefi et al. 2015
+#
+#' @format a network
+"chilean_potential"
 
 #' A densely connected foodweb
 #'

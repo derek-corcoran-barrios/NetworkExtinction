@@ -23,8 +23,8 @@ RandomExtinctions is in plot = T.
 }
 \examples{
 data("Less_Connected")
-History <- SimulateExtinctions(Network = Less_Connected, Method = "Mostconnected", NetworkType = "Mutualistic")
-NullHyp <- RandomExtinctions(Network = Less_Connected, nsim = 100, NetworkType = "Mutualistic")
+History <- SimulateExtinctions(Network = Less_Connected, Method = "Mostconnected")
+NullHyp <- RandomExtinctions(Network = Less_Connected, nsim = 100)
 CompareExtinctions(Nullmodel = NullHyp, Hypothesis = History)
 }
 \author{
