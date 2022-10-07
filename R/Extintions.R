@@ -490,12 +490,13 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
 #'
 #' @examples
 #' #first example
+#' \dontrun{
 #' data("More_Connected")
 #' RandomExtinctions(Network = More_Connected, nsim = 20)
 #'
 #' # Using parallel procesing
 #' ## Detect your number of cores divide by 2
-#' \dontrun{
+#'
 #' cores <- ceiling(parallel::detectCores()/2)
 #'
 #' RandomExtinctions(Network = More_Connected, nsim = 20, parallel = TRUE, ncores = cores)
@@ -619,10 +620,12 @@ RandomExtinctions <- function(Network, nsim = 10,
 #' with the observed extinction history.
 #'
 #' @examples
+#' \dontrun{
 #' data("Less_Connected")
 #' History <- SimulateExtinctions(Network = Less_Connected, Method = "Mostconnected")
 #' NullHyp <- RandomExtinctions(Network = Less_Connected, nsim = 100)
 #' CompareExtinctions(Nullmodel = NullHyp, Hypothesis = History)
+#' }
 #' @importFrom broom tidy
 #' @importFrom ggplot2 aes
 #' @importFrom ggplot2 geom_line
