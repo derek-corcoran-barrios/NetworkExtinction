@@ -70,12 +70,13 @@ When clust.method = cluster_infomap computes the network modularity using cluste
 }
 \examples{
 #first example
+\dontrun{
 data("More_Connected")
 RandomExtinctions(Network = More_Connected, nsim = 20)
 
 # Using parallel procesing
 ## Detect your number of cores divide by 2
-\dontrun{
+
 cores <- ceiling(parallel::detectCores()/2)
 
 RandomExtinctions(Network = More_Connected, nsim = 20, parallel = TRUE, ncores = cores)

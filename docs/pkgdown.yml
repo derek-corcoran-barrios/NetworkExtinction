@@ -1,7 +1,7 @@
-pandoc: 2.3.1
-pkgdown: 1.6.1
+pandoc: 2.17.1.1
+pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
-  How_to_use_the_NetworkExtinction_Package: How_to_use_the_NetworkExtinction_Package.html
-last_built: 2021-02-16T03:05Z
+  NetworkExtinction: NetworkExtinction.html
+last_built: 2022-10-07T18:55Z
 
