@@ -21,14 +21,6 @@ knitr::opts_chunk$set(
 # pkgdown <img src="pkgdown/favicon/apple-touch-icon-180x180.png" align="right" />
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.org/derek-corcoran-barrios/NetworkExtintion.svg?branch=master)](https://travis-ci.org/derek-corcoran-barrios/NetworkExtintion)
-[![CRAN status](https://www.r-pkg.org/badges/version/NetworkExtinction)](https://CRAN.R-project.org/package=NetworkExtinction)
-[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
-[![](http://cranlogs.r-pkg.org/badges/grand-total/NetworkExtinction?color=blue)](https://cran.r-project.org/package=NetworkExtinction)
-[![](http://cranlogs.r-pkg.org/badges/last-month/NetworkExtinction?color=green)](https://cran.r-project.org/package=NetworkExtinction)
-[![Codecov test coverage](https://codecov.io/gh/derek-corcoran-barrios/NetworkExtintion/branch/master/graph/badge.svg)](https://codecov.io/gh/derek-corcoran-barrios/NetworkExtintion?branch=master)
-[![R-CMD-check](https://github.com/derek-corcoran-barrios/NetworkExtintion/workflows/R-CMD-check/badge.svg)](https://github.com/derek-corcoran-barrios/NetworkExtintion/actions)
-<!-- badges: end -->
 
 The goal of NetworkExtinction is to Simulate the extinction of species in the food web and to analyze its cascading effects, as described in Dunne et al. (2002) \doi{10.1073/pnas.192407699}
 
