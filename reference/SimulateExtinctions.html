@@ -14,7 +14,7 @@ and checking for secondary extinctions."><meta property="og:image" content="/log
     
     <a class="navbar-brand me-2" href="../index.html">NetworkExtinction</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,7 +101,7 @@ cluster_label_prop or cluster_infomap, defaults to cluster_infomap</p></dd>
 
 
 <dt>RewiringDist</dt>
-<dd><p>a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities.</p></dd>
+<dd><p>a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities. If Rewiring == function(x)x, this matrix is expected to contain probabilities of a connection being present between species-pairs.</p></dd>
 
 
 <dt>RewiringProb</dt>
@@ -331,7 +331,7 @@ When clust.method = cluster_infomap computes the network modularity using cluste
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sims</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Spp S L          C Link_density Modularity SecExt Pred_release Iso_nodes</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   2 9 8 0.09876543    0.8888889  0.3671875      0            0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   8 8 7 0.12500000    0.8750000  0.3571429      0            0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   8 8 6 0.10714286    0.7500000  0.2777778      0            0         0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   AccSecExt NumExt TotalExt</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1         0      1        1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2         0      2        2</span>
