@@ -8,7 +8,7 @@ Authors@R: c(person("Derek", "Corcoran", email = "derek.corcoran.barrios@gmail.c
   person("Pablo A.", "Marquet", role = c("aut"), comment = c(ORCID = "0000-0001-6369-9339")), person("Erik", "Kusch", email = "erik.kusch@bio.au.dk",
   role = c("aut"), comment = c(ORCID = "0000-0002-4984-7646")))
 Maintainer: Derek Corcoran <derek.corcoran.barrios@gmail.com>
-Description: Simulates the extinction of species in the food web and it analyzes
+Description: Simulates the extinction of species in ecological networks and it analyzes
              its cascading effects, described in Dunne et al. (2002) <doi:10.1073/pnas.192407699>.
 URL: https://derek-corcoran-barrios.github.io/NetworkExtinction/
 Depends: R (>= 3.5.1)
