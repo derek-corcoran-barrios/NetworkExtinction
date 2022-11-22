@@ -13,7 +13,7 @@
 #' cluster_label_prop or cluster_infomap, defaults to cluster_infomap
 #' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70 percent of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
 #' @param Rewiring either a function or a named vector of functions. Signifies how rewiring probabilities are calculated from the RewiringDist argument. If FALSE, no rewiring is carried out.
-#' @param RewiringDist a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities.
+#' @param RewiringDist a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities. If Rewiring == function(x){x}, this matrix is expected to contain probabilities of a connection being present between species-pairs.
 #' @param RewiringProb a numeric which identifies the threshold at which to assume rewiring potential is met.
 #' @param verbose Logical. Whether to report on function progress or not.
 #' @return exports list containing a data frame with the characteristics of the network after every extinction and a network object containing the final network. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.
@@ -118,7 +118,7 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
 #' cluster_label_prop or cluster_infomap, defaults to cluster_infomap
 #' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70percent of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
 #' @param Rewiring either a function or a named vector of functions. Signifies how rewiring probabilities are calculated from the RewiringDist argument. If FALSE, no rewiring is carried out.
-#' @param RewiringDist a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities.
+#' @param RewiringDist a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities. If Rewiring == function(x){x}, this matrix is expected to contain probabilities of a connection being present between species-pairs.
 #' @param RewiringProb a numeric which identifies the threshold at which to assume rewiring potential is met.
 #' @param verbose Logical. Whether to report on function progress or not.
 #' @param RecalcConnect Logical. Whether to recalculate connectedness of each node following each round of extinction simulation and subsequently update extinction order with newly mostconnected nodes.
@@ -342,7 +342,11 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
         if(nrow(Lost_df)!=0){
           for(Iter_LostIS in 1:nrow(Lost_df)){ ## looping over all species that were linked to the current primary extinction
             # Iter_LostIS = 1
-            LostPartnerSim <- eval(str2lang(Rewiring[which(names(Rewiring) == Lost_df$names[Iter_LostIS])]))(RewiringDist[,LostPartner]) # probability of rewiring too each node in network given rewiring function and species similraity
+            if(Rewiring[which(names(Rewiring) == Lost_df$names[Iter_LostIS])] == "function (x)  {     x }"){
+              LostPartnerSim <- eval(str2lang(Rewiring[which(names(Rewiring) == Lost_df$names[Iter_LostIS])]))(RewiringDist[,Lost_df$names[Iter_LostIS]]) # probability of rewiring to each node
+            }else{
+              LostPartnerSim <- eval(str2lang(Rewiring[which(names(Rewiring) == Lost_df$names[Iter_LostIS])]))(RewiringDist[,LostPartner]) # probability of rewiring to each node in network given rewiring function and species similraity
+            }
             names(LostPartnerSim) <- colnames(RewiringDist)
             RewiringCandidates <- LostPartnerSim[LostPartnerSim > RewiringProb & names(LostPartnerSim) %in% network::get.vertex.attribute(Temp, "vertex.names")] # rewiring probability for nodes still in temporary network and having a higher rewiring probability than 0.5
             RewiredPartner <- names(which.max(RewiringCandidates)) # most likely rewiring partner
@@ -477,7 +481,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
 #' @param ncores numeric, number of cores to use if using parallel procesing
 #' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70 precent of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
 #' @param Rewiring either a function or a named vector of functions. Signifies how rewiring probabilities are calculated from the RewiringDist argument. If FALSE, no rewiring is carried out.
-#' @param RewiringDist a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities.
+#' @param RewiringDist a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities. If Rewiring == function(x){x}, this matrix is expected to contain probabilities of a connection being present between species-pairs.
 #' @param RewiringProb a numeric which identifies the threshold at which to assume rewiring potential is met.
 #' @param verbose Logical. Whether to report on function progress or not.
 #' @return exports list containing a data frame with the characteristics of the network after every extinction, a network object containing the final network, and a graph with the mean and 95percent interval. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.
