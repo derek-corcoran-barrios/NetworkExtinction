@@ -1,6 +1,8 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+[![DOI](https://zenodo.org/badge/116978043.svg)](https://zenodo.org/badge/latestdoi/116978043)
+
 # NetworkExtinction
 
 # pkgdown <img src="pkgdown/favicon/apple-touch-icon-180x180.png" align="right" />
@@ -63,7 +65,16 @@ history <- SimulateExtinctions(Network = net, Method = "Mostconnected")
 ExtinctionPlot(History = history[[1]], Variable = "AccSecExt")
 ```
 
+<div class="figure">
+
 <img src="man/figures/README-mostconnected3-1.png" alt="Figure 3. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most to the least connected species" width="100%" />
+<p class="caption">
+Figure 3. The graph shows the number of accumulated secondary
+extinctions that occur when removing species from the most to the least
+connected species
+</p>
+
+</div>
 
 In addition, the list returned by `SimulateExtinctions()` also contains
 the final Network that remains after all primary extinctions have been
@@ -85,7 +96,15 @@ SimulateExtinctions(Network = net, Order = 1:8, Method = "Ordered")
 Already at the removal of node 5, we loose support for all other species
 in the network.
 
+<div class="figure">
+
 <img src="man/figures/README-unnamed-chunk-5-1.png" alt="Figure 4. The graph shows the number of accumulated secondary extinctions that occur when removing species in a custom order." width="100%" />
+<p class="caption">
+Figure 4. The graph shows the number of accumulated secondary
+extinctions that occur when removing species in a custom order.
+</p>
+
+</div>
 
 The results of this function are a dataframe with the topological
 indexes of the network calculated from each extinction step (Table 2),
@@ -117,7 +136,14 @@ set.seed(707)
 RandomExtinctions(Network= net, nsim= 100, SimNum = 8)
 ```
 
+<div class="figure">
+
 <img src="man/figures/README-unnamed-chunk-8-1.png" alt="Figure 5. The resulting graph of the RandomExtinctions function" width="100%" />
+<p class="caption">
+Figure 5. The resulting graph of the RandomExtinctions function
+</p>
+
+</div>
 
 ### Comparison of Null hypothesis with other extinction histories
 
@@ -140,7 +166,16 @@ The result will be a graph (Figue 6) with a dashed line showing the
 observed extinction history and a solid line showing the expected value
 of secondary extinctions randomly generated.
 
+<div class="figure">
+
 <img src="man/figures/README-unnamed-chunk-10-1.png" alt="Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random" width="100%" />
+<p class="caption">
+Figure 6. The resulting graph of the CompareExtinctions function, where
+the dashed line shows the observed extinction history, and a solid line
+shows the expected value of secondary extinctions originated at random
+</p>
+
+</div>
 
 ## Plotting the extinction histories of a network
 
@@ -155,13 +190,29 @@ data(net)
 ExtinctionPlot(History = Order[[1]])
 ```
 
+<div class="figure">
+
 <img src="man/figures/README-unnamed-chunk-11-1.png" alt="Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions" width="100%" />
+<p class="caption">
+Figure 7. Example of the use of the ExtinctionPlot function showing the
+accumulated secondary extinctions against number of extinctions
+</p>
+
+</div>
 
 ``` r
 ExtinctionPlot(History = Order[[1]], Variable = "Link_density")
 ```
 
+<div class="figure">
+
 <img src="man/figures/README-unnamed-chunk-12-1.png" alt="Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions" width="100%" />
+<p class="caption">
+Figure 8. Another example of the use of the ExtinctionPlot function
+showing the number of links per species against number of extinctions
+</p>
+
+</div>
 
 ## Degree distribution function
 
@@ -185,7 +236,17 @@ data("chilean_intertidal")
 DegreeDistribution(chilean_intertidal)
 ```
 
+<div class="figure">
+
 <img src="man/figures/README-unnamed-chunk-15-1.png" alt="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" width="100%" />
+<p class="caption">
+Figure 9: Fitted vs observed values of the degree distribution. The
+black line and points show the observed values, the red, green and blue
+lines show the fitted values for the Exponential, power law and trucated
+distribution, respectively
+</p>
+
+</div>
 
 |    logLik |        AIC |        BIC | model    | Normal.Resid | family      |
 |----------:|-----------:|-----------:|:---------|:-------------|:------------|
@@ -352,8 +413,8 @@ Rewiring <- SimulateExtinctions(Network = net, Order = 1:2, Method = "Ordered", 
 
 | Spp |   S |   L |         C | Link_density | Modularity | SecExt | Pred_release | Iso_nodes | AccSecExt | NumExt | TotalExt |
 |----:|----:|----:|----------:|-------------:|-----------:|-------:|-------------:|----------:|----------:|-------:|---------:|
-|   1 |   9 |   9 | 0.1111111 |    1.0000000 |  0.2901235 |      1 |            1 |         0 |         1 |      1 |        2 |
-|   2 |   7 |   6 | 0.1224490 |    0.8571429 |  0.0000000 |      2 |            1 |         0 |         3 |      2 |        5 |
+|   1 |   9 |   9 | 0.1111111 |        1.000 |  0.2901235 |      0 |            0 |         0 |         0 |      1 |        1 |
+|   2 |   8 |   7 | 0.1250000 |        0.875 |  0.3571429 |      1 |            1 |         0 |         1 |      2 |        3 |
 
 Table 7: The resulting dataframe of the rewiring version of
 SimulateExtinctions

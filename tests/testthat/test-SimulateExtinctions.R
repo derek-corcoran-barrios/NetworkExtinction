@@ -1,4 +1,5 @@
 test_that("SimulateExtinction works", {
+  skip_on_cran()
   capture_warnings(DF <- SimulateExtinctions(Network = NetworkExtinction::net, Method = "Mostconnected",
                                              clust.method = "cluster_infomap")$sims)
   expect_s3_class(DF, "data.frame")
