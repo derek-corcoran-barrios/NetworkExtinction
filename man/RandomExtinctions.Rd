@@ -36,7 +36,7 @@ raw results in the object FullSims}
 
 \item{NetworkType}{a character with the options Trophic and Mutualistic - is used to calculate secondary extinctions.}
 
-\item{clust.method}{a character with the options cluster_edge_betweenness, cluster_spinglass,
+\item{clust.method}{a character with the options cluster_edge_betweenness,
 cluster_label_prop or cluster_infomap, defaults to cluster_infomap}
 
 \item{parallel}{if TRUE, it will use parallel procesing, if FALSE (default) it will run
@@ -64,7 +64,6 @@ Generates a null model by generating random extinction histories and calculating
 When NetworkType = Trophic, secondary extinctions only occur for any predator, but not producers. If NetworkType = Mutualistic, secondary extinctions occur for all species in the network.
 
 When clust.method = cluster_edge_betweenness computes the network modularity using cluster_edge_betweenness methods from igraph to detect communities
-When clust.method = cluster_spinglass computes the network modularity using cluster_spinglass methods from igraph to detect communities, here the number of spins are equal to the network size
 When clust.method = cluster_label_prop computes the network modularity using cluster_label_prop methods from igraph to detect communities
 When clust.method = cluster_infomap computes the network modularity using cluster_infomap methods from igraph to detect communities, here the number of nb.trials are equal to the network size
 }

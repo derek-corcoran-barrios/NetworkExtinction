@@ -9,7 +9,7 @@
 #' @param Method a character with the options Mostconnected and Ordered
 #' @param Order a numeric vector indexing order of primary extinctions. For Method = Mostconnected Order must be NULL. If Order is not NULL, Method is internally forced to be Ordered.
 #' @param NetworkType a character with the options Trophic and Mutualistic - is used to calculate secondary extinctions.
-#' @param clust.method a character with the options cluster_edge_betweenness, cluster_spinglass,
+#' @param clust.method a character with the options cluster_edge_betweenness,
 #' cluster_label_prop or cluster_infomap, defaults to cluster_infomap
 #' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70 percent of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
 #' @param Rewiring either a function or a named vector of functions. Signifies how rewiring probabilities are calculated from the RewiringDist argument. If FALSE, no rewiring is carried out.
@@ -24,7 +24,6 @@
 #' When NetworkType = Trophic, secondary extinctions only occur for any predator, but not producers. If NetworkType = Mutualistic, secondary extinctions occur for all species in the network.
 #'
 #' When clust.method = cluster_edge_betweenness computes the network modularity using cluster_edge_betweenness methods from igraph to detect communities
-#' When clust.method = cluster_spinglass computes the network modularity using cluster_spinglass methods from igraph to detect communities, here the number of spins are equal to the network size
 #' When clust.method = cluster_label_prop computes the network modularity using cluster_label_prop methods from igraph to detect communities
 #' When clust.method = cluster_infomap computes the network modularity using cluster_infomap methods from igraph to detect communities, here the number of nb.trials are equal to the network size
 #' @examples
@@ -114,7 +113,7 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
 #' @param Network a network representation as a an adjacency matrix, edgelist, or a network object
 #' @param Order a numeric vector indexing order of primary extinctions. For Method = Mostconnected Order must be NULL. If Order is not NULL, Method is internally forced to be Ordered.
 #' @param NetworkType a character with the options Trophic and Mutualistic - is used to calculate secondary extinctions.
-#' @param clust.method a character with the options cluster_edge_betweenness, cluster_spinglass,
+#' @param clust.method a character with the options cluster_edge_betweenness,
 #' cluster_label_prop or cluster_infomap, defaults to cluster_infomap
 #' @param IS either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70percent of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.
 #' @param Rewiring either a function or a named vector of functions. Signifies how rewiring probabilities are calculated from the RewiringDist argument. If FALSE, no rewiring is carried out.
@@ -126,7 +125,6 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
 #' @details When NetworkType = Trophic, secondary extinctions only occur for any predator, but not producers. If NetworkType = Mutualistic, secondary extinctions occur for all species in the network.
 #'
 #' When clust.method = cluster_edge_betweenness computes the network modularity using cluster_edge_betweenness methods from igraph to detect communities
-#' When clust.method = cluster_spinglass computes the network modularity using cluster_spinglass methods from igraph to detect communities, here the number of spins are equal to the network size
 #' When clust.method = cluster_label_prop computes the network modularity using cluster_label_prop methods from igraph to detect communities
 #' When clust.method = cluster_infomap computes the network modularity using cluster_infomap methods from igraph to detect communities, here the number of nb.trials are equal to the network size
 #'
@@ -151,7 +149,6 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
 #' @importFrom network as.matrix.network.adjacency
 #' @importFrom igraph graph_from_adjacency_matrix
 #' @importFrom igraph cluster_edge_betweenness
-#' @importFrom igraph cluster_spinglass
 #' @importFrom igraph cluster_label_prop
 #' @importFrom igraph cluster_infomap
 #' @importFrom igraph modularity
@@ -295,13 +292,12 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
       netgraph = suppressMessages(igraph::graph_from_adjacency_matrix(net, mode = "directed", weighted = TRUE))
     }
     if (clust.method == "cluster_edge_betweenness"){
-      Membership = suppressWarnings(cluster_edge_betweenness(netgraph, weights = TRUE, directed = TRUE, edge.betweenness = TRUE,
+      Membership = suppressWarnings(cluster_edge_betweenness(netgraph, weights = igraph::E(
+        igraph::as.undirected(netgraph)
+      )$weight, directed = TRUE, edge.betweenness = TRUE,
                                                              merges = TRUE, bridges = TRUE, modularity = TRUE, membership = TRUE))
-    } else if (clust.method == "cluster_spinglass"){
-      spins = network::network.size(Temp)
-      Membership = suppressWarnings(cluster_spinglass(netgraph, spins=spins)) #spins could be the Richness
     }else if (clust.method == "cluster_label_prop"){
-      Membership = suppressWarnings(cluster_label_prop(netgraph, weights = TRUE, initial = NULL,
+      Membership = suppressWarnings(cluster_label_prop(netgraph, weights = igraph::E(igraph::as.undirected(netgraph))$weight, initial = NULL,
                                                        fixed = NULL))
     }else if (clust.method == "cluster_infomap"){
       nb.trials = network::network.size(Temp)
@@ -474,7 +470,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
 #' @param plot logical if TRUE, will add a graph to the results
 #' @param SimNum numeric, how many nodes to register for primary extinction. By default sets all of them.
 #' @param NetworkType a character with the options Trophic and Mutualistic - is used to calculate secondary extinctions.
-#' @param clust.method a character with the options cluster_edge_betweenness, cluster_spinglass,
+#' @param clust.method a character with the options cluster_edge_betweenness,
 #' cluster_label_prop or cluster_infomap, defaults to cluster_infomap
 #' @param parallel if TRUE, it will use parallel procesing, if FALSE (default) it will run
 #' sequentially
@@ -488,7 +484,6 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
 #' @details When NetworkType = Trophic, secondary extinctions only occur for any predator, but not producers. If NetworkType = Mutualistic, secondary extinctions occur for all species in the network.
 #'
 #' When clust.method = cluster_edge_betweenness computes the network modularity using cluster_edge_betweenness methods from igraph to detect communities
-#' When clust.method = cluster_spinglass computes the network modularity using cluster_spinglass methods from igraph to detect communities, here the number of spins are equal to the network size
 #' When clust.method = cluster_label_prop computes the network modularity using cluster_label_prop methods from igraph to detect communities
 #' When clust.method = cluster_infomap computes the network modularity using cluster_infomap methods from igraph to detect communities, here the number of nb.trials are equal to the network size
 #'

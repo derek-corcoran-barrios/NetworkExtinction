@@ -27,7 +27,7 @@ or a network object}
 
 \item{NetworkType}{a character with the options Trophic and Mutualistic - is used to calculate secondary extinctions.}
 
-\item{clust.method}{a character with the options cluster_edge_betweenness, cluster_spinglass,
+\item{clust.method}{a character with the options cluster_edge_betweenness,
 cluster_label_prop or cluster_infomap, defaults to cluster_infomap}
 
 \item{IS}{either numeric or a named vector of numerics. Identifies the threshold of relative interaction strength which species require to not be considered secondarily extinct (i.e. IS = 0.3 leads to removal of all nodes which lose 70 percent of their interaction strength in the Network argument). If a named vector, names must correspond to vertex names in Network argument.}
@@ -56,7 +56,6 @@ When method is Ordered, it takes a network, and extinguishes nodes using a custo
 When NetworkType = Trophic, secondary extinctions only occur for any predator, but not producers. If NetworkType = Mutualistic, secondary extinctions occur for all species in the network.
 
 When clust.method = cluster_edge_betweenness computes the network modularity using cluster_edge_betweenness methods from igraph to detect communities
-When clust.method = cluster_spinglass computes the network modularity using cluster_spinglass methods from igraph to detect communities, here the number of spins are equal to the network size
 When clust.method = cluster_label_prop computes the network modularity using cluster_label_prop methods from igraph to detect communities
 When clust.method = cluster_infomap computes the network modularity using cluster_infomap methods from igraph to detect communities, here the number of nb.trials are equal to the network size
 }
