@@ -1,5 +1,5 @@
 test_that("CompareExtinctions works", {
-  #skip_on_cran()
+  skip_on_cran()
   data("Less_Connected")
   expect_warning(History <- SimulateExtinctions(Network = Less_Connected, Method = "Mostconnected"))
   capture_warnings(NullHyp <- RandomExtinctions(Network = Less_Connected, nsim = 100))

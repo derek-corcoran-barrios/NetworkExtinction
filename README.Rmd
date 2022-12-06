@@ -5,6 +5,10 @@ bibliography: vignettes/biblio.bib
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+
+[![DOI](https://zenodo.org/badge/116978043.svg)](https://zenodo.org/badge/latestdoi/116978043)
+
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
