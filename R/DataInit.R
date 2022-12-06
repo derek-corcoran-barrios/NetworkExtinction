@@ -10,7 +10,12 @@
     x
   }
   if(is(x) == "matrix"){
-    x <- as.network(x, loops = TRUE)
+    x <- network::as.network(x,
+                             matrix.type='adjacency',
+                             # loops = TRUE,
+                             directed = TRUE,
+                             ignore.eval = FALSE,
+                             names.eval = 'weight')
   }
   return(x)
 }
