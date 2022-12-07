@@ -6,6 +6,7 @@
 [![codecov](https://codecov.io/gh/derek-corcoran-barrios/NetworkExtinction/branch/master/graph/badge.svg?token=BqPVAVQVBv)](https://codecov.io/gh/derek-corcoran-barrios/NetworkExtinction)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/NetworkExtinction)](https://CRAN.R-project.org/package=NetworkExtinction)
+[![R-CMD-check](https://github.com/derek-corcoran-barrios/NetworkExtinction/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/derek-corcoran-barrios/NetworkExtinction/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 # NetworkExtinction
