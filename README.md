@@ -1,13 +1,16 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- badges: start -->
 
 [![DOI](https://zenodo.org/badge/116978043.svg)](https://zenodo.org/badge/latestdoi/116978043)
+
+[![codecov](https://codecov.io/gh/derek-corcoran-barrios/NetworkExtinction/branch/master/graph/badge.svg?token=BqPVAVQVBv)](https://codecov.io/gh/derek-corcoran-barrios/NetworkExtinction)
+
+<!-- badges: end -->
 
 # NetworkExtinction
 
 # pkgdown <img src="pkgdown/favicon/apple-touch-icon-180x180.png" align="right" />
-
-<!-- badges: start -->
 
 The goal of NetworkExtinction is to Simulate the extinction of species
 in the food web and to analyze its cascading effects, as described in
