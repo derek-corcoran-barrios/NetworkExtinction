@@ -246,12 +246,25 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
       Temp <- Network
       DF$Spp[i] <- Conected1[i]
       network::delete.vertices(Temp, c(DF$Spp[1:i]))
+      
+      if(network::network.size(Temp) < 1){
+        if(verbose){setTxtProgressBar(ProgBar, length(Order))}
+        warning(paste("Your network become completely unconnected before all primary extinctions were simulated. This happened at extinction step", i-1, "out of", length(Order)))
+        break
+      }
+      
     }
     if (length(accExt)>0){ # on any subsequent iteration
       Temp <- Network
       Temp <- network::delete.vertices(Temp, c(accExt))
       edgelist <- network::as.matrix.network.edgelist(Temp,matrix.type="edgelist")
 
+      if(network::network.size(Temp) < 1){
+        if(verbose){setTxtProgressBar(ProgBar, length(Order))}
+        warning(paste("Your network become completely unconnected before all primary extinctions were simulated. This happened at extinction step", i-1, "out of", length(Order)))
+        break
+      }
+      
       if(RecalcConnect){
         Conected2 <- data.frame(ID = 1:network::network.size(Temp), Grado = sna::degree(edgelist, c("total")))
         Conected2 <- arrange(Conected2, desc(Grado))
@@ -273,14 +286,14 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
     DF$C[i] <- network::network.density(Temp)
     DF$Link_density[i] <- DF$L[i]/DF$S[i]
 
-    ## premature complete annihilation message ++++++++++ ++++++++++
-    if(i > 1){
-      if(DF$L[i-1] == 0){
-        if(verbose){setTxtProgressBar(ProgBar, length(Order))}
-        warning(paste("Your network become completely unconnected before all primary extinctions were simulated. This happened at extinction step", i-1, "out of", length(Order)))
-        break
-      }
-    }
+    # ## premature complete annihilation message ++++++++++ ++++++++++
+    # if(i > 1){
+    #   if(DF$L[i-1] == 0){
+    #     if(verbose){setTxtProgressBar(ProgBar, length(Order))}
+    #     warning(paste("Your network become completely unconnected before all primary extinctions were simulated. This happened at extinction step", i-1, "out of", length(Order)))
+    #     break
+    #   }
+    # }
 
     ## calculating modularity ++++++++++ ++++++++++
     Networkclass = class(Temp)
