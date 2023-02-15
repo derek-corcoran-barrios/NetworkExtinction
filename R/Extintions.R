@@ -246,13 +246,13 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
       Temp <- Network
       DF$Spp[i] <- Conected1[i]
       network::delete.vertices(Temp, c(DF$Spp[1:i]))
-      
+
       if(network::network.size(Temp) < 1){
         if(verbose){setTxtProgressBar(ProgBar, length(Order))}
         warning(paste("Your network become completely unconnected before all primary extinctions were simulated. This happened at extinction step", i-1, "out of", length(Order)))
         break
       }
-      
+
     }
     if (length(accExt)>0){ # on any subsequent iteration
       Temp <- Network
@@ -264,7 +264,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
         warning(paste("Your network become completely unconnected before all primary extinctions were simulated. This happened at extinction step", i-1, "out of", length(Order)))
         break
       }
-      
+
       if(RecalcConnect){
         Conected2 <- data.frame(ID = 1:network::network.size(Temp), Grado = sna::degree(edgelist, c("total")))
         Conected2 <- arrange(Conected2, desc(Grado))
@@ -308,7 +308,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
       Membership = suppressWarnings(cluster_edge_betweenness(netgraph, weights = igraph::E(
         igraph::as.undirected(netgraph)
       )$weight, directed = TRUE, edge.betweenness = TRUE,
-                                                             merges = TRUE, bridges = TRUE, modularity = TRUE, membership = TRUE))
+      merges = TRUE, bridges = TRUE, modularity = TRUE, membership = TRUE))
     }else if (clust.method == "cluster_label_prop"){
       Membership = suppressWarnings(cluster_label_prop(netgraph, weights = igraph::E(igraph::as.undirected(netgraph))$weight, initial = NULL,
                                                        fixed = NULL))
