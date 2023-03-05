@@ -286,14 +286,14 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
     DF$C[i] <- network::network.density(Temp)
     DF$Link_density[i] <- DF$L[i]/DF$S[i]
 
-    # ## premature complete annihilation message ++++++++++ ++++++++++
-    # if(i > 1){
-    #   if(DF$L[i-1] == 0){
-    #     if(verbose){setTxtProgressBar(ProgBar, length(Order))}
-    #     warning(paste("Your network become completely unconnected before all primary extinctions were simulated. This happened at extinction step", i-1, "out of", length(Order)))
-    #     break
-    #   }
-    # }
+    ## premature complete annihilation message ++++++++++ ++++++++++
+    if(i > 1){
+      if(DF$L[i-1] == 0){
+        if(verbose){setTxtProgressBar(ProgBar, length(Order))}
+        warning(paste("Your network become completely unconnected before all primary extinctions were simulated. This happened at extinction step", i-1, "out of", length(Order)))
+        break
+      }
+    }
 
     ## calculating modularity ++++++++++ ++++++++++
     Networkclass = class(Temp)
