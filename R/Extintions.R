@@ -6,8 +6,8 @@
 #'
 #' @param Network a network representation as a an adjacency matrix, edgelist,
 #' or a network object
-#' @param Method a character with the options Mostconnected and Ordered
-#' @param Order a numeric vector indexing order of primary extinctions. For Method = Mostconnected Order must be NULL. If Order is not NULL, Method is internally forced to be Ordered.
+#' @param Method a character with the options Mostconnected, Leastconnected and Ordered
+#' @param Order a numeric vector indexing order of primary extinctions. For Method = Mostconnected or Leastconnected Order must be NULL. If Order is not NULL, Method is internally forced to be Ordered.
 #' @param NetworkType a character with the options Trophic and Mutualistic - is used to calculate secondary extinctions.
 #' @param clust.method a character with the options cluster_edge_betweenness,
 #' cluster_label_prop or cluster_infomap, defaults to cluster_infomap
@@ -17,7 +17,7 @@
 #' @param RewiringProb a numeric which identifies the threshold at which to assume rewiring potential is met.
 #' @param verbose Logical. Whether to report on function progress or not.
 #' @return exports list containing a data frame with the characteristics of the network after every extinction and a network object containing the final network. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.
-#' @details When method is Mostconnected, the function takes the network and calculates which node is the most connected of the network, using total degree. Then remove the most connected node, and calculates the the topological indexes of the network and the number of secondary extinctions. This process is repeated until the entire network has gone extinct.
+#' @details When method is Mostconnected, the function takes the network and calculates which node is the most connected of the network, using total degree. Then remove the most connected node, and calculates the the topological indexes of the network and the number of secondary extinctions. This process is repeated until the entire network has gone extinct. When method is Leastconnected, this process prioritises nodes of lowest degree.
 #'
 #' When method is Ordered, it takes a network, and extinguishes nodes using a custom order, then it calculates the secondary extinctions and plots the accumulated secondary extinctions.
 #'
@@ -81,21 +81,29 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
   if(!is.null(Order)){Method <- "Ordered"}
 
   '%ni%'<- Negate('%in%')
-  if(Method %ni% c("Mostconnected", "Ordered")) stop('Choose the right method. See ?SimulateExtinction.')
+  if(Method %ni% c("Mostconnected", "Leastconnected", "Ordered")) stop('Choose the right method. See ?SimulateExtinction.')
 
   edgelist <- network::as.matrix.network.edgelist(Network,matrix.type="edgelist") #Prey - Predator
-  if(Method == "Mostconnected"){
+  if(Method == "Mostconnected" | Method == "Leastconnected"){
     # if(NetworkType == "Trophic"){
     #   Conected <- as.numeric(names(sort(table(edgelist[,1]), decreasing = TRUE)))
     # }else{
     Grado <- NULL
     Conected <- data.frame(ID = 1:network::network.size(Network), Grado = sna::degree(edgelist, c("total")))
-    Conected <- dplyr::arrange(Conected, desc(Grado))$ID
+    if(Method == "Mostconnected"){
+      Conected <- dplyr::arrange(Conected, desc(Grado))$ID
+      RecalcConnect = 1
+    }
+    if(Method == "Leastconnected"){
+      Conected <- dplyr::arrange(Conected, Grado)$ID
+      RecalcConnect = -1
+    }
+
     # }
     DF <- ExtinctionOrder(Network = Network, Order = Conected, clust.method = clust.method,
                           IS = IS, Rewiring = Rewiring, RewiringDist = RewiringDist,
                           verbose = verbose, RewiringProb = RewiringProb, NetworkType = NetworkType,
-                          RecalcConnect = TRUE)
+                          RecalcConnect = RecalcConnect)
   }
   if(Method == "Ordered"){
     DF <- ExtinctionOrder(Network = Network, Order = Order, clust.method = clust.method,
@@ -120,7 +128,7 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
 #' @param RewiringDist a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities. If Rewiring == function(x){x}, this matrix is expected to contain probabilities of a connection being present between species-pairs.
 #' @param RewiringProb a numeric which identifies the threshold at which to assume rewiring potential is met.
 #' @param verbose Logical. Whether to report on function progress or not.
-#' @param RecalcConnect Logical. Whether to recalculate connectedness of each node following each round of extinction simulation and subsequently update extinction order with newly mostconnected nodes.
+#' @param RecalcConnect Logical or Numeric. Whether to recalculate connectedness of each node following each round of extinction simulation and subsequently update extinction order with newly mostconnected nodes.
 #' @return exports list containing a data frame with the characteristics of the network after every extinction and a network object containing the final network. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.
 #' @details When NetworkType = Trophic, secondary extinctions only occur for any predator, but not producers. If NetworkType = Mutualistic, secondary extinctions occur for all species in the network.
 #'
@@ -277,9 +285,14 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
         break
       }
 
-      if(RecalcConnect){
+      if(RecalcConnect != FALSE){
         Conected2 <- data.frame(ID = 1:network::network.size(Temp), Grado = sna::degree(edgelist, c("total")))
-        Conected2 <- arrange(Conected2, desc(Grado))
+        if(RecalcConnect == 1){
+          Conected2 <- arrange(Conected2, desc(Grado))
+        }
+        if(RecalcConnect == -1){
+          Conected2 <- arrange(Conected2, Grado)
+        }
         for(j in sort(accExt)){
           Conected2$ID <- ifelse(Conected2$ID < j, Conected2$ID, Conected2$ID + 1)
         }
