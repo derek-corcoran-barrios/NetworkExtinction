@@ -43,7 +43,7 @@ To ensure your network representations work well with `NetworkExtinction` you sh
 
 Binary networks simply denote whether two partners (i.e., nodes) interact with each other (link is present) or not (link is absent). Within a matrix, presence and absence are encoded as 1 and 0, respectively:
 
-```{r}
+``` r
 set.seed(42)
 bin_mat <- matrix(
   rbinom(n = 1e2, size = 1, prob = 0.5),
@@ -65,49 +65,49 @@ bin_mat
 
 To express this network matrix as a `network` object, simply run:
 
-```{r}
+``` r
 library(network)
 bin_net <- as.network(bin_mat)
 summary(bin_net)
-#>
-#>Network attributes:
-#>  vertices = 10
-#>  directed = TRUE
-#>  hyper = FALSE
-#>  loops = FALSE
-#>  multiple = FALSE
-#>  bipartite = FALSE
-#> total edges = 49 
-#>   missing edges = 0 
-#>   non-missing edges = 49 
-#> density = 0.5444444 
-#>
-#>Vertex attributes:
-#>  vertex.names:
-#>   character valued attribute
-#>   10 valid vertex names
-#>
-#>No edge attributes
-#>
-#>Network adjacency matrix:
-#>   1 2 3 4 5 6 7 8 9 10
-#>1  0 0 1 1 0 0 1 0 1  1
-#>2  1 0 0 1 0 0 1 0 0  0
-#>3  0 1 0 0 0 0 1 0 0  0
-#>4  1 0 1 0 1 1 1 0 1  1
-#>5  1 0 0 0 0 0 1 0 1  1
-#>6  1 1 1 1 1 0 0 1 1  1
-#>7  1 1 0 0 1 1 0 0 0  0
-#>8  0 0 1 0 1 0 1 0 0  1
-#>9  1 0 0 1 1 0 1 1 0  1
-#>10 1 1 1 1 1 1 0 0 0  0
+#> 
+#> Network attributes:
+#>   vertices = 10
+#>   directed = TRUE
+#>   hyper = FALSE
+#>   loops = FALSE
+#>   multiple = FALSE
+#>   bipartite = FALSE
+#>  total edges = 49 
+#>    missing edges = 0 
+#>    non-missing edges = 49 
+#>  density = 0.5444444 
+#> 
+#> Vertex attributes:
+#>   vertex.names:
+#>    character valued attribute
+#>    10 valid vertex names
+#> 
+#> No edge attributes
+#> 
+#> Network adjacency matrix:
+#>    1 2 3 4 5 6 7 8 9 10
+#> 1  0 0 1 1 0 0 1 0 1  1
+#> 2  1 0 0 1 0 0 1 0 0  0
+#> 3  0 1 0 0 0 0 1 0 0  0
+#> 4  1 0 1 0 1 1 1 0 1  1
+#> 5  1 0 0 0 0 0 1 0 1  1
+#> 6  1 1 1 1 1 0 0 1 1  1
+#> 7  1 1 0 0 1 1 0 0 0  0
+#> 8  0 0 1 0 1 0 1 0 0  1
+#> 9  1 0 0 1 1 0 1 1 0  1
+#> 10 1 1 1 1 1 1 0 0 0  0
 ```
 
 ### Weighted Networks
 
 Weighted networks allow for quantification of relative importance of interactions to interaction partners. Thus, the network matrices of weighted networks are not bound to values of exactly 0 and 1, but rather to ranges:
 
-```{r}
+``` r
 set.seed(42)
 weight_mat <- matrix(
   round(
@@ -115,64 +115,64 @@ weight_mat <- matrix(
     2),
   ncol = 10, nrow = 10)
 weight_mat
-#>
-#>      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-#> [1,] 0.91 0.46 0.90 0.74 0.38 0.33 0.68 0.04 0.58  0.67
-#> [2,] 0.94 0.72 0.14 0.81 0.44 0.35 0.98 0.14 0.16  0.00
-#> [3,] 0.29 0.93 0.99 0.39 0.04 0.40 0.76 0.22 0.36  0.21
-#> [4,] 0.83 0.26 0.95 0.69 0.97 0.78 0.57 0.48 0.65  0.93
-#> [5,] 0.64 0.46 0.08 0.00 0.43 0.04 0.85 0.20 0.78  0.93
-#> [6,] 0.52 0.94 0.51 0.83 0.96 0.75 0.19 0.72 0.56  0.73
-#> [7,] 0.74 0.98 0.39 0.01 0.89 0.68 0.27 0.01 0.23  0.33
-#> [8,] 0.13 0.12 0.91 0.21 0.64 0.17 0.83 0.38 0.09  0.52
-#> [9,] 0.66 0.47 0.45 0.91 0.97 0.26 0.69 0.51 0.09  0.74
-#>[10,] 0.71 0.56 0.84 0.61 0.62 0.51 0.24 0.00 0.31  0.62
+#> 
+#>       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+#>  [1,] 0.91 0.46 0.90 0.74 0.38 0.33 0.68 0.04 0.58  0.67
+#>  [2,] 0.94 0.72 0.14 0.81 0.44 0.35 0.98 0.14 0.16  0.00
+#>  [3,] 0.29 0.93 0.99 0.39 0.04 0.40 0.76 0.22 0.36  0.21
+#>  [4,] 0.83 0.26 0.95 0.69 0.97 0.78 0.57 0.48 0.65  0.93
+#>  [5,] 0.64 0.46 0.08 0.00 0.43 0.04 0.85 0.20 0.78  0.93
+#>  [6,] 0.52 0.94 0.51 0.83 0.96 0.75 0.19 0.72 0.56  0.73
+#>  [7,] 0.74 0.98 0.39 0.01 0.89 0.68 0.27 0.01 0.23  0.33
+#>  [8,] 0.13 0.12 0.91 0.21 0.64 0.17 0.83 0.38 0.09  0.52
+#>  [9,] 0.66 0.47 0.45 0.91 0.97 0.26 0.69 0.51 0.09  0.74
+#> [10,] 0.71 0.56 0.84 0.61 0.62 0.51 0.24 0.00 0.31  0.62
 ```
 
 To express these matrices as `network` objects ready for use with `NetworkExtinction` functions, run the following (this is what `NetworkExtinction` attempts when it detects a matrix input):
 
-```{r}
+``` r
 weight_net <- as.network(weight_mat, matrix.type = "adjacency", 
                          ignore.eval = FALSE, names.eval = 'weight')
 summary(weight_net)
-#>
-#>Network attributes:
-#>  vertices = 10
-#>  directed = TRUE
-#>  hyper = FALSE
-#>  loops = FALSE
-#>  multiple = FALSE
-#>  bipartite = FALSE
-#> total edges = 87 
-#>   missing edges = 0 
-#>   non-missing edges = 87 
-#> density = 0.9666667 
-#>
-#>Vertex attributes:
-#>  vertex.names:
-#>   character valued attribute
-#>   10 valid vertex names
-#>
-#>Edge attributes:
-#>
-#> weight:
-#>   numeric valued attribute
-#>   attribute summary:
-#>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#> 0.0100  0.2750  0.5600  0.5361  0.7800  0.9800 
-#>
-#>Network adjacency matrix:
-#>   1 2 3 4 5 6 7 8 9 10
-#>1  0 1 1 1 1 1 1 1 1  1
-#>2  1 0 1 1 1 1 1 1 1  0
-#>3  1 1 0 1 1 1 1 1 1  1
-#>4  1 1 1 0 1 1 1 1 1  1
-#>5  1 1 1 0 0 1 1 1 1  1
-#>6  1 1 1 1 1 0 1 1 1  1
-#>7  1 1 1 1 1 1 0 1 1  1
-#>8  1 1 1 1 1 1 1 0 1  1
-#>9  1 1 1 1 1 1 1 1 0  1
-#>10 1 1 1 1 1 1 1 0 1  0
+#> 
+#> Network attributes:
+#>   vertices = 10
+#>   directed = TRUE
+#>   hyper = FALSE
+#>   loops = FALSE
+#>   multiple = FALSE
+#>   bipartite = FALSE
+#>  total edges = 87 
+#>    missing edges = 0 
+#>    non-missing edges = 87 
+#>  density = 0.9666667 
+#> 
+#> Vertex attributes:
+#>   vertex.names:
+#>    character valued attribute
+#>    10 valid vertex names
+#> 
+#> Edge attributes:
+#> 
+#>  weight:
+#>    numeric valued attribute
+#>    attribute summary:
+#>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+#>  0.0100  0.2750  0.5600  0.5361  0.7800  0.9800 
+#> 
+#> Network adjacency matrix:
+#>    1 2 3 4 5 6 7 8 9 10
+#> 1  0 1 1 1 1 1 1 1 1  1
+#> 2  1 0 1 1 1 1 1 1 1  0
+#> 3  1 1 0 1 1 1 1 1 1  1
+#> 4  1 1 1 0 1 1 1 1 1  1
+#> 5  1 1 1 0 0 1 1 1 1  1
+#> 6  1 1 1 1 1 0 1 1 1  1
+#> 7  1 1 1 1 1 1 0 1 1  1
+#> 8  1 1 1 1 1 1 1 0 1  1
+#> 9  1 1 1 1 1 1 1 1 0  1
+#> 10 1 1 1 1 1 1 1 0 1  0
 ```
 
 **NOTE:** `NetworkExtinction` functions do not require `network` objects and can work just fine with matrix objects.
