@@ -265,6 +265,12 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
       Temp <- network::delete.vertices(Temp, c(accExt))
       edgelist <- network::as.matrix.network.edgelist(Temp,matrix.type="edgelist")
 
+      if(dim(edgelist)[1] == 0){
+        if(verbose){setTxtProgressBar(ProgBar, length(Order))}
+        warning(paste("All predators have gone extinct. This happened at extinction step", i-1, "out of", length(Order)))
+        break
+      }
+
       if(network::network.size(Temp) < 1){
         if(verbose){setTxtProgressBar(ProgBar, length(Order))}
         warning(paste("Your network become completely unconnected before all primary extinctions were simulated. This happened at extinction step", i-1, "out of", length(Order)))
