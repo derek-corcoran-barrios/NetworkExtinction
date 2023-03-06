@@ -603,19 +603,19 @@ RandomExtinctions <- function(Network, nsim = 10,
   ## simulations
   if(verbose & !parallel){ProgBar <- txtProgressBar(max = nsim, style = 3)}
   if(parallel){
-    cl <- makeCluster(ncores)
+    cl <- makeCluster(ncores, outfile="")
     registerDoParallel(cl)
     parallel::clusterExport(cl,
                             varlist = c("network", "SimNum", "IS", "Rewiring", "RewiringDist", "RewiringProb", "SimNum"),
                             envir = environment()
     )
-    sims <- foreach(i=1:nsim, .packages = "NetworkExtinction")%dopar%{
-      sims <- try(ExtinctionOrder(Network = network, Order = sample(1:network::network.size(network), size = SimNum),
-                                  IS = IS, NetworkType = NetworkType,
-                                  Rewiring = Rewiring, RewiringDist = RewiringDist,
-                                  verbose = FALSE, RewiringProb = RewiringProb), silent = TRUE)
-      try({sims$simulation <- i}, silent = TRUE)
-      sims
+    sims <- foreach(i=1:nsim, .packages = c("NetworkExtinction", "dplyr"))%dopar%{
+      sims1 <- try(ExtinctionOrder(Network = network, Order = sample(1:network::network.size(network), size = SimNum),
+                                   IS = IS, NetworkType = NetworkType,
+                                   Rewiring = Rewiring, RewiringDist = RewiringDist,
+                                   verbose = FALSE, RewiringProb = RewiringProb), silent = TRUE)
+      try({sims1$simulation <- i}, silent = TRUE)
+      sims1
     }
     stopCluster(cl)
   }else{
