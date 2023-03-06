@@ -247,7 +247,12 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
 
   # Sequential extinction simulation ++++++++++ ++++++++++ ++++++++++ ++++++++++
   if(verbose){ProgBar <- txtProgressBar(max = length(Order), style = 3)}
+  primskip <- c()
   for (i in 1:length(Order)){
+    if(is.na(Conected1[i])){
+      if(verbose){setTxtProgressBar(ProgBar, i)}
+      next()
+    }
     # print(i)
     ### creating temporary network + deleting vertices if they have been set to go extinct ++++++++++ ++++++++++
     if(length(accExt)==0){ # on first iteration
@@ -269,6 +274,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
 
     }
     if (length(accExt)>0){ # on any subsequent iteration
+
       Temp <- Network
       Temp <- network::delete.vertices(Temp, c(accExt))
       edgelist <- network::as.matrix.network.edgelist(Temp,matrix.type="edgelist")
@@ -288,7 +294,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
       if(RecalcConnect != FALSE){
         Conected2 <- data.frame(ID =
                                   # get.vertex.attribute(Temp, "vertex.names"),
-                                1:network::network.size(Temp),
+                                  1:network::network.size(Temp),
                                 Grado = sna::degree(edgelist, c("total")))
         if(RecalcConnect == 1){
           Conected2 <- arrange(Conected2, desc(Grado))
@@ -301,6 +307,12 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
         }
         DF$Spp[i] <- Conected2$ID[1]
       }else{
+
+        if(Conected1[i] %in% accExt){
+          primskip <- c(primskip, Conected1[i])
+          Conected1 <- Conected1[-i]
+        }
+
         DF$Spp[i] <- Conected1[i]
       }
 
@@ -494,6 +506,8 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
   DF$TotalExt <- DF$AccSecExt + DF$NumExt
   DF <- relocate(DF, Modularity, .after = Link_density)
   class(DF) <- c("data.frame", "SimulateExt")
+
+  if(length(primskip)!= 0){warning(paste("Primary extinctions of", paste(primskip, collapse = ", "), "skipped due to their prior extinction as secondary extinctions."))}
 
   return(list(sims = DF,
               Network = Temp))
