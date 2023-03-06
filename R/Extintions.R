@@ -601,12 +601,12 @@ RandomExtinctions <- function(Network, nsim = 10,
   }
 
   ## simulations
-  if(verbose){ProgBar <- txtProgressBar(max = nsim, style = 3)}
+  if(verbose & !parallel){ProgBar <- txtProgressBar(max = nsim, style = 3)}
   if(parallel){
     cl <- makeCluster(ncores)
     registerDoParallel(cl)
     parallel::clusterExport(cl,
-                            varlist = c("network", "SimNum", "IS", "Rewiring", "RewiringDist", "RewiringProb"),
+                            varlist = c("network", "SimNum", "IS", "Rewiring", "RewiringDist", "RewiringProb", "SimNum"),
                             envir = environment()
     )
     sims <- foreach(i=1:nsim, .packages = "NetworkExtinction")%dopar%{
