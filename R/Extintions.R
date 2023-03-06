@@ -273,8 +273,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
       }
 
     }
-    if (length(accExt)>0){ # on any subsequent iteration
-
+    if(length(accExt)>0){ # on any subsequent iteration
       Temp <- Network
       Temp <- network::delete.vertices(Temp, c(accExt))
       edgelist <- network::as.matrix.network.edgelist(Temp,matrix.type="edgelist")
@@ -311,6 +310,8 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
         if(Conected1[i] %in% accExt){
           primskip <- c(primskip, Conected1[i])
           Conected1 <- Conected1[-i]
+          if(verbose){setTxtProgressBar(ProgBar, length(Order))}
+          if(is.na(Conected1[i])){break()}
         }
 
         DF$Spp[i] <- Conected1[i]
@@ -603,14 +604,16 @@ RandomExtinctions <- function(Network, nsim = 10,
   ## simulations
   if(verbose & !parallel){ProgBar <- txtProgressBar(max = nsim, style = 3)}
   if(parallel){
-    cl <- makeCluster(ncores, outfile="")
+    cl <- makeCluster(ncores, outfile="test.txt")
     registerDoParallel(cl)
     parallel::clusterExport(cl,
                             varlist = c("network", "SimNum", "IS", "Rewiring", "RewiringDist", "RewiringProb", "SimNum"),
                             envir = environment()
     )
     sims <- foreach(i=1:nsim, .packages = c("NetworkExtinction", "dplyr"))%dopar%{
-      sims1 <- try(ExtinctionOrder(Network = network, Order = sample(1:network::network.size(network), size = SimNum),
+      Order <- sample(1:network::network.size(network), size = SimNum)
+      sims1 <- try(ExtinctionOrder(Network = network,
+                                   Order = Order,
                                    IS = IS, NetworkType = NetworkType,
                                    Rewiring = Rewiring, RewiringDist = RewiringDist,
                                    verbose = FALSE, RewiringProb = RewiringProb), silent = TRUE)
@@ -621,7 +624,8 @@ RandomExtinctions <- function(Network, nsim = 10,
   }else{
     sims <- list()
     for(i in 1:nsim){
-      sims[[i]] <- try(ExtinctionOrder(Network = network, Order = sample(1:network::network.size(network), size = SimNum),
+      Order <- sample(1:network::network.size(network), size = SimNum)
+      sims[[i]] <- try(ExtinctionOrder(Network = network, Order = Order,
                                        IS = IS, NetworkType = NetworkType,
                                        Rewiring = Rewiring, RewiringDist = RewiringDist,
                                        verbose = FALSE, RewiringProb = RewiringProb), silent = TRUE)
