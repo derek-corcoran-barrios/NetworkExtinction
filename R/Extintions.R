@@ -95,7 +95,7 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
       RecalcConnect = 1
     }
     if(Method == "Leastconnected"){
-      Conected <- dplyr::arrange(Conected, Grado)$ID
+      Conected <- dplyr::arrange(Conected[Conected$Grado != 0,], Grado)$ID
       RecalcConnect = -1
     }
 
@@ -291,7 +291,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
           Conected2 <- arrange(Conected2, desc(Grado))
         }
         if(RecalcConnect == -1){
-          Conected2 <- arrange(Conected2, Grado)
+          Conected2 <- arrange(Conected2[Conected2$Grado != 0,], Grado)
         }
         for(j in sort(accExt)){
           Conected2$ID <- ifelse(Conected2$ID < j, Conected2$ID, Conected2$ID + 1)
