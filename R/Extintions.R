@@ -286,16 +286,18 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
       }
 
       if(RecalcConnect != FALSE){
-        Conected2 <- data.frame(ID = 1:network::network.size(Temp), Grado = sna::degree(edgelist, c("total")))
+        Conected2 <- data.frame(ID = get.vertex.attribute(Temp, "vertex.names"),
+                                # 1:network::network.size(Temp),
+                                Grado = sna::degree(edgelist, c("total")))
         if(RecalcConnect == 1){
           Conected2 <- arrange(Conected2, desc(Grado))
         }
         if(RecalcConnect == -1){
           Conected2 <- arrange(Conected2[Conected2$Grado != 0,], Grado)
         }
-        for(j in sort(accExt)){
-          Conected2$ID <- ifelse(Conected2$ID < j, Conected2$ID, Conected2$ID + 1)
-        }
+        # for(j in sort(accExt)){
+        #   Conected2$ID <- ifelse(Conected2$ID < j, Conected2$ID, Conected2$ID + 1)
+        # }
         DF$Spp[i] <- Conected2$ID[1]
       }else{
         DF$Spp[i] <- Conected1[i]
