@@ -21,9 +21,9 @@ SimulateExtinctions(
 \item{Network}{a network representation as a an adjacency matrix, edgelist,
 or a network object}
 
-\item{Method}{a character with the options Mostconnected and Ordered}
+\item{Method}{a character with the options Mostconnected, Leastconnected and Ordered}
 
-\item{Order}{a numeric vector indexing order of primary extinctions. For Method = Mostconnected Order must be NULL. If Order is not NULL, Method is internally forced to be Ordered.}
+\item{Order}{a numeric vector indexing order of primary extinctions. For Method = Mostconnected or Leastconnected Order must be NULL. If Order is not NULL, Method is internally forced to be Ordered.}
 
 \item{NetworkType}{a character with the options Trophic and Mutualistic - is used to calculate secondary extinctions.}
 
@@ -49,7 +49,7 @@ extinctions, species-dependency on existing interaction strength, and rewiring p
 and checking for secondary extinctions.
 }
 \details{
-When method is Mostconnected, the function takes the network and calculates which node is the most connected of the network, using total degree. Then remove the most connected node, and calculates the the topological indexes of the network and the number of secondary extinctions. This process is repeated until the entire network has gone extinct.
+When method is Mostconnected, the function takes the network and calculates which node is the most connected of the network, using total degree. Then remove the most connected node, and calculates the the topological indexes of the network and the number of secondary extinctions. This process is repeated until the entire network has gone extinct. When method is Leastconnected, this process prioritises nodes of lowest degree.
 
 When method is Ordered, it takes a network, and extinguishes nodes using a custom order, then it calculates the secondary extinctions and plots the accumulated secondary extinctions.
 
