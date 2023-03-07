@@ -46,6 +46,56 @@ And the development version from [GitHub](https://github.com/) with:
 # install.packages("devtools")
 devtools::install_github("derek-corcoran-barrios/NetworkExtinction")
 ```
+
+## Network Encoding
+
+Within `NetworkExtinction`, ecological networks are recognized either as adjacency matrices or as `network` objects. Furthermore, `NetworkExtinction` functions support both binary (whether an interaction is present or not) as well as weighted (importance of an interaction for partners) network specifications. For the demonstration of the package in front of you, we use both types. 
+
+To ensure your network representations work well with `NetworkExtinction` you should ensure that they match the structure of the following objects.
+
+### Binary Networks
+
+Binary networks simply denote whether two partners (i.e., nodes) interact with each other (link is present) or not (link is absent). Within a matrix, presence and absence are encoded as 1 and 0, respectively:
+
+```{r}
+set.seed(42)
+bin_mat <- matrix(
+  rbinom(n = 1e2, size = 1, prob = 0.5),
+  ncol = 10, nrow = 10)
+bin_mat
+```
+
+To express this network matrix as a `network` object, simply run:
+
+```{r}
+library(network)
+bin_net <- as.network(bin_mat)
+summary(bin_net)
+```
+
+### Weighted Networks
+
+Weighted networks allow for quantification of relative importance of interactions to interaction partners. Thus, the network matrices of weighted networks are not bound to values of exactly 0 and 1, but rather to ranges:
+
+```{r}
+set.seed(42)
+weight_mat <- matrix(
+  round(
+    runif(n = 1e2, min = 0, max = 1), 
+    2),
+  ncol = 10, nrow = 10)
+weight_mat
+```
+To express these matrices as `network` objects ready for use with `NetworkExtinction` functions, run the following (this is what `NetworkExtinction` attempts when it detects a matrix input):
+
+```{r}
+weight_net <- as.network(weight_mat, matrix.type = "adjacency", 
+                         ignore.eval = FALSE, names.eval = 'weight')
+summary(weight_net)
+```
+
+**NOTE:** `NetworkExtinction` functions do not require `network` objects and can work just fine with matrix objects.
+
 ## Extinctions functions 
 
 ### Extinctions from most to less conected species in the network
