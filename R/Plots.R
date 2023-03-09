@@ -15,16 +15,20 @@
 #' ExtinctionPlot(History = history$sims)
 #' # You can also specify the variable to be ploted in the y axis
 #' ExtinctionPlot(History = history$sims, Variable = "Link_density")
-#' @importFrom ggplot2 aes_string
+#' @importFrom ggplot2 aes
 #' @importFrom ggplot2 geom_line
 #' @importFrom ggplot2 ggplot
 #' @importFrom ggplot2 theme_bw
+#' @importFrom rlang sym
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
 #' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
 #' @seealso [NetworkExtintion::ExtinctionOrder()]
 #' @export
 
-ExtinctionPlot <- function(History, Variable = "AccSecExt"){
+ExtinctionPlot <- function(History, Variable = "AccSecExt") {
+  X <- NULL
   History$X <- 1:nrow(History)
-  ggplot(History, aes_string(x = "X", y = Variable)) + geom_line() + theme_bw() + ylab(Variable) + xlab("Primary extinctions")
+  ggplot(data = History, aes(x = X, y = !!rlang::sym(Variable))) +
+    geom_line() + theme_bw() + ylab(Variable) + xlab("Primary extinctions")
 }
+

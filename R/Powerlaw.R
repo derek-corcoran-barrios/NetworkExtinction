@@ -35,9 +35,9 @@
 #'@importFrom dplyr group_split
 #'@importFrom dplyr mutate
 #'@importFrom dplyr select
-#'@importFrom tidyr gather
+#'@importFrom tidyr pivot_longer
 #'@importFrom magrittr "%>%"
-#'@importFrom ggplot2 aes_string
+#'@importFrom ggplot2 aes
 #'@importFrom ggplot2 geom_line
 #'@importFrom ggplot2 geom_point
 #'@importFrom ggplot2 scale_x_log10
@@ -135,9 +135,15 @@ DegreeDistribution <- function(Network, scale = "arithmetic"){
                             term == "lambda" ~ "Lambda",
                             term == "K" ~ "Lambda",
                             TRUE ~ term))
-  DF2 <- For.Graph %>% filter(K != 0 & Cumulative != 0) %>% gather(key = model, value = fit, Exp, Power, LogExp, LogPower) %>% dplyr::filter(model %in% Summs$model)
+  DF2 <- For.Graph %>%
+    filter(K != 0 & Cumulative != 0) %>%
+    tidyr::pivot_longer(
+      cols = c(Exp, Power, LogExp, LogPower),
+      names_to = "model",
+      values_to = "fit"
+    ) %>% dplyr::filter(model %in% Summs$model)
 
-  g <- ggplot(DF2, aes_string(x = "K", y = "Cumulative")) + geom_line() + geom_point()+ theme_bw() + geom_line(aes_string(y ="fit", color = "model")) + ylim(c(0,1))
+  g <- ggplot(DF2, aes(x = K, y = Cumulative)) + geom_line() + geom_point()+ theme_bw() + geom_line(aes(y =fit, color = model)) + ylim(c(0,1))
 
   if(scale == "LogLog"){
     g <- g  + scale_x_log10() + scale_y_log10(breaks=c(0, .001,.01,1))

@@ -12,7 +12,24 @@ Description: Simulates the extinction of species in ecological networks and it a
              its cascading effects, described in Dunne et al. (2002) <doi:10.1073/pnas.192407699>.
 URL: https://derek-corcoran-barrios.github.io/NetworkExtinction/
 Depends: R (>= 3.5.1)
-Imports: broom, doParallel, dplyr, foreach, ggplot2, igraph, magrittr, network, scales, sna, stats, tidyr, MASS, parallel, purrr, methods
+Imports: 
+    broom,
+    doParallel,
+    dplyr,
+    foreach,
+    ggplot2,
+    igraph,
+    magrittr,
+    network,
+    scales,
+    sna,
+    stats,
+    tidyr,
+    MASS,
+    parallel,
+    purrr,
+    methods,
+    rlang
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
