@@ -66,10 +66,12 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9">
-<div class="section level1"><div class="page-header">
+<div class="section level1">
+<div class="page-header">
 <img src="logo.png" class="logo" alt=""><h1 id="networkextinction">NetworkExtinction<a class="anchor" aria-label="anchor" href="#networkextinction"></a>
 </h1>
-</div></div>
+</div>
+</div>
 <div class="section level1">
 <h1 id="pkgdown-">pkgdown <img src="pkgdown/favicon/apple-touch-icon-180x180.png" align="right"><a class="anchor" aria-label="anchor" href="#pkgdown-"></a>
 </h1>
@@ -237,7 +239,9 @@
 <span><span class="va">history</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/SimulateExtinctions.html">SimulateExtinctions</a></span><span class="op">(</span>Network <span class="op">=</span> <span class="va">net</span>, Method <span class="op">=</span> <span class="st">"Mostconnected"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/ExtinctionPlot.html">ExtinctionPlot</a></span><span class="op">(</span>History <span class="op">=</span> <span class="va">history</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, Variable <span class="op">=</span> <span class="st">"AccSecExt"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="reference/figures/README-mostconnected3-1.png" alt="Figure 3. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most to the least connected species" width="100%"><p class="caption">Figure 3. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most to the least connected species</p>
+<img src="reference/figures/README-mostconnected3-1.png" alt="Figure 3. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most to the least connected species" width="100%"><p class="caption">
+Figure 3. The graph shows the number of accumulated secondary extinctions that occur when removing species from the most to the least connected species
+</p>
 </div>
 <p>In addition, the list returned by <code><a href="reference/SimulateExtinctions.html">SimulateExtinctions()</a></code> also contains the final Network that remains after all primary extinctions have been finished:</p>
 </div>
@@ -250,7 +254,9 @@
 <span><span class="fu"><a href="reference/SimulateExtinctions.html">SimulateExtinctions</a></span><span class="op">(</span>Network <span class="op">=</span> <span class="va">net</span>, Order <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, Method <span class="op">=</span> <span class="st">"Ordered"</span><span class="op">)</span></span></code></pre></div>
 <p>Already at the removal of node 5, we loose support for all other species in the network.</p>
 <div class="figure">
-<img src="reference/figures/README-unnamed-chunk-5-1.png" alt="Figure 4. The graph shows the number of accumulated secondary extinctions that occur when removing species in a custom order." width="100%"><p class="caption">Figure 4. The graph shows the number of accumulated secondary extinctions that occur when removing species in a custom order.</p>
+<img src="reference/figures/README-unnamed-chunk-5-1.png" alt="Figure 4. The graph shows the number of accumulated secondary extinctions that occur when removing species in a custom order." width="100%"><p class="caption">
+Figure 4. The graph shows the number of accumulated secondary extinctions that occur when removing species in a custom order.
+</p>
 </div>
 <p>The results of this function are a dataframe with the topological indexes of the network calculated from each extinction step (Table 2), and a plot that shows the number of accumulated secondary extinctions that occurred with each removed node (Figure 4).</p>
 </div>
@@ -264,7 +270,9 @@
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">707</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/RandomExtinctions.html">RandomExtinctions</a></span><span class="op">(</span>Network<span class="op">=</span> <span class="va">net</span>, nsim<span class="op">=</span> <span class="fl">100</span>, SimNum <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="reference/figures/README-unnamed-chunk-8-1.png" alt="Figure 5. The resulting graph of the RandomExtinctions function" width="100%"><p class="caption">Figure 5. The resulting graph of the RandomExtinctions function</p>
+<img src="reference/figures/README-unnamed-chunk-8-1.png" alt="Figure 5. The resulting graph of the RandomExtinctions function" width="100%"><p class="caption">
+Figure 5. The resulting graph of the RandomExtinctions function
+</p>
 </div>
 </div>
 <div class="section level3">
@@ -276,7 +284,9 @@
 <span><span class="va">Comparison</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/CompareExtinctions.html">CompareExtinctions</a></span><span class="op">(</span>Nullmodel <span class="op">=</span> <span class="va">Test</span>, Hypothesis <span class="op">=</span> <span class="va">Order</span><span class="op">)</span></span></code></pre></div>
 <p>The result will be a graph (Figue 6) with a dashed line showing the observed extinction history and a solid line showing the expected value of secondary extinctions randomly generated.</p>
 <div class="figure">
-<img src="reference/figures/README-unnamed-chunk-10-1.png" alt="Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random" width="100%"><p class="caption">Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random</p>
+<img src="reference/figures/README-unnamed-chunk-10-1.png" alt="Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random" width="100%"><p class="caption">
+Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random
+</p>
 </div>
 </div>
 </div>
@@ -288,12 +298,16 @@
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/ExtinctionPlot.html">ExtinctionPlot</a></span><span class="op">(</span>History <span class="op">=</span> <span class="va">Order</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="reference/figures/README-unnamed-chunk-11-1.png" alt="Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions" width="100%"><p class="caption">Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions</p>
+<img src="reference/figures/README-unnamed-chunk-11-1.png" alt="Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions" width="100%"><p class="caption">
+Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions
+</p>
 </div>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/ExtinctionPlot.html">ExtinctionPlot</a></span><span class="op">(</span>History <span class="op">=</span> <span class="va">Order</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, Variable <span class="op">=</span> <span class="st">"Link_density"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="reference/figures/README-unnamed-chunk-12-1.png" alt="Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions" width="100%"><p class="caption">Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions</p>
+<img src="reference/figures/README-unnamed-chunk-12-1.png" alt="Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions" width="100%"><p class="caption">
+Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions
+</p>
 </div>
 </div>
 <div class="section level2">
@@ -305,9 +319,19 @@
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"chilean_intertidal"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/DegreeDistribution.html">DegreeDistribution</a></span><span class="op">(</span><span class="va">chilean_intertidal</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="reference/figures/README-unnamed-chunk-15-1.png" alt="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" width="100%"><p class="caption">Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively</p>
+<img src="reference/figures/README-unnamed-chunk-15-1.png" alt="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" width="100%"><p class="caption">
+Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively
+</p>
 </div>
 <table class="table">
+<colgroup>
+<col width="15%">
+<col width="16%">
+<col width="16%">
+<col width="13%">
+<col width="19%">
+<col width="18%">
+</colgroup>
 <thead><tr class="header">
 <th align="right">logLik</th>
 <th align="right">AIC</th>
@@ -614,13 +638,27 @@
 <h1 id="bibliography">Bibliography<a class="anchor" aria-label="anchor" href="#bibliography"></a>
 </h1>
 <div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-albert2002statistical" class="csl-entry"><p>Albert, Réka, and Albert-László Barabási. 2002. “Statistical Mechanics of Complex Networks.” <em>Reviews of Modern Physics</em> 74 (1): 47.</p></div>
-<div id="ref-dunne2009cascading" class="csl-entry"><p>Dunne, Jennifer A, and Richard J Williams. 2009. “Cascading Extinctions and Community Collapse in Model Food Webs.” <em>Philosophical Transactions of the Royal Society B: Biological Sciences</em> 364 (1524): 1711–23.</p></div>
-<div id="ref-dunne2002food" class="csl-entry"><p>Dunne, Jennifer A, Richard J Williams, and Neo D Martinez. 2002. “Food-Web Structure and Network Theory: The Role of Connectance and Size.” <em>Proceedings of the National Academy of Sciences</em> 99 (20): 12917–22.</p></div>
-<div id="ref-estrada2007food" class="csl-entry"><p>Estrada, Ernesto. 2007. “Food Webs Robustness to Biodiversity Loss: The Roles of Connectance, Expansibility and Degree Distribution.” <em>Journal of Theoretical Biology</em> 244 (2): 296–307.</p></div>
-<div id="ref-kefi2015network" class="csl-entry"><p>Kéfi, Sonia, Eric L Berlow, Evie A Wieters, Lucas N Joppa, Spencer A Wood, Ulrich Brose, and Sergio A Navarrete. 2015. “Network Structure Beyond Food Webs: Mapping Non-Trophic and Trophic Interactions on Chilean Rocky Shores.” <em>Ecology</em> 96 (1): 291–303.</p></div>
-<div id="ref-de2013topological" class="csl-entry"><p>Santana, Charles N de, Alejandro F Rozenfeld, Pablo A Marquet, and Carlos M Duarte. 2013. “Topological Properties of Polar Food Webs.” <em>Marine Ecology Progress Series</em> 474: 15–26.</p></div>
-<div id="ref-sole2001complexity" class="csl-entry"><p>Sole, Ricard V, and M Montoya. 2001. “Complexity and Fragility in Ecological Networks.” <em>Proceedings of the Royal Society of London B: Biological Sciences</em> 268 (1480): 2039–45.</p></div>
+<div id="ref-albert2002statistical" class="csl-entry">
+Albert, Réka, and Albert-László Barabási. 2002. “Statistical Mechanics of Complex Networks.” <em>Reviews of Modern Physics</em> 74 (1): 47.
+</div>
+<div id="ref-dunne2009cascading" class="csl-entry">
+Dunne, Jennifer A, and Richard J Williams. 2009. “Cascading Extinctions and Community Collapse in Model Food Webs.” <em>Philosophical Transactions of the Royal Society B: Biological Sciences</em> 364 (1524): 1711–23.
+</div>
+<div id="ref-dunne2002food" class="csl-entry">
+Dunne, Jennifer A, Richard J Williams, and Neo D Martinez. 2002. “Food-Web Structure and Network Theory: The Role of Connectance and Size.” <em>Proceedings of the National Academy of Sciences</em> 99 (20): 12917–22.
+</div>
+<div id="ref-estrada2007food" class="csl-entry">
+Estrada, Ernesto. 2007. “Food Webs Robustness to Biodiversity Loss: The Roles of Connectance, Expansibility and Degree Distribution.” <em>Journal of Theoretical Biology</em> 244 (2): 296–307.
+</div>
+<div id="ref-kefi2015network" class="csl-entry">
+Kéfi, Sonia, Eric L Berlow, Evie A Wieters, Lucas N Joppa, Spencer A Wood, Ulrich Brose, and Sergio A Navarrete. 2015. “Network Structure Beyond Food Webs: Mapping Non-Trophic and Trophic Interactions on Chilean Rocky Shores.” <em>Ecology</em> 96 (1): 291–303.
+</div>
+<div id="ref-de2013topological" class="csl-entry">
+Santana, Charles N de, Alejandro F Rozenfeld, Pablo A Marquet, and Carlos M Duarte. 2013. “Topological Properties of Polar Food Webs.” <em>Marine Ecology Progress Series</em> 474: 15–26.
+</div>
+<div id="ref-sole2001complexity" class="csl-entry">
+Sole, Ricard V, and M Montoya. 2001. “Complexity and Fragility in Ecological Networks.” <em>Proceedings of the Royal Society of London B: Biological Sciences</em> 268 (1480): 2039–45.
+</div>
 </div>
 </div>
 
