@@ -560,17 +560,23 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
 #' @importFrom doParallel registerDoParallel
 #' @importFrom dplyr group_by
 #' @importFrom dplyr mutate
+#' @importFrom dplyr n
 #' @importFrom dplyr summarise
+#' @importFrom dplyr relocate
+#' @importFrom dplyr everything
 #' @importFrom foreach `%dopar%`
 #' @importFrom foreach foreach
-#' @importFrom ggplot2 aes_string
+#' @importFrom ggplot2 aes
 #' @importFrom ggplot2 geom_line
 #' @importFrom ggplot2 geom_ribbon
 #' @importFrom ggplot2 ggplot
 #' @importFrom ggplot2 theme_bw
+#' @importFrom ggplot2 theme
 #' @importFrom ggplot2 scale_fill_manual
 #' @importFrom ggplot2 xlab
 #' @importFrom ggplot2 ylab
+#' @importFrom ggplot2 labs
+#' @importFrom ggplot2 element_blank
 #' @importFrom magrittr "%>%"
 #' @importFrom network network.size
 #' @importFrom parallel makeCluster
@@ -581,6 +587,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
 #' @importFrom stats na.omit
 #' @importFrom utils setTxtProgressBar
 #' @importFrom utils txtProgressBar
+#' @importFrom patchwork wrap_plots
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
 #' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
 #' @author Erik Kusch <erik.kusch@bio.au.dk>
@@ -595,7 +602,7 @@ RandomExtinctions <- function(Network, nsim = 10,
                               verbose = TRUE){
   if(!NetworkType %in% c("Trophic", "Mutualistic")){stop("Please specify NetworkType as either 'Trophic' or 'Mutualistic'")}
   ## setting up objects
-  NumExt <- sd <- AccSecExt <- AccSecExt_95CI <- AccSecExt_mean <- Lower <- NULL
+  NumExt <- sd <- AccSecExt <- AccSecExt_95CI <- AccSecExt_mean <- Lower <- Upper <-NULL
   network <- .DataInit(x = Network)
   if(is.null(SimNum)){
     SimNum <- network::network.size(network)
@@ -617,7 +624,7 @@ RandomExtinctions <- function(Network, nsim = 10,
                                    IS = IS, NetworkType = NetworkType,
                                    Rewiring = Rewiring, RewiringDist = RewiringDist,
                                    verbose = FALSE, RewiringProb = RewiringProb), silent = TRUE)
-      try({sims1$simulation <- i}, silent = TRUE)
+      try({sims1$sims$simulation <- i}, silent = TRUE)
       sims1
     }
     stopCluster(cl)
@@ -629,7 +636,7 @@ RandomExtinctions <- function(Network, nsim = 10,
                                        IS = IS, NetworkType = NetworkType,
                                        Rewiring = Rewiring, RewiringDist = RewiringDist,
                                        verbose = FALSE, RewiringProb = RewiringProb), silent = TRUE)
-      try({sims[[i]]$simulation <- i}, silent = TRUE)
+      try({sims[[i]]$sims$simulation <- i}, silent = TRUE)
       if(verbose){setTxtProgressBar(ProgBar, i)}
     }
   }
@@ -645,19 +652,21 @@ RandomExtinctions <- function(Network, nsim = 10,
     FullSims <- sims
   }
 
-  sims <- sims[!is.na(sims$SecExt), ] %>% dplyr::group_by(NumExt) %>% summarise(AccSecExt_95CI = 1.96*sd(AccSecExt), AccSecExt_mean = mean(AccSecExt)) %>% mutate(Upper = AccSecExt_mean + AccSecExt_95CI, Lower = AccSecExt_mean - AccSecExt_95CI, Lower = ifelse(Lower < 0, 0, Lower))
+  sims <- sims[!is.na(sims$SecExt), ] %>% dplyr::group_by(NumExt) %>% summarise(AccSecExt_95CI = 1.96*sd(AccSecExt), AccSecExt_mean = mean(AccSecExt), nsim = dplyr::n()) %>% mutate(Upper = AccSecExt_mean + AccSecExt_95CI, Lower = AccSecExt_mean - AccSecExt_95CI, Lower = ifelse(Lower < 0, 0, Lower)) %>% dplyr::relocate(nsim, .after = dplyr::everything())
 
   ## plot output
   if(plot == TRUE){
-    g <- ggplot(sims, aes_string(x = "NumExt", y = "AccSecExt_mean")) + geom_ribbon(aes_string(ymin = "Lower", ymax = "Upper"), fill = scales::muted("red")) + geom_line() + ylab("Acc. Secondary extinctions") + xlab("Primary extinctions") + theme_bw()
-    print(g)
+    g <- ggplot(sims, aes(x = NumExt, y = AccSecExt_mean)) + geom_ribbon(aes(ymin = Lower, ymax = Upper), fill = scales::muted("red")) + geom_line() + ylab("Acc. Secondary extinctions") + xlab("Primary extinctions") + theme_bw() + ggplot2::theme(axis.title.x = ggplot2::element_blank())
+    h <- ggplot(sims, aes(x = NumExt, y = nsim/max(nsim))) + geom_line() + theme_bw() + labs(y = "Prop", x = "Primary extinctions")
+    I <- patchwork::wrap_plots(g, h, ncol = 1, guides = "keep", heights = c(3,1))
+    print(I)
   }
 
   ## object output
   if(Record == T & plot == T){
     return(list(sims = sims, graph = g, FullSims = FullSims, nets = temps))
   }else if(Record == F & plot == T){
-    return(list(sims = sims, graph = g, nets = temps))
+    return(list(sims = sims, graph = I, nets = temps))
   }else if(Record == F & plot == F){
     return(list(sims = sims, nets = temps))
   }else if(Record == T & plot == F){
@@ -691,6 +700,9 @@ RandomExtinctions <- function(Network, nsim = 10,
 #' @importFrom ggplot2 geom_ribbon
 #' @importFrom ggplot2 scale_color_manual
 #' @importFrom ggplot2 theme_bw
+#' @importFrom ggplot2 element_blank
+#' @importFrom ggplot2 theme
+#' @importFrom patchwork wrap_plots
 #' @importFrom scales muted
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
 #' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
@@ -698,26 +710,21 @@ RandomExtinctions <- function(Network, nsim = 10,
 
 CompareExtinctions <- function(Nullmodel, Hypothesis){
   if(class(Hypothesis$sims)[2] == "SimulateExt"){
-    NumExt <- sd <- AccSecExt <- AccSecExt_mean <-NULL
-    if(class(Nullmodel$sims)[1] == "list"){
-      g <- Nullmodel$graph + geom_line(aes(color = "blue"))
-      g <- g + geom_point(data = Hypothesis, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison",values =c("black", "blue"), label = c("Observed","Null hypothesis"))
-    } else {
-      g <- ggplot(Nullmodel$sims, aes(x = NumExt, y = AccSecExt_mean)) + geom_ribbon(aes_string(ymin = "Lower", ymax = "Upper"), fill = scales::muted("red")) + geom_line(color = "blue") + ylab("Acc. Secondary extinctions") + xlab("Primary extinctions") + theme_bw()
-      g <- g + geom_point(data = Hypothesis$sims, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis$sims, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison",values =c("black", "blue"), label = c("Observed","Null hypothesis"))
-      g
-    }
-
-    g
-
-    return(g)
+    NumExt <- sd <- AccSecExt <- AccSecExt_mean <- Lower <- Upper <- nsim<-NULL
+    g <- ggplot(Nullmodel$sims, aes(x = NumExt, y = AccSecExt_mean)) + geom_ribbon(aes(ymin = Lower, ymax = Upper), fill = scales::muted("red")) + geom_line(aes(color = "blue")) + ylab("Acc. Secondary extinctions") + xlab("Primary extinctions") + theme_bw() + ggplot2::theme(axis.title.x = ggplot2::element_blank())
+    g <- g + geom_point(data = Hypothesis$sims, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis$sims, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison",values =c("black", "blue"), label = c("Observed","Null hypothesis"))
+    h <- ggplot(Nullmodel$sims, aes(x = NumExt, y = nsim/max(nsim))) + geom_line() + theme_bw() + labs(y = "Prop", x = "Primary extinctions")
+    I <- patchwork::wrap_plots(g, h, ncol = 1, guides = "keep", heights = c(3,1))
+    I
+    return(I)
   }
   if(class(Hypothesis$sims)[2] %in% c("Mostconnected", "ExtinctionOrder")){
     NumExt <- sd <- AccSecExt <- AccSecExt_mean <-NULL
-    g <- Nullmodel$graph + geom_line(aes(color = "blue"))
+    g <- ggplot(Nullmodel$sims, aes(x = NumExt, y = AccSecExt_mean)) + geom_ribbon(aes(ymin = Lower, ymax = Upper), fill = scales::muted("red")) + geom_line(aes(color = "blue")) + ylab("Acc. Secondary extinctions") + xlab("Primary extinctions") + theme_bw() + ggplot2::theme(axis.title.x = ggplot2::element_blank())
     g <- g + geom_point(data = Hypothesis, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison", values =c("black", "blue"), label = c("Observed","Null hypothesis"))
-    g
-    return(g)
+    I <- patchwork::wrap_plots(g, h, ncol = 1, guides = "keep", heights = c(3,1))
+    I
+    return(I)
   }
   else{
     message("Hypothesis not of class Mostconnected or ExtinctionOrder")
