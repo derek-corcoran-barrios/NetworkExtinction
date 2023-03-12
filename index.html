@@ -75,7 +75,7 @@
 <div class="section level1">
 <h1 id="pkgdown-">pkgdown <img src="pkgdown/favicon/apple-touch-icon-180x180.png" align="right"><a class="anchor" aria-label="anchor" href="#pkgdown-"></a>
 </h1>
-<p>The goal of NetworkExtinction is to Simulate the extinction of species in the food web and to analyze its cascading effects, as described in Dunne et al.(2002)</p>
+<p>The goal of NetworkExtinction is to Simulate the extinction of species in the food web and to analyze its cascading effects, as described in Dunne et al. (2002)</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -102,24 +102,22 @@
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1e2</span>, size <span class="op">=</span> <span class="fl">1</span>, prob <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
 <span>  ncol <span class="op">=</span> <span class="fl">10</span>, nrow <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">bin_mat</span></span>
-<span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt;      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]</span></span>
-<span><span class="co">#&gt; [1,]    1    0    1    1    0    0    1    0    1     1</span></span>
-<span><span class="co">#&gt; [2,]    1    1    0    1    0    0    1    0    0     0</span></span>
-<span><span class="co">#&gt; [3,]    0    1    1    0    0    0    1    0    0     0</span></span>
-<span><span class="co">#&gt; [4,]    1    0    1    1    1    1    1    0    1     1</span></span>
-<span><span class="co">#&gt; [5,]    1    0    0    0    0    0    1    0    1     1</span></span>
-<span><span class="co">#&gt; [6,]    1    1    1    1    1    1    0    1    1     1</span></span>
-<span><span class="co">#&gt; [7,]    1    1    0    0    1    1    0    0    0     0</span></span>
-<span><span class="co">#&gt; [8,]    0    0    1    0    1    0    1    0    0     1</span></span>
-<span><span class="co">#&gt; [9,]    1    0    0    1    1    0    1    1    0     1</span></span>
+<span><span class="co">#&gt;       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]</span></span>
+<span><span class="co">#&gt;  [1,]    1    0    1    1    0    0    1    0    1     1</span></span>
+<span><span class="co">#&gt;  [2,]    1    1    0    1    0    0    1    0    0     0</span></span>
+<span><span class="co">#&gt;  [3,]    0    1    1    0    0    0    1    0    0     0</span></span>
+<span><span class="co">#&gt;  [4,]    1    0    1    1    1    1    1    0    1     1</span></span>
+<span><span class="co">#&gt;  [5,]    1    0    0    0    0    0    1    0    1     1</span></span>
+<span><span class="co">#&gt;  [6,]    1    1    1    1    1    1    0    1    1     1</span></span>
+<span><span class="co">#&gt;  [7,]    1    1    0    0    1    1    0    0    0     0</span></span>
+<span><span class="co">#&gt;  [8,]    0    0    1    0    1    0    1    0    0     1</span></span>
+<span><span class="co">#&gt;  [9,]    1    0    0    1    1    0    1    1    0     1</span></span>
 <span><span class="co">#&gt; [10,]    1    1    1    1    1    1    0    0    0     1</span></span></code></pre></div>
 <p>To express this network matrix as a <code>network</code> object, simply run:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://statnet.org/" class="external-link">network</a></span><span class="op">)</span></span>
 <span><span class="va">bin_net</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/network/man/network.html" class="external-link">as.network</a></span><span class="op">(</span><span class="va">bin_mat</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">bin_net</span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Network attributes:</span></span>
 <span><span class="co">#&gt;   vertices = 10</span></span>
 <span><span class="co">#&gt;   directed = TRUE</span></span>
@@ -164,7 +162,6 @@
 <span>    <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  ncol <span class="op">=</span> <span class="fl">10</span>, nrow <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">weight_mat</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]</span></span>
 <span><span class="co">#&gt;  [1,] 0.91 0.46 0.90 0.74 0.38 0.33 0.68 0.04 0.58  0.67</span></span>
 <span><span class="co">#&gt;  [2,] 0.94 0.72 0.14 0.81 0.44 0.35 0.98 0.14 0.16  0.00</span></span>
@@ -181,7 +178,6 @@
 <code class="sourceCode R"><span><span class="va">weight_net</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/network/man/network.html" class="external-link">as.network</a></span><span class="op">(</span><span class="va">weight_mat</span>, matrix.type <span class="op">=</span> <span class="st">"adjacency"</span>, </span>
 <span>                         ignore.eval <span class="op">=</span> <span class="cn">FALSE</span>, names.eval <span class="op">=</span> <span class="st">'weight'</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">weight_net</span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Network attributes:</span></span>
 <span><span class="co">#&gt;   vertices = 10</span></span>
 <span><span class="co">#&gt;   directed = TRUE</span></span>
@@ -254,7 +250,7 @@ Figure 3. The graph shows the number of accumulated secondary extinctions that o
 <span><span class="fu"><a href="reference/SimulateExtinctions.html">SimulateExtinctions</a></span><span class="op">(</span>Network <span class="op">=</span> <span class="va">net</span>, Order <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, Method <span class="op">=</span> <span class="st">"Ordered"</span><span class="op">)</span></span></code></pre></div>
 <p>Already at the removal of node 5, we loose support for all other species in the network.</p>
 <div class="figure">
-<img src="reference/figures/README-unnamed-chunk-5-1.png" alt="Figure 4. The graph shows the number of accumulated secondary extinctions that occur when removing species in a custom order." width="100%"><p class="caption">
+<img src="reference/figures/README-unnamed-chunk-9-1.png" alt="Figure 4. The graph shows the number of accumulated secondary extinctions that occur when removing species in a custom order." width="100%"><p class="caption">
 Figure 4. The graph shows the number of accumulated secondary extinctions that occur when removing species in a custom order.
 </p>
 </div>
@@ -270,7 +266,7 @@ Figure 4. The graph shows the number of accumulated secondary extinctions that o
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">707</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/RandomExtinctions.html">RandomExtinctions</a></span><span class="op">(</span>Network<span class="op">=</span> <span class="va">net</span>, nsim<span class="op">=</span> <span class="fl">100</span>, SimNum <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="reference/figures/README-unnamed-chunk-8-1.png" alt="Figure 5. The resulting graph of the RandomExtinctions function" width="100%"><p class="caption">
+<img src="reference/figures/README-unnamed-chunk-12-1.png" alt="Figure 5. The resulting graph of the RandomExtinctions function" width="100%"><p class="caption">
 Figure 5. The resulting graph of the RandomExtinctions function
 </p>
 </div>
@@ -284,7 +280,7 @@ Figure 5. The resulting graph of the RandomExtinctions function
 <span><span class="va">Comparison</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/CompareExtinctions.html">CompareExtinctions</a></span><span class="op">(</span>Nullmodel <span class="op">=</span> <span class="va">Test</span>, Hypothesis <span class="op">=</span> <span class="va">Order</span><span class="op">)</span></span></code></pre></div>
 <p>The result will be a graph (Figue 6) with a dashed line showing the observed extinction history and a solid line showing the expected value of secondary extinctions randomly generated.</p>
 <div class="figure">
-<img src="reference/figures/README-unnamed-chunk-10-1.png" alt="Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random" width="100%"><p class="caption">
+<img src="reference/figures/README-unnamed-chunk-14-1.png" alt="Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random" width="100%"><p class="caption">
 Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random
 </p>
 </div>
@@ -298,14 +294,14 @@ Figure 6. The resulting graph of the CompareExtinctions function, where the dash
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/ExtinctionPlot.html">ExtinctionPlot</a></span><span class="op">(</span>History <span class="op">=</span> <span class="va">Order</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="reference/figures/README-unnamed-chunk-11-1.png" alt="Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions" width="100%"><p class="caption">
+<img src="reference/figures/README-unnamed-chunk-15-1.png" alt="Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions" width="100%"><p class="caption">
 Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions
 </p>
 </div>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/ExtinctionPlot.html">ExtinctionPlot</a></span><span class="op">(</span>History <span class="op">=</span> <span class="va">Order</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, Variable <span class="op">=</span> <span class="st">"Link_density"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="reference/figures/README-unnamed-chunk-12-1.png" alt="Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions" width="100%"><p class="caption">
+<img src="reference/figures/README-unnamed-chunk-16-1.png" alt="Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions" width="100%"><p class="caption">
 Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions
 </p>
 </div>
@@ -319,7 +315,7 @@ Figure 8. Another example of the use of the ExtinctionPlot function showing the 
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"chilean_intertidal"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/DegreeDistribution.html">DegreeDistribution</a></span><span class="op">(</span><span class="va">chilean_intertidal</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="reference/figures/README-unnamed-chunk-15-1.png" alt="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" width="100%"><p class="caption">
+<img src="reference/figures/README-unnamed-chunk-19-1.png" alt="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" width="100%"><p class="caption">
 Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively
 </p>
 </div>
