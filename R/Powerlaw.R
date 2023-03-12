@@ -47,6 +47,7 @@
 #'@importFrom MASS fitdistr
 #'@importFrom purrr map
 #'@importFrom purrr reduce
+#'@importFrom purrr discard
 #'@importFrom stats ks.test
 #'@importFrom stats glm
 #'@importFrom stats logLik
@@ -69,64 +70,109 @@ DegreeDistribution <- function(Network, scale = "arithmetic"){
 
 
   #exponential model nls
-  exp.model <- nls(Cumulative~exp(K*lambda+ c),start= list(lambda=0.1, c = 0), data = For.Graph)
-  For.Graph$Exp <- predict(exp.model)
-  Summs.exp <- glance(exp.model)
-  Summs.exp$model <- "Exp"
-  Summs.exp$Normal.Resid <- ifelse(tidy(ks.test(augment(exp.model)$.resid,y='pnorm',alternative='two.sided'))$p.value < 0.05, "No", "Yes")
-  Summs.exp$family <- "Exponential"
-  Summs.exp$AICcNorm <- logLik(MASS::fitdistr(augment(exp.model)$.resid, "normal"))[1]
-  Summs.exp$AICcNorm <- (4 - 2*Summs.exp$AICcNorm) + (12/(nrow(augment(exp.model)) - 1))
-  Params.exp <- tidy(exp.model)
-  Params.exp$model <- "Exp"
-  #exponential model Log
+  tryCatch({
+    exp.model <- nls(Cumulative~exp(K*lambda+ c),start= list(lambda=0.1, c = 0), data = For.Graph)
+    For.Graph$Exp <- predict(exp.model)
+    Summs.exp <- glance(exp.model)
+    Summs.exp$model <- "Exp"
+    Summs.exp$Normal.Resid <- ifelse(tidy(ks.test(augment(exp.model)$.resid,y='pnorm',alternative='two.sided'))$p.value < 0.05, "No", "Yes")
+    Summs.exp$family <- "Exponential"
+    Summs.exp$AICcNorm <- logLik(MASS::fitdistr(augment(exp.model)$.resid, "normal"))[1]
+    Summs.exp$AICcNorm <- (4 - 2*Summs.exp$AICcNorm) + (12/(nrow(augment(exp.model)) - 1))
+    Params.exp <- tidy(exp.model)
+    Params.exp$model <- "Exp"
 
-  power <- filter(For.Graph, K != 0 & Cumulative != 0)
-  logexp.model <- glm(LogCum ~ K, data = power)
-  power$LogExp <- exp(predict(logexp.model))
-  Summs.logexp <- glance(logexp.model)
-  Summs.logexp$model <- "LogExp"
-  Summs.logexp$Normal.Resid <- ifelse(tidy(ks.test(augment(logexp.model)$.resid,y='pnorm',alternative='two.sided'))$p.value < 0.05, "No", "Yes")
-  Summs.logexp$family <- "Exponential"
-  Summs.logexp$AICcNorm <- logLik(MASS::fitdistr(augment(logexp.model)$.resid, "normal"))[1]
-  Summs.logexp$AICcNorm <- (4 - 2*Summs.logexp$AICcNorm) + (12/(nrow(augment(logexp.model)) - 1))
-  Params.logexp <- tidy(logexp.model)
-  Params.logexp$model <- "LogExp"
+  }, error = function(e) {
+    # display error message when there is an error
+    message("Could not fit Exponential model: ", e$message)
+  })
+  if(!exists("Summs.exp")) {
+    Summs.exp <- NULL
+  }
+  if(!exists("Params.exp")) {
+    Params.exp <- NULL
+  }
+
+  #exponential model Log
+  tryCatch({
+    power <- filter(For.Graph, K != 0 & Cumulative != 0)
+    logexp.model <- glm(LogCum ~ K, data = power)
+    power$LogExp <- exp(predict(logexp.model))
+    Summs.logexp <- glance(logexp.model)
+    Summs.logexp$model <- "LogExp"
+    Summs.logexp$Normal.Resid <- ifelse(tidy(ks.test(augment(logexp.model)$.resid,y='pnorm',alternative='two.sided'))$p.value < 0.05, "No", "Yes")
+    Summs.logexp$family <- "Exponential"
+    Summs.logexp$AICcNorm <- logLik(MASS::fitdistr(augment(logexp.model)$.resid, "normal"))[1]
+    Summs.logexp$AICcNorm <- (4 - 2*Summs.logexp$AICcNorm) + (12/(nrow(augment(logexp.model)) - 1))
+    Params.logexp <- tidy(logexp.model)
+    Params.logexp$model <- "LogExp"}, error = function(e) {
+      # display error message when there is an error
+      message("Could not fit Logexponential model: ", e$message)
+    })
+  if(!exists("Summs.logexp")) {
+    Summs.logexp <- NULL
+  }
+  if(!exists("Params.logexp")) {
+    Params.logexp <- NULL
+  }
 
   #logpowerlaw
-
-  logpower.model <- glm(LogCum ~ I(log(K)), data = power)
-  power$LogPower <- exp(predict(logpower.model))
-  For.Graph <- full_join(For.Graph, power)
-  Summs.logpower <- glance(logpower.model)
-  Summs.logpower$model <- "LogPower"
-  Summs.logpower$Normal.Resid <- ifelse(tidy(ks.test(augment(logpower.model)$.resid,y='pnorm',alternative='two.sided'))$p.value < 0.05, "No", "Yes")
-  Summs.logpower$family <- "PowerLaw"
-  Summs.logpower$AICcNorm <- logLik(MASS::fitdistr(augment(logpower.model)$.resid, "normal"))[1]
-  Summs.logpower$AICcNorm <- (4 - 2*Summs.logpower$AICcNorm) + (12/(nrow(augment(logpower.model)) - 1))
-  Params.logpower <- tidy(logpower.model)
-  Params.logpower$model <- "LogPower"
+  tryCatch({
+    logpower.model <- glm(LogCum ~ I(log(K)), data = power)
+    power$LogPower <- exp(predict(logpower.model))
+    For.Graph <- full_join(For.Graph, power)
+    Summs.logpower <- glance(logpower.model)
+    Summs.logpower$model <- "LogPower"
+    Summs.logpower$Normal.Resid <- ifelse(tidy(ks.test(augment(logpower.model)$.resid,y='pnorm',alternative='two.sided'))$p.value < 0.05, "No", "Yes")
+    Summs.logpower$family <- "PowerLaw"
+    Summs.logpower$AICcNorm <- logLik(MASS::fitdistr(augment(logpower.model)$.resid, "normal"))[1]
+    Summs.logpower$AICcNorm <- (4 - 2*Summs.logpower$AICcNorm) + (12/(nrow(augment(logpower.model)) - 1))
+    Params.logpower <- tidy(logpower.model)
+    Params.logpower$model <- "LogPower"}, error = function(e) {
+      # display error message when there is an error
+      message("Could not fit Logpower model: ", e$message)
+    })
+  if(!exists("Summs.logpower")) {
+    Summs.logpower <- NULL
+  }
+  if(!exists("Params.logpower")) {
+    Params.logpower <- NULL
+  }
 
   #powerlaw
+  tryCatch({
+    power.model <- nls(Cumulative~a*K^y, start= list(y=0, a = 1), data = power)
+    power$Power <- predict(power.model)
+    For.Graph <- full_join(For.Graph, power)
+    Summs.power <- glance(power.model)
+    Summs.power$model <- "Power"
+    Summs.power$Normal.Resid <- ifelse(tidy(ks.test(augment(power.model)$.resid,y='pnorm',alternative='two.sided'))$p.value < 0.05, "No", "Yes")
+    Summs.power$family <- "PowerLaw"
+    Summs.power$AICcNorm <- logLik(MASS::fitdistr(augment(power.model)$.resid, "normal"))[1]
+    Summs.power$AICcNorm <- (4 - 2*Summs.power$AICcNorm) + (12/(nrow(augment(power.model)) - 1))
+    Params.power <- tidy(power.model)
+    Params.power$model <- "Power"
 
-  powerlaw.model <- nls(Cumulative~a*K^y, start= list(y=0, a = 1), data = power)
-  power$Power <- predict(powerlaw.model)
-  For.Graph <- full_join(For.Graph, power)
-  Summs.power <- glance(powerlaw.model)
-  Summs.power$model <- "Power"
-  Summs.power$Normal.Resid  <- ifelse(tidy(ks.test(augment(powerlaw.model)$.resid,y='pnorm',alternative='two.sided'))$p.value < 0.05, "No", "Yes")
-  Summs.power$family <- "PowerLaw"
-  Summs.power$AICcNorm <- logLik(MASS::fitdistr(augment(powerlaw.model)$.resid, "normal"))[1]
-  Summs.power$AICcNorm <- (4 - 2*Summs.power$AICcNorm) + (12/(nrow(augment(powerlaw.model)) - 1))
-  Params.power <- tidy(powerlaw.model)
-  Params.power$model <- "Power"
+  }, error = function(e) {
+    # display error message when there is an error
+    message("Could not fit Power model: ", e$message)
+  })
+  if(!exists("Summs.power")) {
+    Summs.power <- NULL
+  }
+  if(!exists("Params.power")) {
+    Params.power <- NULL
+  }
+
 
   #all together
-  Summs <- full_join(Summs.exp, Summs.power)
-  Summs <- full_join(Summs, Summs.logexp)
-  Summs <- full_join(Summs, Summs.logpower) %>% select(logLik, AIC, BIC, model, Normal.Resid, family, AICcNorm)
-  Summs <- arrange(Summs, Normal.Resid, AIC) %>%  dplyr::select(logLik, AIC, BIC, model, Normal.Resid, family)
-  params <- bind_rows(Params.logpower, Params.power, Params.logexp, Params.exp) %>%
+  Summs <- list(Summs.exp, Summs.power, Summs.logexp, Summs.logpower) |>
+    purrr::discard(is.null) |>
+    purrr::reduce(full_join) |>
+    select(logLik, AIC, BIC, model, Normal.Resid, family, AICcNorm) |>      arrange(Normal.Resid, AIC) |>
+    dplyr::select(logLik, AIC, BIC, model, Normal.Resid, family)
+  params <- list(Params.logpower, Params.power, Params.logexp, Params.exp) |> purrr::discard(is.null) |>
+    purrr::reduce(bind_rows) %>%
     dplyr::filter(model %in% Summs$model) %>%
     mutate(term = case_when(term == "y" ~ "Beta",
                             term == "a" ~ "c",

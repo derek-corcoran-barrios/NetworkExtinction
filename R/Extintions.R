@@ -588,6 +588,9 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
 #' @importFrom utils setTxtProgressBar
 #' @importFrom utils txtProgressBar
 #' @importFrom patchwork wrap_plots
+#' @importFrom patchwork plot_annotation
+
+
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
 #' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
 #' @author Erik Kusch <erik.kusch@bio.au.dk>
@@ -658,7 +661,9 @@ RandomExtinctions <- function(Network, nsim = 10,
   if(plot == TRUE){
     g <- ggplot(sims, aes(x = NumExt, y = AccSecExt_mean)) + geom_ribbon(aes(ymin = Lower, ymax = Upper), fill = scales::muted("red")) + geom_line() + ylab("Acc. Secondary extinctions") + xlab("Primary extinctions") + theme_bw() + ggplot2::theme(axis.title.x = ggplot2::element_blank())
     h <- ggplot(sims, aes(x = NumExt, y = nsim/max(nsim))) + geom_line() + theme_bw() + labs(y = "Prop", x = "Primary extinctions")
-    I <- patchwork::wrap_plots(g, h, ncol = 1, guides = "keep", heights = c(3,1))
+    I <- patchwork::wrap_plots(g, h, ncol = 1, guides = "keep", heights = c(3,1)) + patchwork::plot_annotation(tag_levels = 'A')
+
+
     print(I)
   }
 
@@ -703,6 +708,9 @@ RandomExtinctions <- function(Network, nsim = 10,
 #' @importFrom ggplot2 element_blank
 #' @importFrom ggplot2 theme
 #' @importFrom patchwork wrap_plots
+#' @importFrom patchwork plot_annotation
+
+
 #' @importFrom scales muted
 #' @author Derek Corcoran <derek.corcoran.barrios@gmail.com>
 #' @author M. Isidora Ávila-Thieme <msavila@uc.cl>
@@ -714,7 +722,7 @@ CompareExtinctions <- function(Nullmodel, Hypothesis){
     g <- ggplot(Nullmodel$sims, aes(x = NumExt, y = AccSecExt_mean)) + geom_ribbon(aes(ymin = Lower, ymax = Upper), fill = scales::muted("red")) + geom_line(aes(color = "blue")) + ylab("Acc. Secondary extinctions") + xlab("Primary extinctions") + theme_bw() + ggplot2::theme(axis.title.x = ggplot2::element_blank())
     g <- g + geom_point(data = Hypothesis$sims, aes(y = AccSecExt), color = "black") + geom_line(data = Hypothesis$sims, aes(y = AccSecExt, color = "black")) + scale_color_manual(name = "Comparison",values =c("black", "blue"), label = c("Observed","Null hypothesis"))
     h <- ggplot(Nullmodel$sims, aes(x = NumExt, y = nsim/max(nsim))) + geom_line() + theme_bw() + labs(y = "Prop", x = "Primary extinctions")
-    I <- patchwork::wrap_plots(g, h, ncol = 1, guides = "keep", heights = c(3,1))
+    I <- patchwork::wrap_plots(g, h, ncol = 1, guides = "keep", heights = c(3,1)) + patchwork::plot_annotation(tag_levels = 'A')
     I
     return(I)
   }

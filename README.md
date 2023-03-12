@@ -15,7 +15,7 @@ status](https://www.r-pkg.org/badges/version/NetworkExtinction)](https://CRAN.R-
 
 The goal of NetworkExtinction is to Simulate the extinction of species
 in the food web and to analyze its cascading effects, as described in
-Dunne et al.(2002)
+Dunne et al. (2002)
 
 ## Installation
 
@@ -35,13 +35,23 @@ devtools::install_github("derek-corcoran-barrios/NetworkExtinction")
 
 ## Network Encoding
 
-Within `NetworkExtinction`, ecological networks are recognized either as adjacency matrices or as `network` objects. Furthermore, `NetworkExtinction` functions support both binary (whether an interaction is present or not) as well as weighted (importance of an interaction for partners) network specifications. For the demonstration of the package in front of you, we use both types. 
+Within `NetworkExtinction`, ecological networks are recognized either as
+adjacency matrices or as `network` objects. Furthermore,
+`NetworkExtinction` functions support both binary (whether an
+interaction is present or not) as well as weighted (importance of an
+interaction for partners) network specifications. For the demonstration
+of the package in front of you, we use both types.
 
-To ensure your network representations work well with `NetworkExtinction` you should ensure that they match the structure of the following objects.
+To ensure your network representations work well with
+`NetworkExtinction` you should ensure that they match the structure of
+the following objects.
 
 ### Binary Networks
 
-Binary networks simply denote whether two partners (i.e., nodes) interact with each other (link is present) or not (link is absent). Within a matrix, presence and absence are encoded as 1 and 0, respectively:
+Binary networks simply denote whether two partners (i.e., nodes)
+interact with each other (link is present) or not (link is absent).
+Within a matrix, presence and absence are encoded as 1 and 0,
+respectively:
 
 ``` r
 set.seed(42)
@@ -49,17 +59,16 @@ bin_mat <- matrix(
   rbinom(n = 1e2, size = 1, prob = 0.5),
   ncol = 10, nrow = 10)
 bin_mat
-#>
-#>      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-#> [1,]    1    0    1    1    0    0    1    0    1     1
-#> [2,]    1    1    0    1    0    0    1    0    0     0
-#> [3,]    0    1    1    0    0    0    1    0    0     0
-#> [4,]    1    0    1    1    1    1    1    0    1     1
-#> [5,]    1    0    0    0    0    0    1    0    1     1
-#> [6,]    1    1    1    1    1    1    0    1    1     1
-#> [7,]    1    1    0    0    1    1    0    0    0     0
-#> [8,]    0    0    1    0    1    0    1    0    0     1
-#> [9,]    1    0    0    1    1    0    1    1    0     1
+#>       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+#>  [1,]    1    0    1    1    0    0    1    0    1     1
+#>  [2,]    1    1    0    1    0    0    1    0    0     0
+#>  [3,]    0    1    1    0    0    0    1    0    0     0
+#>  [4,]    1    0    1    1    1    1    1    0    1     1
+#>  [5,]    1    0    0    0    0    0    1    0    1     1
+#>  [6,]    1    1    1    1    1    1    0    1    1     1
+#>  [7,]    1    1    0    0    1    1    0    0    0     0
+#>  [8,]    0    0    1    0    1    0    1    0    0     1
+#>  [9,]    1    0    0    1    1    0    1    1    0     1
 #> [10,]    1    1    1    1    1    1    0    0    0     1
 ```
 
@@ -69,7 +78,6 @@ To express this network matrix as a `network` object, simply run:
 library(network)
 bin_net <- as.network(bin_mat)
 summary(bin_net)
-#> 
 #> Network attributes:
 #>   vertices = 10
 #>   directed = TRUE
@@ -105,7 +113,10 @@ summary(bin_net)
 
 ### Weighted Networks
 
-Weighted networks allow for quantification of relative importance of interactions to interaction partners. Thus, the network matrices of weighted networks are not bound to values of exactly 0 and 1, but rather to ranges:
+Weighted networks allow for quantification of relative importance of
+interactions to interaction partners. Thus, the network matrices of
+weighted networks are not bound to values of exactly 0 and 1, but rather
+to ranges:
 
 ``` r
 set.seed(42)
@@ -115,7 +126,6 @@ weight_mat <- matrix(
     2),
   ncol = 10, nrow = 10)
 weight_mat
-#> 
 #>       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
 #>  [1,] 0.91 0.46 0.90 0.74 0.38 0.33 0.68 0.04 0.58  0.67
 #>  [2,] 0.94 0.72 0.14 0.81 0.44 0.35 0.98 0.14 0.16  0.00
@@ -129,13 +139,14 @@ weight_mat
 #> [10,] 0.71 0.56 0.84 0.61 0.62 0.51 0.24 0.00 0.31  0.62
 ```
 
-To express these matrices as `network` objects ready for use with `NetworkExtinction` functions, run the following (this is what `NetworkExtinction` attempts when it detects a matrix input):
+To express these matrices as `network` objects ready for use with
+`NetworkExtinction` functions, run the following (this is what
+`NetworkExtinction` attempts when it detects a matrix input):
 
 ``` r
 weight_net <- as.network(weight_mat, matrix.type = "adjacency", 
                          ignore.eval = FALSE, names.eval = 'weight')
 summary(weight_net)
-#> 
 #> Network attributes:
 #>   vertices = 10
 #>   directed = TRUE
@@ -175,7 +186,8 @@ summary(weight_net)
 #> 10 1 1 1 1 1 1 1 0 1  0
 ```
 
-**NOTE:** `NetworkExtinction` functions do not require `network` objects and can work just fine with matrix objects.
+**NOTE:** `NetworkExtinction` functions do not require `network` objects
+and can work just fine with matrix objects.
 
 ## Extinctions functions
 
@@ -246,7 +258,7 @@ in the network.
 
 <div class="figure">
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" alt="Figure 4. The graph shows the number of accumulated secondary extinctions that occur when removing species in a custom order." width="100%" />
+<img src="man/figures/README-unnamed-chunk-9-1.png" alt="Figure 4. The graph shows the number of accumulated secondary extinctions that occur when removing species in a custom order." width="100%" />
 <p class="caption">
 Figure 4. The graph shows the number of accumulated secondary
 extinctions that occur when removing species in a custom order.
@@ -286,7 +298,7 @@ RandomExtinctions(Network= net, nsim= 100, SimNum = 8)
 
 <div class="figure">
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" alt="Figure 5. The resulting graph of the RandomExtinctions function" width="100%" />
+<img src="man/figures/README-unnamed-chunk-12-1.png" alt="Figure 5. The resulting graph of the RandomExtinctions function" width="100%" />
 <p class="caption">
 Figure 5. The resulting graph of the RandomExtinctions function
 </p>
@@ -316,7 +328,7 @@ of secondary extinctions randomly generated.
 
 <div class="figure">
 
-<img src="man/figures/README-unnamed-chunk-10-1.png" alt="Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random" width="100%" />
+<img src="man/figures/README-unnamed-chunk-14-1.png" alt="Figure 6. The resulting graph of the CompareExtinctions function, where the dashed line shows the observed extinction history, and a solid line shows the expected value of secondary extinctions originated at random" width="100%" />
 <p class="caption">
 Figure 6. The resulting graph of the CompareExtinctions function, where
 the dashed line shows the observed extinction history, and a solid line
@@ -340,7 +352,7 @@ ExtinctionPlot(History = Order[[1]])
 
 <div class="figure">
 
-<img src="man/figures/README-unnamed-chunk-11-1.png" alt="Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions" width="100%" />
+<img src="man/figures/README-unnamed-chunk-15-1.png" alt="Figure 7. Example of the use of the ExtinctionPlot function showing the accumulated secondary extinctions against number of extinctions" width="100%" />
 <p class="caption">
 Figure 7. Example of the use of the ExtinctionPlot function showing the
 accumulated secondary extinctions against number of extinctions
@@ -354,7 +366,7 @@ ExtinctionPlot(History = Order[[1]], Variable = "Link_density")
 
 <div class="figure">
 
-<img src="man/figures/README-unnamed-chunk-12-1.png" alt="Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions" width="100%" />
+<img src="man/figures/README-unnamed-chunk-16-1.png" alt="Figure 8. Another example of the use of the ExtinctionPlot function showing the number of links per species against number of extinctions" width="100%" />
 <p class="caption">
 Figure 8. Another example of the use of the ExtinctionPlot function
 showing the number of links per species against number of extinctions
@@ -386,7 +398,7 @@ DegreeDistribution(chilean_intertidal)
 
 <div class="figure">
 
-<img src="man/figures/README-unnamed-chunk-15-1.png" alt="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" width="100%" />
+<img src="man/figures/README-unnamed-chunk-19-1.png" alt="Figure 9: Fitted vs observed values of the degree distribution. The black line and points show the observed values, the red, green and blue lines show the fitted values for the Exponential, power law and trucated distribution, respectively" width="100%" />
 <p class="caption">
 Figure 9: Fitted vs observed values of the degree distribution. The
 black line and points show the observed values, the red, green and blue
