@@ -519,9 +519,10 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
 
     if(forceFULL){
       Conected1 <- Order <- unique(c(Order, Secundaryext))
-      i <- i+1
     }
+    i <- i+1
   }
+
 
   # return of final data objects ++++++++++ ++++++++++
   DF <- DF[!is.na(DF$Spp),]
