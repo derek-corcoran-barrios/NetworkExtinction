@@ -14,7 +14,8 @@ ExtinctionOrder(
   RewiringDist,
   RewiringProb = 0.5,
   verbose = TRUE,
-  RecalcConnect = FALSE
+  RecalcConnect = FALSE,
+  forceFULL = FALSE
 )
 }
 \arguments{

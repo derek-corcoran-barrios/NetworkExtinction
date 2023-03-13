@@ -16,6 +16,7 @@
 #' @param RewiringDist a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities. If Rewiring == function(x){x}, this matrix is expected to contain probabilities of a connection being present between species-pairs.
 #' @param RewiringProb a numeric which identifies the threshold at which to assume rewiring potential is met.
 #' @param verbose Logical. Whether to report on function progress or not.
+#' @param forceFULL Logical. Whether to continue removal of nodes after initial order has been depleted. This will force the simulations to execute extinctions and check for secondary extinctions/new links until the network does not change anylonger.
 #' @return exports list containing a data frame with the characteristics of the network after every extinction and a network object containing the final network. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.
 #' @details When method is Mostconnected, the function takes the network and calculates which node is the most connected of the network, using total degree. Then remove the most connected node, and calculates the the topological indexes of the network and the number of secondary extinctions. This process is repeated until the entire network has gone extinct. When method is Leastconnected, this process prioritises nodes of lowest degree.
 #'
@@ -74,7 +75,7 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
                                 NetworkType = "Trophic", clust.method = "cluster_infomap",
                                 IS = 0,
                                 Rewiring = FALSE, RewiringDist, RewiringProb = 0.5,
-                                verbose = TRUE){
+                                verbose = TRUE, forceFULL = FALSE){
   Network <- .DataInit(x = Network)
   if(!NetworkType %in% c("Trophic", "Mutualistic")){stop("Please specify NetworkType as either 'Trophic' or 'Mutualistic'")}
 
@@ -103,12 +104,12 @@ SimulateExtinctions <- function(Network, Method, Order = NULL,
     DF <- ExtinctionOrder(Network = Network, Order = Conected, clust.method = clust.method,
                           IS = IS, Rewiring = Rewiring, RewiringDist = RewiringDist,
                           verbose = verbose, RewiringProb = RewiringProb, NetworkType = NetworkType,
-                          RecalcConnect = RecalcConnect)
+                          RecalcConnect = RecalcConnect, forceFULL = forceFULL)
   }
   if(Method == "Ordered"){
     DF <- ExtinctionOrder(Network = Network, Order = Order, clust.method = clust.method,
                           IS = IS, Rewiring = Rewiring, RewiringDist = RewiringDist,
-                          verbose = verbose, RewiringProb = RewiringProb, NetworkType = NetworkType)
+                          verbose = verbose, RewiringProb = RewiringProb, NetworkType = NetworkType, forceFULL = forceFULL)
   }
 
   return(DF)
@@ -172,7 +173,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
                             IS = 0,
                             Rewiring = FALSE, RewiringDist, RewiringProb = 0.5,
                             verbose = TRUE,
-                            RecalcConnect = FALSE
+                            RecalcConnect = FALSE, forceFULL = FALSE
 ){
   if(!NetworkType %in% c("Trophic", "Mutualistic")){stop("Please specify NetworkType as either 'Trophic' or 'Mutualistic'")}
   # Setting up Objects for function run ++++++++++ ++++++++++ ++++++++++ ++++++++++
@@ -248,12 +249,29 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
   # Sequential extinction simulation ++++++++++ ++++++++++ ++++++++++ ++++++++++
   if(verbose){ProgBar <- txtProgressBar(max = length(Order), style = 3)}
   primskip <- c()
-  for (i in 1:length(Order)){
+  i <- 1
+  while(i <= length(Order)){
+    # for (i in 1:length(Order)){
     if(is.na(Conected1[i])){
       if(verbose){setTxtProgressBar(ProgBar, i)}
       next()
     }
     # print(i)
+
+    if(i > nrow(DF)){
+      DF <- rbind(DF, data.frame(
+        Spp = NA,
+        S = NA,
+        L = NA,
+        C = NA,
+        Link_density = NA,
+        SecExt = NA,
+        Pred_release = NA,
+        Iso_nodes = NA,
+        Modularity = NA)
+      )
+    }
+
     ### creating temporary network + deleting vertices if they have been set to go extinct ++++++++++ ++++++++++
     if(length(accExt)==0){ # on first iteration
       Temp <- Network
@@ -498,6 +516,11 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
       Temp <- Network
       network::delete.vertices(Temp, unique(c(c(DF$Spp[1:i]),accExt)))
     }
+
+    if(forceFULL){
+      Conected1 <- Order <- unique(c(Order, Secundaryext))
+      i <- i+1
+    }
   }
 
   # return of final data objects ++++++++++ ++++++++++
@@ -536,6 +559,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
 #' @param RewiringDist a numeric matrix of NxN dimension (N... number of nodes in Network). Contains, for example, phylogenetic or functional trait distances between nodes in Network which are used by the Rewiring argument to calculate rewiring probabilities. If Rewiring == function(x){x}, this matrix is expected to contain probabilities of a connection being present between species-pairs.
 #' @param RewiringProb a numeric which identifies the threshold at which to assume rewiring potential is met.
 #' @param verbose Logical. Whether to report on function progress or not.
+#' #' @param forceFULL Logical. Whether to continue removal of nodes after initial order has been depleted. This will force the simulations to execute extinctions and check for secondary extinctions/new links until the network does not change anylonger.
 #' @return exports list containing a data frame with the characteristics of the network after every extinction, a network object containing the final network, and a graph with the mean and 95percent interval. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.
 #' @details When NetworkType = Trophic, secondary extinctions only occur for any predator, but not producers. If NetworkType = Mutualistic, secondary extinctions occur for all species in the network.
 #'
