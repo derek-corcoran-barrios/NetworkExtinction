@@ -101,6 +101,15 @@ SimulateExtinctions(Network = net, Order = c(2,8), IS = 0.3,
 Rewiring = function(x){x}, # no changes to the RewiringDist object means
 RewiringDist = dist, RewiringProb = 0.2,
 Method = "Ordered", clust.method = "cluster_infomap")
+
+## mutualistic network example
+data(mutual)
+# tallying of first-order secondary extinctions only
+SimulateExtinctions(Network = mutual, Order = 3, NetworkType = "Mutualistic",
+IS = 1, forceFULL = FALSE)
+# tallying of all secondary extinctions until network contains no more potential secondary extinctions
+SimulateExtinctions(Network = mutual, Order = 3, NetworkType = "Mutualistic",
+IS = 1, forceFULL = TRUE)
 }
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>
