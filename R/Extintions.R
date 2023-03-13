@@ -263,6 +263,7 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
     # for (i in 1:length(Order)){
     if(is.na(Conected1[i])){
       if(verbose){setTxtProgressBar(ProgBar, i)}
+      i <- i+1
       next()
     }
     # print(i)
