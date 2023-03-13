@@ -18,7 +18,8 @@ RandomExtinctions(
   Rewiring = FALSE,
   RewiringDist = NULL,
   RewiringProb = 0.5,
-  verbose = TRUE
+  verbose = TRUE,
+  forceFULL = FALSE
 )
 }
 \arguments{
@@ -52,8 +53,9 @@ sequentially}
 
 \item{RewiringProb}{a numeric which identifies the threshold at which to assume rewiring potential is met.}
 
-\item{verbose}{Logical. Whether to report on function progress or not.
-#' @param forceFULL Logical. Whether to continue removal of nodes after initial order has been depleted. This will force the simulations to execute extinctions and check for secondary extinctions/new links until the network does not change anylonger.}
+\item{verbose}{Logical. Whether to report on function progress or not.}
+
+\item{forceFULL}{Logical. Whether to continue removal of nodes after initial order has been depleted. This will force the simulations to execute extinctions and check for secondary extinctions/new links until the network does not change anylonger.}
 }
 \value{
 exports list containing a data frame with the characteristics of the network after every extinction, a network object containing the final network, and a graph with the mean and 95percent interval. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.
