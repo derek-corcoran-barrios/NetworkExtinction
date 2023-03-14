@@ -14,7 +14,8 @@ ExtinctionOrder(
   RewiringDist,
   RewiringProb = 0.5,
   verbose = TRUE,
-  RecalcConnect = FALSE
+  RecalcConnect = FALSE,
+  forceFULL = FALSE
 )
 }
 \arguments{
@@ -38,6 +39,8 @@ cluster_label_prop or cluster_infomap, defaults to cluster_infomap}
 \item{verbose}{Logical. Whether to report on function progress or not.}
 
 \item{RecalcConnect}{Logical or Numeric. Whether to recalculate connectedness of each node following each round of extinction simulation and subsequently update extinction order with newly mostconnected nodes.}
+
+\item{forceFULL}{Logical. Whether to continue removal of nodes after initial order has been depleted. This will force the simulations to execute extinctions and check for secondary extinctions/new links until the network does not change anylonger.}
 }
 \value{
 exports list containing a data frame with the characteristics of the network after every extinction and a network object containing the final network. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.
