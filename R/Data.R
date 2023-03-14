@@ -53,8 +53,13 @@
 #'
 #' A network with 30 species and 47 interactions.
 #' This network has a connectance of 0.03
-
-
 #' @format a network
 #' @seealso \code{\link{More_Connected}}
 "Less_Connected"
+
+#' A mutualistic web
+#'
+#' A network with 10 species (5 basal and 5 of higher order)
+#'
+#' @format a network
+"mutual"

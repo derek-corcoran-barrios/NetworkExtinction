@@ -14,7 +14,8 @@ SimulateExtinctions(
   Rewiring = FALSE,
   RewiringDist,
   RewiringProb = 0.5,
-  verbose = TRUE
+  verbose = TRUE,
+  forceFULL = FALSE
 )
 }
 \arguments{
@@ -39,6 +40,8 @@ cluster_label_prop or cluster_infomap, defaults to cluster_infomap}
 \item{RewiringProb}{a numeric which identifies the threshold at which to assume rewiring potential is met.}
 
 \item{verbose}{Logical. Whether to report on function progress or not.}
+
+\item{forceFULL}{Logical. Whether to continue removal of nodes after initial order has been depleted. This will force the simulations to execute extinctions and check for secondary extinctions/new links until the network does not change anylonger.}
 }
 \value{
 exports list containing a data frame with the characteristics of the network after every extinction and a network object containing the final network. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.
@@ -98,6 +101,15 @@ SimulateExtinctions(Network = net, Order = c(2,8), IS = 0.3,
 Rewiring = function(x){x}, # no changes to the RewiringDist object means
 RewiringDist = dist, RewiringProb = 0.2,
 Method = "Ordered", clust.method = "cluster_infomap")
+
+## mutualistic network example
+data(mutual)
+# tallying of first-order secondary extinctions only
+SimulateExtinctions(Network = mutual, Order = 3, NetworkType = "Mutualistic",
+IS = 1, forceFULL = FALSE)
+# tallying of all secondary extinctions until network contains no more potential secondary extinctions
+SimulateExtinctions(Network = mutual, Order = 3, NetworkType = "Mutualistic",
+IS = 1, forceFULL = TRUE)
 }
 \author{
 Derek Corcoran <derek.corcoran.barrios@gmail.com>
