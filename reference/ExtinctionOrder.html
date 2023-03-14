@@ -58,7 +58,8 @@
 <span>  <span class="va">RewiringDist</span>,</span>
 <span>  RewiringProb <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  RecalcConnect <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  RecalcConnect <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  forceFULL <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -103,6 +104,10 @@ cluster_label_prop or cluster_infomap, defaults to cluster_infomap</p></dd>
 
 <dt>RecalcConnect</dt>
 <dd><p>Logical or Numeric. Whether to recalculate connectedness of each node following each round of extinction simulation and subsequently update extinction order with newly mostconnected nodes.</p></dd>
+
+
+<dt>forceFULL</dt>
+<dd><p>Logical. Whether to continue removal of nodes after initial order has been depleted. This will force the simulations to execute extinctions and check for secondary extinctions/new links until the network does not change anylonger.</p></dd>
 
 </dl></div>
     <div class="section level2">

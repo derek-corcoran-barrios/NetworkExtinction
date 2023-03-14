@@ -62,7 +62,8 @@
 <span>  Rewiring <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  RewiringDist <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  RewiringProb <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  forceFULL <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -126,6 +127,10 @@ sequentially</p></dd>
 
 <dt>verbose</dt>
 <dd><p>Logical. Whether to report on function progress or not.</p></dd>
+
+
+<dt>forceFULL</dt>
+<dd><p>Logical. Whether to continue removal of nodes after initial order has been depleted. This will force the simulations to execute extinctions and check for secondary extinctions/new links until the network does not change anylonger.</p></dd>
 
 </dl></div>
     <div class="section level2">
