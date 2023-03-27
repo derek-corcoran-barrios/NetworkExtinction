@@ -107,7 +107,8 @@ data(mutual)
 # tallying of first-order secondary extinctions only
 SimulateExtinctions(Network = mutual, Order = 3, NetworkType = "Mutualistic",
 IS = 1, forceFULL = FALSE)
-# tallying of all secondary extinctions until network contains no more potential secondary extinctions
+# tallying of all secondary extinctions until network contains no
+#more potential secondary extinctions
 SimulateExtinctions(Network = mutual, Order = 3, NetworkType = "Mutualistic",
 IS = 1, forceFULL = TRUE)
 }

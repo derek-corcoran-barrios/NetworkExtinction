@@ -72,7 +72,8 @@
 #' # tallying of first-order secondary extinctions only
 #' SimulateExtinctions(Network = mutual, Order = 3, NetworkType = "Mutualistic",
 #' IS = 1, forceFULL = FALSE)
-#' # tallying of all secondary extinctions until network contains no more potential secondary extinctions
+#' # tallying of all secondary extinctions until network contains no
+#' #more potential secondary extinctions
 #' SimulateExtinctions(Network = mutual, Order = 3, NetworkType = "Mutualistic",
 #' IS = 1, forceFULL = TRUE)
 #' @importFrom dplyr desc
@@ -543,9 +544,42 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
   DF <- relocate(DF, Modularity, .after = Link_density)
   class(DF) <- c("data.frame", "SimulateExt")
 
+  # return of robustness metrics
+
+
+
   if(length(primskip)!= 0){warning(paste("Primary extinctions of", paste(primskip, collapse = ", "), "skipped due to their prior extinction as secondary extinctions."))}
 
+  NetworkSize <- network::network.size(Network)
+  FracTotalExt <- DF$TotalExt/NetworkSize
+  positionR50 <- which(round((FracTotalExt),1) >= 0.5)
+  positionR100 <- which(round((FracTotalExt),1) >= 1)
+
+  if (length(positionR50) > 0){
+    position <- positionR50[1]
+    R50 <- round((position/NetworkSize), 2)
+  } else{
+    nodeContribution <- 1/NetworkSize
+    HighestValue <- max(FracTotalExt, na.rm = TRUE)
+    NremovalslackingtoR50<- (0.5-HighestValue)/nodeContribution
+    ObservedNremovals <- which(FracTotalExt == HighestValue)
+    R50 <- round(((ObservedNremovals+NremovalslackingtoR50)/NetworkSize),2)
+  }
+
+  if (length(positionR100) > 0){
+    position <- positionR100[1]
+    R100 <- round((position/NetworkSize), 2)
+  } else{
+    nodeContribution <- 1/NetworkSize
+    HighestValue <- max(FracTotalExt, na.rm = TRUE)
+    NremovalslackingtoR50<- (1-HighestValue)/nodeContribution
+    ObservedNremovals <- which(FracTotalExt == HighestValue)
+    R100 <- round(((ObservedNremovals+NremovalslackingtoR50)/NetworkSize),2)
+  }
+
   return(list(sims = DF,
+              R50 = R50,
+              R100 = R100,
               Network = Temp))
 }
 
@@ -686,6 +720,21 @@ RandomExtinctions <- function(Network, nsim = 10,
     }
   }
 
+  r50values <- c()
+  r100values <- c()
+  for(i in 1:nsim){
+    r50values[i] <- sims[[i]]$R50
+    r100values[i] <-sims[[i]]$R100
+  }
+
+  R50mean <- mean(r50values)
+  R50CI <- 1.96*sd(r50values)
+  R50result <- c(R50mean,R50CI)
+
+  R100mean <- mean(r100values)
+  R100CI <- 1.96*sd(r100values)
+  R100result <- c(R100mean,R100CI)
+
   ## extract objects
   temps <- lapply(sims, "[[", 2)
   sims <- lapply(sims, "[[", 1)
@@ -696,6 +745,7 @@ RandomExtinctions <- function(Network, nsim = 10,
   if(Record == TRUE){
     FullSims <- sims
   }
+
 
   sims <- sims[!is.na(sims$SecExt), ] %>% dplyr::group_by(NumExt) %>% summarise(AccSecExt_95CI = 1.96*sd(AccSecExt), AccSecExt_mean = mean(AccSecExt), nsim = dplyr::n()) %>% mutate(Upper = AccSecExt_mean + AccSecExt_95CI, Lower = AccSecExt_mean - AccSecExt_95CI, Lower = ifelse(Lower < 0, 0, Lower)) %>% dplyr::relocate(nsim, .after = dplyr::everything())
 
@@ -711,13 +761,13 @@ RandomExtinctions <- function(Network, nsim = 10,
 
   ## object output
   if(Record == T & plot == T){
-    return(list(sims = sims, graph = g, FullSims = FullSims, nets = temps))
+    return(list(sims = sims, graph = g, FullSims = FullSims, nets = temps, R50result = R50result, R100result = R100result))
   }else if(Record == F & plot == T){
-    return(list(sims = sims, graph = I, nets = temps))
+    return(list(sims = sims, graph = g, nets = temps, R50result = R50result, R100result = R100result))
   }else if(Record == F & plot == F){
-    return(list(sims = sims, nets = temps))
+    return(list(sims = sims, nets = temps, R50result = R50result, R100result = R100result))
   }else if(Record == T & plot == F){
-    return(list(sims = sims, FullSims = FullSims, nets= temps))
+    return(list(sims = sims, FullSims = FullSims, nets= temps, R50result = R50result, R100result = R100result))
   }
 }
 
