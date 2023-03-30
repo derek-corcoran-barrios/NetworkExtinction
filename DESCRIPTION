@@ -1,7 +1,7 @@
 Package: NetworkExtinction
 Type: Package
 Title: Extinction Simulation in Ecological Networks
-Version: 1.0.2
+Version: 1.0.3
 Authors@R: c(person("Derek", "Corcoran", email = "derek.corcoran.barrios@gmail.com",
   role = c("aut", "cre"), comment = c(ORCID = "0000-0002-0248-6230")), person("M. Isidora", "Ávila-Thieme", email = "msavila@uc.cl",
   role = c("aut"), comment = c(ORCID = "0000-0003-0772-4717")), person("Fernanda S.", "Valdovinos", role = c("aut")), person("Sergio A.", "Navarrete", role = c("aut")), 

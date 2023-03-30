@@ -166,15 +166,15 @@ DegreeDistribution <- function(Network, scale = "arithmetic"){
 
 
   #all together
-  Summs <- list(Summs.exp, Summs.power, Summs.logexp, Summs.logpower) |>
-    purrr::discard(is.null) |>
-    purrr::reduce(full_join) |>
-    select(logLik, AIC, BIC, model, Normal.Resid, family, AICcNorm) |>      arrange(Normal.Resid, AIC) |>
-    dplyr::select(logLik, AIC, BIC, model, Normal.Resid, family) |>
+  Summs <- list(Summs.exp, Summs.power, Summs.logexp, Summs.logpower) %>%
+    purrr::discard(is.null) %>%
+    purrr::reduce(full_join) %>%
+    select(logLik, AIC, BIC, model, Normal.Resid, family, AICcNorm) %>%      arrange(Normal.Resid, AIC) %>%
+    dplyr::select(logLik, AIC, BIC, model, Normal.Resid, family) %>%
     dplyr::filter(AIC > -Inf, AIC < Inf)
 
 
-  params <- list(Params.logpower, Params.power, Params.logexp, Params.exp) |> purrr::discard(is.null) |>
+  params <- list(Params.logpower, Params.power, Params.logexp, Params.exp) %>% purrr::discard(is.null) %>%
     purrr::reduce(bind_rows) %>%
     dplyr::filter(model %in% Summs$model) %>%
     mutate(term = case_when(term == "y" ~ "Beta",

@@ -730,13 +730,15 @@ RandomExtinctions <- function(Network, nsim = 10,
   R50mean <- mean(r50values)
   R50CI <- 1.96*sd(r50values)
   R50result <- c(R50mean,R50CI)
+  names(R50result) <- c("Mean", "CI")
 
   R100mean <- mean(r100values)
   R100CI <- 1.96*sd(r100values)
   R100result <- c(R100mean,R100CI)
+  names(R50result) <- c("Mean", "CI")
 
   ## extract objects
-  temps <- lapply(sims, "[[", 2)
+  temps <- lapply(sims, "[[", 4)
   sims <- lapply(sims, "[[", 1)
   cond <- sapply(sims, function(x) "data.frame" %in% class(x))
   cond <- c(1:length(cond))[cond]
