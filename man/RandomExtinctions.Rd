@@ -64,6 +64,18 @@ exports list containing a data frame with the characteristics of the network aft
 Generates a null model by generating random extinction histories and calculating the mean and standard deviation of the accumulated secondary extinctions developed by making n random extinction histories.
 }
 \details{
+"Note: When using the pre-defined order of nodes for primary
+removals option in the random extinction scenario, it is possible
+that some of the species in the predefined order may be lost as
+secondary extinctions. As such, they should not be counted as
+primary removals. For example, if a network has five species {A,B,
+,D,E} and a pre-defined "random" order of removal {C,A,B,E,D} with
+removal of C causing the additional loss of A and removal of B
+causing the additional loss of E and D, only two primary removals
+(C and B) would be required for total network collapse, even though
+the algorithm would terminate at the third element of the removal
+vector, i.e., {C,A,B}."
+
 When NetworkType = Trophic, secondary extinctions only occur for any predator, but not producers. If NetworkType = Mutualistic, secondary extinctions occur for all species in the network.
 
 When clust.method = cluster_edge_betweenness computes the network modularity using cluster_edge_betweenness methods from igraph to detect communities

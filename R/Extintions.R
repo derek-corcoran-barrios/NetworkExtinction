@@ -577,6 +577,8 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
     R100 <- round(((ObservedNremovals+NremovalslackingtoR50)/NetworkSize),2)
   }
 
+  # Your function code here
+
   return(list(sims = DF,
               R50 = R50,
               R100 = R100,
@@ -607,7 +609,21 @@ ExtinctionOrder <- function(Network, Order, NetworkType = "Trophic", clust.metho
 #' @param verbose Logical. Whether to report on function progress or not.
 #' @param forceFULL Logical. Whether to continue removal of nodes after initial order has been depleted. This will force the simulations to execute extinctions and check for secondary extinctions/new links until the network does not change anylonger.
 #' @return exports list containing a data frame with the characteristics of the network after every extinction, a network object containing the final network, and a graph with the mean and 95percent interval. The resulting data frame contains 11 columns that incorporate the topological index, the secondary extinctions, predation release, and total extinctions of the network in each primary extinction.
-#' @details When NetworkType = Trophic, secondary extinctions only occur for any predator, but not producers. If NetworkType = Mutualistic, secondary extinctions occur for all species in the network.
+#' @details
+#'
+#' "Note: When using the pre-defined order of nodes for primary
+#' removals option in the random extinction scenario, it is possible
+#' that some of the species in the predefined order may be lost as
+#' secondary extinctions. As such, they should not be counted as
+#' primary removals. For example, if a network has five species {A,B,
+#' ,D,E} and a pre-defined "random" order of removal {C,A,B,E,D} with
+#' removal of C causing the additional loss of A and removal of B
+#' causing the additional loss of E and D, only two primary removals
+#' (C and B) would be required for total network collapse, even though
+#' the algorithm would terminate at the third element of the removal
+#' vector, i.e., {C,A,B}."
+#'
+#' When NetworkType = Trophic, secondary extinctions only occur for any predator, but not producers. If NetworkType = Mutualistic, secondary extinctions occur for all species in the network.
 #'
 #' When clust.method = cluster_edge_betweenness computes the network modularity using cluster_edge_betweenness methods from igraph to detect communities
 #' When clust.method = cluster_label_prop computes the network modularity using cluster_label_prop methods from igraph to detect communities
@@ -760,6 +776,7 @@ RandomExtinctions <- function(Network, nsim = 10,
 
     print(I)
   }
+  message("Note: If using the pre-defined order of nodes for primary removals option, please note that some species in the predefined order may be lost as secondary extinctions and should not be counted as primary removals.")
 
   ## object output
   if(Record == T & plot == T){
