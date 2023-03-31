@@ -8,3 +8,6 @@
 ^codecov\.yml$
 ^\.github$
 ^cran-comments\.md$
+^README\.md$
+^\.Rhistory$
+^\.RData$
