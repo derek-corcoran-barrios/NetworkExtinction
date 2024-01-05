@@ -11,6 +11,7 @@ Maintainer: Derek Corcoran <derek.corcoran.barrios@gmail.com>
 Description: Simulates the extinction of species in ecological networks and it analyzes
              its cascading effects, described in Dunne et al. (2002) <doi:10.1073/pnas.192407699>.
 URL: https://derek-corcoran-barrios.github.io/NetworkExtinction/
+BugReports: https://github.com/derek-corcoran-barrios/NetworkExtinction/issues
 Depends: R (>= 3.5.1)
 Imports: 
     broom,
