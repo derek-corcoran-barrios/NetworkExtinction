@@ -1,66 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/404.html</loc>
-  </url>
-  <url>
-    <loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/articles/NetworkExtinction.html</loc>
-  </url>
-  <url>
-    <loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/index.html</loc>
-  </url>
-  <url>
-    <loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/CompareExtinctions.html</loc>
-  </url>
-  <url>
-    <loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/DegreeDistribution.html</loc>
-  </url>
-  <url>
-    <loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/ExtinctionOrder.html</loc>
-  </url>
-  <url>
-    <loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/ExtinctionPlot.html</loc>
-  </url>
-  <url>
-    <loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/Less_Connected.html</loc>
-  </url>
-  <url>
-    <loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/More_Connected.html</loc>
-  </url>
-  <url>
-    <loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/RandomExtinctions.html</loc>
-  </url>
-  <url>
-    <loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/SimulateExtinctions.html</loc>
-  </url>
-  <url>
-    <loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/chilean_intertidal.html</loc>
-  </url>
-  <url>
-    <loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/chilean_potential.html</loc>
-  </url>
-  <url>
-    <loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/chilean_weighted.html</loc>
-  </url>
-  <url>
-    <loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/dist.html</loc>
-  </url>
-  <url>
-    <loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/mutual.html</loc>
-  </url>
-  <url>
-    <loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/net.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/404.html</loc></url>
+<url><loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/articles/NetworkExtinction.html</loc></url>
+<url><loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/articles/index.html</loc></url>
+<url><loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/authors.html</loc></url>
+<url><loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/index.html</loc></url>
+<url><loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/news/index.html</loc></url>
+<url><loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/CompareExtinctions.html</loc></url>
+<url><loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/DegreeDistribution.html</loc></url>
+<url><loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/ExtinctionOrder.html</loc></url>
+<url><loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/ExtinctionPlot.html</loc></url>
+<url><loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/Less_Connected.html</loc></url>
+<url><loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/More_Connected.html</loc></url>
+<url><loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/RandomExtinctions.html</loc></url>
+<url><loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/SimulateExtinctions.html</loc></url>
+<url><loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/chilean_intertidal.html</loc></url>
+<url><loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/chilean_potential.html</loc></url>
+<url><loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/chilean_weighted.html</loc></url>
+<url><loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/dist.html</loc></url>
+<url><loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/index.html</loc></url>
+<url><loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/mutual.html</loc></url>
+<url><loc>https://derek-corcoran-barrios.github.io/NetworkExtinction/reference/net.html</loc></url>
 </urlset>
+

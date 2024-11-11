@@ -1,10 +1,9 @@
-pandoc: 2.19.2
-pkgdown: 2.0.7
+pandoc: 3.1.11
+pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   NetworkExtinction: NetworkExtinction.html
-last_built: 2023-04-29T22:41Z
+last_built: 2024-11-11T10:03Z
 urls:
   reference: https://derek-corcoran-barrios.github.io/NetworkExtinction/reference
   article: https://derek-corcoran-barrios.github.io/NetworkExtinction/articles
-
